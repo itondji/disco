@@ -205,7 +205,7 @@ export default {
         modelInUseMessage = `A new ${this.Task.displayInformation.taskTitle} model will be created. You can start training!`;
       }
       this.$toast.success(modelInUseMessage);
-      setTimeout(this.$toast.clear, 30000);
+      
     },
   },
   computed: {
@@ -225,7 +225,7 @@ export default {
         this.$toast.success(
           `A new ${this.Task.displayInformation.taskTitle} model has been created. You can start training!`
         );
-        setTimeout(this.$toast.clear, 30000);
+        
       }
       this.$router.push({
         name: this.Id + '.training',
@@ -241,7 +241,7 @@ export default {
       this.$toast.success(
         `Deleted the cached ${this.Task.displayInformation.taskTitle} model.`
       );
-      setTimeout(this.$toast.clear, 30000);
+      
     },
     async saveModel() {
       await memory.saveWorkingModel(
@@ -251,7 +251,7 @@ export default {
       this.$toast.success(
         `Saved the cached ${this.Task.displayInformation.taskTitle} model to the model library`
       );
-      setTimeout(this.$toast.clear, 30000);
+      
     },
     async toggleUseWorkingModel() {
       this.useWorkingModel = !this.useWorkingModel;

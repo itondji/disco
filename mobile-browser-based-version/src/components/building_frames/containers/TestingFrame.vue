@@ -65,20 +65,20 @@ export default {
       downloadLink.click();
       document.body.removeChild(downloadLink);
       this.$toast.success(`Predictions have been downloaded.`);
-      setTimeout(this.$toast.clear, 30000);
+      
     },
     async testModel() {
       const nbrFiles = this.fileUploadManager.numberOfFiles();
       // Check that the user indeed gave a file
       if (nbrFiles == 0) {
         this.$toast.error(`Training aborted. No uploaded file given as input.`);
-        setTimeout(this.$toast.clear, 30000);
+        
       } else {
         // Assume we only read the first file
         this.$toast.success(
           `Thank you for your contribution. Testing has started`
         );
-        setTimeout(this.$toast.clear, 30000);
+        
         console.log(this.fileUploadManager);
         var filesElement =
           nbrFiles > 1

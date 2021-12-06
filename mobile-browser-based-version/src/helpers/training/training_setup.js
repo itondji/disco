@@ -7,12 +7,13 @@ import { FileUploadManager } from '../../../helpers/data_validation/file_upload_
 import { saveWorkingModel } from '../../../helpers/memory/helpers';
 
 class TrainingSetup {
-  constructor(task, platform) {
+  constructor(task, platform, useIndexedDB, getLogger) {
     // task can either be a json or string corresponding to the taskID
     this.task = typeof task === 'object' ? task : this.loadTask(task);
-    this.dataDir = dataDir;
 
     this.isConnected = false;
+    this.useIndexedDB = useIndexedDB;
+    this.getLogger = getLogger;
     // Manager that returns feedbacks when training
     this.trainingInformant = new TrainingInformant(10, this.task.taskID);
     // Manager for the file uploading process
@@ -28,7 +29,7 @@ class TrainingSetup {
       this.task,
       this.client,
       this.trainingInformant,
-      false //indexedDB
+      this.useIndexedDB
     );
   }
 
@@ -43,6 +44,56 @@ class TrainingSetup {
     this.client.disconnect();
   }
 
+  async joinTraining(
+    distributed,
+    onConnectionError,
+    onFileError,
+    onPreCheckError
+  ) {
+    if (distributed && !this.isConnected && onConnectionError) {
+      onConnectionError();
+      return;
+    }
+    const nbrFiles = this.fileUploadManager.numberOfFiles();
+    // Check that the user indeed gave a file
+    if (nbrFiles == 0) {
+      this.getLogger().error(
+        `Training aborted. No uploaded file given as input.`
+      );
+    } else {
+      // Assume we only read the first file
+      this.getLogger().success(
+        `Thank you for your contribution. Data preprocessing has started`
+      );
+
+      console.log(this.fileUploadManager);
+      const filesElement =
+        nbrFiles > 1
+          ? this.fileUploadManager.getFilesList()
+          : this.fileUploadManager.getFirstFile();
+      var statusValidation = { accepted: true };
+      if (this.precheckData) {
+        // data checking is optional
+        statusValidation = await this.precheckData(
+          filesElement,
+          this.Task.trainingInformation
+        );
+      }
+      if (!statusValidation.accepted) {
+        // print error message
+        this.getLogger().error(
+          `Invalid input format : Number of data points with valid format: ${statusValidation.nr_accepted} out of ${nbrFiles}`
+        );
+      } else {
+        // preprocess data
+        let processedDataset = await this.dataPreprocessing(filesElement);
+        this.getLogger().success(
+          `Data preprocessing has finished and training has started`
+        );
+        this.trainingManager.trainModel(processedDataset, distributed);
+      }
+    }
+  }
   /*
    * For command line interface
    */
@@ -55,7 +106,7 @@ class TrainingSetup {
     fs.readdir(dataDir, function (err, files) {
       //handling error
       if (err) {
-        return console.log('Unable to scan directory: ' + err);
+        this.getLogger(`Unable to scan data directory: ${err}`);
       }
       //listing all files using forEach
       files.forEach(function (file) {

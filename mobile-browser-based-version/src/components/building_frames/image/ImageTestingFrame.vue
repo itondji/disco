@@ -160,7 +160,7 @@ export default {
         this.classes = classes[ids[0]];
         this.gotResults = true;
         this.$toast.success(`Predictions are available below.`);
-        setTimeout(this.$toast.clear, 30000);
+        
       } else {
         predictions = classes;
       }

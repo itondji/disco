@@ -15,6 +15,9 @@ app
   .use(store)
   .use(VueApexCharts)
   .use(i18n)
-  .use(Toaster)
+  .use(Toaster, {
+    // One of the options
+    duration: 3000,
+  })
   .use(router)
   .mount('#app');

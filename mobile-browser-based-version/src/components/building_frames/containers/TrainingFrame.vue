@@ -162,7 +162,7 @@ export default {
           'The model library is currently turned off. See settings for more information'
         );
       }
-      setTimeout(this.$toast.clear, 30000);
+      
     },
     async joinTraining(distributed) {
       if (distributed && !this.isConnected) {
@@ -178,13 +178,13 @@ export default {
       // Check that the user indeed gave a file
       if (nbrFiles == 0) {
         this.$toast.error(`Training aborted. No uploaded file given as input.`);
-        setTimeout(this.$toast.clear, 30000);
+        
       } else {
         // Assume we only read the first file
         this.$toast.success(
           `Thank you for your contribution. Data preprocessing has started`
         );
-        setTimeout(this.$toast.clear, 30000);
+        
         console.log(this.fileUploadManager);
         const filesElement =
           nbrFiles > 1
@@ -205,14 +205,14 @@ export default {
           this.$toast.error(
             `Invalid input format : Number of data points with valid format: ${statusValidation.nr_accepted} out of ${nbrFiles}`
           );
-          setTimeout(this.$toast.clear, 30000);
+          
         } else {
           // preprocess data
           let processedDataset = await this.dataPreprocessing(filesElement);
           this.$toast.success(
             `Data preprocessing has finished and training has started`
           );
-          setTimeout(this.$toast.clear, 30000);
+          
           this.trainingManager.trainModel(processedDataset, distributed);
         }
       }
@@ -241,7 +241,7 @@ export default {
           'Failed to connect to server. Fallback to training alone.'
         );
       }
-      setTimeout(this.$toast.clear, 30000);
+      
     });
   },
   async unmounted() {
