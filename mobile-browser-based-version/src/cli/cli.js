@@ -1,10 +1,8 @@
-const fs = require('fs');
-
 require('yargs')
   .scriptName('deai')
   .usage('$0 <cmd> [args]')
   .command({
-    command: 'train <task> <data> [decentralised]',
+    command: 'train <task> <dataDir> [decentralised]',
     describe: 'Train your model using the DeAI module',
     builder: (yargs) => {
       yargs
@@ -12,9 +10,9 @@ require('yargs')
           type: 'string',
           describe: 'Selected task',
         })
-        .positional('data', {
+        .positional('dataDir', {
           type: 'string',
-          describe: 'Training set',
+          describe: 'Directory containing the Training set',
         })
         .positional('decentralised', {
           type: 'boolean',
