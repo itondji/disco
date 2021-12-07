@@ -34,9 +34,16 @@ class TrainingSetup {
   }
 
   async connect() {
+    // Connect to centralized server
     this.isConnected = await this.client.connect();
-    if (!this.isConnected) {
-      //error
+    if (this.isConnected) {
+      this.getLogger().success(
+        'Succesfully connected to server. Distributed training available.'
+      );
+    } else {
+      this.getLogger().error(
+        'Failed to connect to server. Fallback to training alone.'
+      );
     }
   }
 
