@@ -52,8 +52,8 @@ import CustomButton from './simple/CustomButton.vue';
  */
 import _ from 'lodash';
 import { defineComponent } from 'vue';
-import { mapMutations, mapState } from 'vuex';
-import { getTaskClass } from '../task_definition/converter.js';
+import { mapMutations } from 'vuex';
+import { createTaskClass, loadTasks } from '../task_definition/helper.js';
 
 export default {
   name: 'task-list',
@@ -63,7 +63,7 @@ export default {
     CustomButton,
   },
   watch: {
-    '$store.state.newTasks': function() {
+    '$store.state.newTasks': function () {
       this.$store.state.newTasks.forEach(this.createNewTaskComponent);
       this.clearNewTasks();
     },
@@ -87,16 +87,7 @@ export default {
     },
     createNewTaskComponent(task) {
       console.log(`Processing ${task.taskID}`);
-      let TaskClass = getTaskClass(task.trainingInformation.dataType);
-      if (!TaskClass) {
-        console.log(`Task ${task.taskID} was not processed`);
-        return;
-      }
-      let newTaskFrame = new TaskClass(
-        task.taskID,
-        task.displayInformation,
-        task.trainingInformation
-      );
+      let newTaskFrame = createTaskClass(task);
       this.addTaskFrame(newTaskFrame); // commit to store
       let newTaskRoute = {
         path: '/'.concat(newTaskFrame.taskID),
@@ -127,8 +118,7 @@ export default {
     },
   },
   async mounted() {
-    let tasksURL = process.env.VUE_APP_DEAI_SERVER.concat('tasks');
-    let rawTasks = await fetch(tasksURL).then((response) => response.json());
+    let rawTasks = await loadTasks();
     rawTasks
       .concat(this.$store.state.newTasks)
       .forEach(this.createNewTaskComponent);

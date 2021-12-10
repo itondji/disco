@@ -1,4 +1,10 @@
-require('yargs')
+import { loadTasks } from '../task_definition/helper';
+import { TrainingSetup } from '../helpers/training/training_setup';
+import { Logger } from '../helpers/logging/logger';
+const _ = require('lodash');
+const yargs = require('yargs');
+
+yargs
   .scriptName('deai')
   .usage('$0 <cmd> [args]')
   .command({
@@ -25,5 +31,12 @@ require('yargs')
   .help().argv;
 
 function deai(argv) {
-  console.log('hello', argv.task, 'welcome to deai!');
+  Logger().success('Welcome to DeAI !');
+  const tasks = loadTasks(true);
+  var task = _.filter(tasks, (t) => t.taskID == argv.task);
+  if (task.size == 0) {
+    Logger().success(`Task ${argv.task} is not valid`);
+  }
+  task = task[0];
+  const trainingSetup = new TrainingSetup(task, 'deai', false, () => Logger());
 }

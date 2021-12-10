@@ -20,7 +20,7 @@
           Train Alone
         </custom-button>
         <custom-button v-on:click="joinTraining(true)" :center="true">
-          Train {{ this.$t("platform") }}
+          Train {{ this.$t('platform') }}
         </custom-button>
       </div>
       <!-- Training Board -->
@@ -85,19 +85,19 @@
 </template>
 
 <script>
-import UploadingFrame from "../upload/UploadingFrame.vue";
-import TrainingInformationFrame from "../TrainingInformationFrame.vue";
-import ActionFrame from "./ActionFrame.vue";
-import IconCard from "../../containers/IconCard.vue";
-import CustomButton from "../../simple/CustomButton.vue";
-import Download from "../../../assets/svg/Download.vue";
+import UploadingFrame from '../upload/UploadingFrame.vue';
+import TrainingInformationFrame from '../TrainingInformationFrame.vue';
+import ActionFrame from './ActionFrame.vue';
+import IconCard from '../../containers/IconCard.vue';
+import CustomButton from '../../simple/CustomButton.vue';
+import Download from '../../../assets/svg/Download.vue';
 
-import { saveWorkingModel } from "../../../helpers/memory/helpers";
-import { TrainingSetup } from "../../../helpers/training/training_setup";
-import { mapState } from "vuex";
+import { saveWorkingModel } from '../../../helpers/memory/helpers';
+import { TrainingSetup } from '../../../helpers/training/training_setup';
+import { mapState } from 'vuex';
 
 export default {
-  name: "TrainingFrame",
+  name: 'TrainingFrame',
   props: {
     Id: String,
     Task: Object,
@@ -113,14 +113,6 @@ export default {
     CustomButton,
     Download,
   },
-  computed: {
-    ...mapState(['useIndexedDB']),
-  },
-  watch: {
-    useIndexedDB(newValue) {
-      this.trainingManager.setIndexedDB(newValue);
-    },
-  },
   data() {
     return {
       trainingSetup: new TrainingSetup(
@@ -132,7 +124,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["useIndexedDB"]),
+    ...mapState(['useIndexedDB']),
   },
   watch: {
     useIndexedDB(newValue) {
@@ -142,7 +134,7 @@ export default {
   methods: {
     goToTesting() {
       this.$router.push({
-        path: "testing",
+        path: 'testing',
       });
     },
     async saveModelButton() {
@@ -156,7 +148,7 @@ export default {
         );
       } else {
         this.$toast.error(
-          "The model library is currently turned off. See settings for more information"
+          'The model library is currently turned off. See settings for more information'
         );
       }
     },
