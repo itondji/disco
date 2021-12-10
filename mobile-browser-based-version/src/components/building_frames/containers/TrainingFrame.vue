@@ -62,7 +62,7 @@
         <template v-slot:icon><download /></template>
         <template v-slot:extra>
           <!-- Descrition -->
-          <div class="relative p-4 overflow-x-scroll">
+          <div class="relative p-4 overflow-x-hidden">
             <span
               style="white-space: pre-line"
               class="text-sm text-gray-500 dark:text-light"
@@ -113,11 +113,19 @@ export default {
     CustomButton,
     Download,
   },
+  computed: {
+    ...mapState(['useIndexedDB']),
+  },
+  watch: {
+    useIndexedDB(newValue) {
+      this.trainingManager.setIndexedDB(newValue);
+    },
+  },
   data() {
     return {
       trainingSetup: new TrainingSetup(
         this.Task,
-        this.$t("platform"),
+        this.$store.getters.platform,
         this.useIndexedDB,
         () => this.$toast
       ),
