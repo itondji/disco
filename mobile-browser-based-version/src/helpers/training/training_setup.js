@@ -33,7 +33,18 @@ class TrainingSetup {
     );
   }
 
+  setIndexedDB(newValue) {
+    this.useIndexedDB = newValue;
+  }
+
   async connect() {
+    // Create the training manager
+    this.trainingManager = new TrainingManager(
+      this.Task,
+      this.client,
+      this.trainingInformant,
+      this.useIndexedDB
+    );
     // Connect to centralized server
     this.isConnected = await this.client.connect();
     if (this.isConnected) {
@@ -41,6 +52,7 @@ class TrainingSetup {
         'Succesfully connected to server. Distributed training available.'
       );
     } else {
+      console.log('Error in connecting');
       this.getLogger().error(
         'Failed to connect to server. Fallback to training alone.'
       );
@@ -51,14 +63,9 @@ class TrainingSetup {
     this.client.disconnect();
   }
 
-  async joinTraining(
-    distributed,
-    onConnectionError,
-    onFileError,
-    onPreCheckError
-  ) {
-    if (distributed && !this.isConnected && onConnectionError) {
-      onConnectionError();
+  async joinTraining(distributed) {
+    if (distributed && !this.isConnected) {
+      this.getLogger().error('Distributed training is not available.');
       return;
     }
     const nbrFiles = this.fileUploadManager.numberOfFiles();
@@ -127,3 +134,5 @@ class TrainingSetup {
     });
   }
 }
+
+export default TrainingSetup;
