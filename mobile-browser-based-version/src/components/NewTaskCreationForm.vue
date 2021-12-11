@@ -590,6 +590,7 @@ import _ from 'lodash';
 import sections from '../task_definition/form.config.js';
 import TitleCard from './containers/TitleCard.vue';
 import axios from 'axios';
+import * as task_config from './task.config.js';
 
 import {
   Field as VeeField,
@@ -612,7 +613,7 @@ export default {
   },
   data() {
     // data property defining which task-specific fields should be rendered
-    const dataType = 'csv';
+    const dataType = task_config.CSV_TASK;
     const formSections = sections;
     // validation schema used by the yup package
     let schemaData = {};

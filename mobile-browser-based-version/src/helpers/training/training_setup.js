@@ -79,8 +79,6 @@ class TrainingSetup {
       this.getLogger().success(
         `Thank you for your contribution. Data preprocessing has started`
       );
-
-      console.log(this.fileUploadManager);
       const filesElement =
         nbrFiles > 1
           ? this.fileUploadManager.getFilesList()
@@ -107,31 +105,6 @@ class TrainingSetup {
         this.trainingManager.trainModel(processedDataset, distributed);
       }
     }
-  }
-  /*
-   * For command line interface
-   */
-
-  loadTask(taskID) {
-    return { taskID: taskID };
-  }
-
-  loadFiles(dataDir) {
-    fs.readdir(dataDir, function (err, files) {
-      //handling error
-      if (err) {
-        this.getLogger(`Unable to scan data directory: ${err}`);
-      }
-      //listing all files using forEach
-      files.forEach(function (file) {
-        // Do whatever you want to do with the file
-        this.fileUploadManager.addFile(
-          URL.createObjectURL(file),
-          file,
-          file.name
-        );
-      });
-    });
   }
 }
 

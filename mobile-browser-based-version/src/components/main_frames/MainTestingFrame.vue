@@ -17,7 +17,7 @@
 <script>
 import ImageTestingFrame from '../building_frames/image/ImageTestingFrame.vue';
 import CsvTestingFrame from '../building_frames/csv/CsvTestingFrame.vue';
-
+import * as task_config from './task.config.js';
 export default {
   name: 'main-testing-frame',
   props: {

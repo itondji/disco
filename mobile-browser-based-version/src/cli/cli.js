@@ -1,5 +1,5 @@
-import { loadTasks } from '../task_definition/helper';
 import { TrainingSetup } from '../helpers/training/training_setup';
+import { loadTask, loadFiles } from './helper';
 import { Logger } from '../helpers/logging/logger';
 const _ = require('lodash');
 const yargs = require('yargs');
@@ -8,7 +8,7 @@ yargs
   .scriptName('deai')
   .usage('$0 <cmd> [args]')
   .command({
-    command: 'train <task> <dataDir> [decentralised]',
+    command: 'train <task> <dataDir> [distributed]',
     describe: 'Train your model using the DeAI module',
     builder: (yargs) => {
       yargs
@@ -20,23 +20,22 @@ yargs
           type: 'string',
           describe: 'Directory containing the Training set',
         })
-        .positional('decentralised', {
+        .positional('distributed', {
           type: 'boolean',
           describe: 'Training decentralised (or local)',
         })
-        .default('decentralised', true);
+        .default('distributed', true);
     },
     handler: deai,
   })
   .help().argv;
 
-function deai(argv) {
+async function deai(argv) {
   Logger().success('Welcome to DeAI !');
-  const tasks = loadTasks(true);
-  var task = _.filter(tasks, (t) => t.taskID == argv.task);
-  if (task.size == 0) {
-    Logger().success(`Task ${argv.task} is not valid`);
-  }
-  task = task[0];
+  const task = loadTask(argv.task);
   const trainingSetup = new TrainingSetup(task, 'deai', false, () => Logger());
+  trainingSetup.connect();
+  loadFiles(argv.dataDir, trainingSetup.fileUploadManager);
+  await trainingSetup.joinTraining(argv.distributed);
+  trainingSetup.disconnect();
 }

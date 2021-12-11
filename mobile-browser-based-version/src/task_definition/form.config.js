@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import * as config from './task.config.js';
 /* form generator
          each section should contain :
             - `fields` (general fields)
@@ -26,13 +27,12 @@ const sections = [
         yup: yup.string().required(),
         as: 'input',
         type: 'select',
-        options: ['image', 'csv', 'other'],
+        options: config.ALL,
         default: 'eg. : other',
       },
     ],
     csv: [],
     image: [],
-    other: [],
   },
   // *** Section ***
   {
@@ -150,7 +150,6 @@ const sections = [
         default: 'eg. : ./9-mnist-example.png',
       },
     ],
-    other: [],
   },
   // *** Section ***
   {
@@ -349,7 +348,6 @@ const sections = [
         default: false,
       },
     ],
-    other: [],
   },
   // *** Section ***
   {
@@ -416,7 +414,6 @@ const sections = [
     ],
     csv: [],
     image: [],
-    other: [],
   },
   {
     title: 'Model Files',
@@ -451,7 +448,6 @@ const sections = [
     ],
     csv: [],
     image: [],
-    other: [],
   },
 ];
 export default sections;
