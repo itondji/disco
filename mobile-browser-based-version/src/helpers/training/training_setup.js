@@ -5,7 +5,7 @@ import { TrainingManager } from './training_manager';
 import { getClient } from '../communication/helpers';
 import { FileUploadManager } from '../data_validation/file_upload_manager';
 
-class TrainingSetup {
+export class TrainingSetup {
   constructor(task, platform, useIndexedDB, getLogger) {
     // task can either be a json or string corresponding to the taskID
     this.task = typeof task === 'object' ? task : this.loadTask(task);
