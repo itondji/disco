@@ -1,10 +1,9 @@
 const fs = require('fs');
 
-import { TrainingInformant } from '../../../helpers/training/decentralised/training_informant';
-import { getClient } from '../../../helpers/communication/helpers';
-import { TrainingManager } from '../../../helpers/training/training_manager';
-import { FileUploadManager } from '../../../helpers/data_validation/file_upload_manager';
-import { saveWorkingModel } from '../../../helpers/memory/helpers';
+import { TrainingInformant } from './decentralised/training_informant';
+import { TrainingManager } from './training_manager';
+import { getClient } from '../communication/helpers';
+import { FileUploadManager } from '../data_validation/file_upload_manager';
 
 class TrainingSetup {
   constructor(task, platform, useIndexedDB, getLogger) {
