@@ -1,10 +1,5 @@
 <template>
-  <training-frame
-    :Id="Id"
-    :Task="Task"
-    :dataPreprocessing="dataPreprocessing"
-    :nbrClasses="1"
-  >
+  <training-frame :Id="Id" :Task="Task" :nbrClasses="1" :context="context">
     <template v-slot:dataExample>
       <!-- Data Point Example -->
       <div class="relative p-4 overflow-x-hidden">
@@ -55,7 +50,7 @@
             >
               <li
                 class="border-gray-400"
-                v-for="header in headers"
+                v-for="header in context.headers"
                 :key="header.id"
               >
                 <div
@@ -120,8 +115,6 @@
 import TrainingFrame from '../containers/TrainingFrame.vue';
 import IconCard from '../../containers/IconCard.vue';
 import Bezier2 from '../../../assets/svg/Bezier2.vue';
-import { getTaskInfo } from '../../../task_definition/helper';
-import * as task_config from '../../../task_definition/task.config';
 
 export default {
   name: 'csv-training-frame',
@@ -132,7 +125,7 @@ export default {
   data() {
     return {
       // Headers related to training task of containing item of the form {id: "", userHeader: ""}
-      headers: [],
+      context: { headers: [] },
       dataExample: null,
     };
   },
@@ -141,15 +134,12 @@ export default {
     IconCard,
     Bezier2,
   },
-  setup() {
-    return { dataPreprocessing: getTaskInfo(task_config.CSV_TASK)};
-  },
   async mounted() {
     // This method is called when the component is created
     this.$nextTick(async function () {
       this.dataExample = this.Task.displayInformation.dataExample;
       this.Task.displayInformation.headers.forEach((item) => {
-        this.headers.push({ id: item, userHeader: item });
+        this.context.headers.push({ id: item, userHeader: item });
       });
     });
   },

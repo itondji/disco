@@ -4,11 +4,12 @@ import { TrainingInformant } from './decentralised/training_informant';
 import { TrainingManager } from './training_manager';
 import { getClient } from '../communication/helpers';
 import { FileUploadManager } from '../data_validation/file_upload_manager';
+import { getTaskInfo } from '../../task_definition/helper.js';
 
 export class TrainingSetup {
   constructor(task, platform, useIndexedDB, getLogger) {
     // task can either be a json or string corresponding to the taskID
-    this.task = typeof task === 'object' ? task : this.loadTask(task);
+    this.task = task;
 
     this.isConnected = false;
     this.useIndexedDB = useIndexedDB;
@@ -36,14 +37,16 @@ export class TrainingSetup {
     this.useIndexedDB = newValue;
   }
 
-  async connect() {
+  async connect(useIndexedDB) {
+    this.setIndexedDB(useIndexedDB);
     // Create the training manager
     this.trainingManager = new TrainingManager(
-      this.Task,
+      this.task,
       this.client,
       this.trainingInformant,
       this.useIndexedDB
     );
+    console.log(this.trainingManager);
     // Connect to centralized server
     this.isConnected = await this.client.connect();
     if (this.isConnected) {
@@ -62,7 +65,7 @@ export class TrainingSetup {
     this.client.disconnect();
   }
 
-  async joinTraining(distributed) {
+  async joinTraining(distributed, context) {
     if (distributed && !this.isConnected) {
       this.getLogger().error('Distributed training is not available.');
       return;
@@ -97,7 +100,14 @@ export class TrainingSetup {
         );
       } else {
         // preprocess data
-        let processedDataset = await this.dataPreprocessing(filesElement);
+        const dataPreprocessing = getTaskInfo(
+          this.task.trainingInformation.dataType
+        ).dataPreprocessing;
+        const processedDataset = await dataPreprocessing(
+          this.task,
+          filesElement,
+          context
+        );
         this.getLogger().success(
           `Data preprocessing has finished and training has started`
         );

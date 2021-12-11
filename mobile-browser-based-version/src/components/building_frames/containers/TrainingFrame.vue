@@ -7,8 +7,8 @@
         <uploading-frame
           v-bind:Id="Id"
           v-bind:Task="Task"
-          v-bind:fileUploadManager="fileUploadManager"
-          v-if="fileUploadManager"
+          v-bind:fileUploadManager="trainingSetup.fileUploadManager"
+          v-if="trainingSetup.fileUploadManager"
         />
       </div>
 
@@ -16,18 +16,24 @@
 
       <!-- Train Button -->
       <div class="flex items-center justify-center p-4">
-        <custom-button v-on:click="joinTraining(false)" :center="true">
+        <custom-button
+          v-on:click="trainingSetup.joinTraining(false, context)"
+          :center="true"
+        >
           Train Alone
         </custom-button>
-        <custom-button v-on:click="joinTraining(true)" :center="true">
+        <custom-button
+          v-on:click="trainingSetup.joinTraining(true, context)"
+          :center="true"
+        >
           Train {{ this.$t('platform') }}
         </custom-button>
       </div>
       <!-- Training Board -->
       <div>
         <training-information-frame
-          v-bind:trainingInformant="trainingInformant"
-          v-if="trainingInformant"
+          v-bind:trainingInformant="trainingSetup.trainingInformant"
+          v-if="trainingSetup.trainingInformant"
         />
       </div>
 
@@ -101,9 +107,9 @@ export default {
   props: {
     Id: String,
     Task: Object,
-    dataPreprocessing: Function,
     precheckData: Function,
     nbrClasses: Number,
+    context: Object,
   },
   components: {
     UploadingFrame,
@@ -155,7 +161,7 @@ export default {
   },
   async mounted() {
     // This method is called when the component is created
-    this.$nextTick(this.trainingSetup.connect);
+    this.$nextTick(() => this.trainingSetup.connect(this.useIndexedDB));
   },
   async unmounted() {
     this.trainingSetup.disconnect();

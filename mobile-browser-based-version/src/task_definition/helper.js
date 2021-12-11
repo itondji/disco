@@ -8,12 +8,15 @@ export function getTaskInfo(name) {
     case config.CSV_TASK:
       return {
         frameClass: CsvTask,
-        dataPreprocessing: function (task, filesElement) {
+        dataPreprocessing: function (task, filesElement, context) {
           return new Promise((resolve, reject) => {
             let reader = new FileReader();
             reader.onload = async (e) => {
               // Preprocess the data and get object of the form {accepted: True/False, Xtrain: training data, ytrain: lavels}
-              var processedData = await task.dataPreprocessing(e, this.headers);
+              var processedData = await task.dataPreprocessing(
+                e,
+                context.headers
+              );
               resolve(processedData);
             };
             reader.readAsText(filesElement);
@@ -23,7 +26,7 @@ export function getTaskInfo(name) {
     case config.IMAGE_TASK:
       return {
         frameClass: ImageTask,
-        dataPreprocessing: function (task, filesElement) {
+        dataPreprocessing: function (task, filesElement, context) {
           return new Promise((resolve, reject) => {
             let processedData = task.dataPreprocessing(filesElement);
             resolve(processedData);
