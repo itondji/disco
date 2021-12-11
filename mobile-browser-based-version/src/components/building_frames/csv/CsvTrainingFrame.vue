@@ -120,6 +120,8 @@
 import TrainingFrame from '../containers/TrainingFrame.vue';
 import IconCard from '../../containers/IconCard.vue';
 import Bezier2 from '../../../assets/svg/Bezier2.vue';
+import { getTaskInfo } from '../../../task_definition/helper';
+import * as task_config from '../../../task_definition/task.config';
 
 export default {
   name: 'csv-training-frame',
@@ -134,29 +136,14 @@ export default {
       dataExample: null,
     };
   },
-
-  methods: {
-    async dataPreprocessing(filesElement) {
-      return new Promise((resolve, reject) => {
-        let reader = new FileReader();
-        reader.onload = async (e) => {
-          // Preprocess the data and get object of the form {accepted: True/False, Xtrain: training data, ytrain: lavels}
-          var processedData = await this.Task.dataPreprocessing(
-            e,
-            this.headers
-          );
-          resolve(processedData);
-        };
-        reader.readAsText(filesElement);
-      });
-    },
-  },
   components: {
     TrainingFrame,
     IconCard,
     Bezier2,
   },
-
+  setup() {
+    return { dataPreprocessing: getTaskInfo(task_config.CSV_TASK)};
+  },
   async mounted() {
     // This method is called when the component is created
     this.$nextTick(async function () {

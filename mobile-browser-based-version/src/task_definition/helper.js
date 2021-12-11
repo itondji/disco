@@ -13,10 +13,7 @@ export function getTaskInfo(name) {
             let reader = new FileReader();
             reader.onload = async (e) => {
               // Preprocess the data and get object of the form {accepted: True/False, Xtrain: training data, ytrain: lavels}
-              var processedData = await this.Task.dataPreprocessing(
-                e,
-                this.headers
-              );
+              var processedData = await task.dataPreprocessing(e, this.headers);
               resolve(processedData);
             };
             reader.readAsText(filesElement);
