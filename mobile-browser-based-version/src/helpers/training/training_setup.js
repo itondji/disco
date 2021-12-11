@@ -86,11 +86,13 @@ export class TrainingSetup {
           ? this.fileUploadManager.getFilesList()
           : this.fileUploadManager.getFirstFile();
       var statusValidation = { accepted: true };
-      if (this.precheckData) {
+      // get task  specific information (preprocessing steps, precheck function, etc.)
+      const taskInfo = getTaskInfo(this.task.trainingInformation.dataType);
+      if (taskInfo.precheckData) {
         // data checking is optional
-        statusValidation = await this.precheckData(
+        statusValidation = await taskInfo.precheckData(
           filesElement,
-          this.Task.trainingInformation
+          this.task.trainingInformation
         );
       }
       if (!statusValidation.accepted) {
@@ -100,10 +102,7 @@ export class TrainingSetup {
         );
       } else {
         // preprocess data
-        const dataPreprocessing = getTaskInfo(
-          this.task.trainingInformation.dataType
-        ).dataPreprocessing;
-        const processedDataset = await dataPreprocessing(
+        const processedDataset = await taskInfo.dataPreprocessing(
           this.task,
           filesElement,
           context

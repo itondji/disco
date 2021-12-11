@@ -107,7 +107,6 @@ export default {
   props: {
     Id: String,
     Task: Object,
-    precheckData: Function,
     nbrClasses: Number,
     context: Object,
   },

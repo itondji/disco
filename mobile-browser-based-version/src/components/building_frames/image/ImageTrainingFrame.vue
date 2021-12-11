@@ -2,9 +2,7 @@
   <training-frame
     :Id="Id"
     :Task="Task"
-    :dataPreprocessing="dataPreprocessing"
     :nbrClasses="Task.trainingInformation.LABEL_LIST.length"
-    :precheckData="precheckData"
   >
     <template v-slot:dataExample>
       <!-- Data Point Example -->
@@ -21,7 +19,6 @@
 </template>
 
 <script>
-import { checkData } from '../../../helpers/data_validation/helpers_image_tasks.js';
 import TrainingFrame from '../containers/TrainingFrame.vue';
 
 export default {
@@ -49,16 +46,7 @@ export default {
       }
       var images = require.context('../../../../example_training_data/', false);
       return images(url);
-    },
-    async dataPreprocessing(filesElement) {
-      return new Promise((resolve, reject) => {
-        let processedData = this.Task.dataPreprocessing(filesElement);
-        resolve(processedData);
-      });
-    },
-    precheckData(filesElement, info) {
-      return checkData(filesElement, info);
-    },
+    }
   },
   async mounted() {
     // This method is called when the component is created

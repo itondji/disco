@@ -1,5 +1,6 @@
 import { CsvTask } from './csv_task';
 import { ImageTask } from './image_task';
+import { checkData } from '../helpers/data_validation/helpers_image_tasks.js';
 import * as config from './task.config.js';
 import _ from 'lodash';
 
@@ -32,6 +33,7 @@ export function getTaskInfo(name) {
             resolve(processedData);
           });
         },
+        preCheckData: checkData,
       };
     default:
       console.log('No task object available');
