@@ -1,6 +1,6 @@
-import { TrainingSetup } from '../helpers/training/training_setup';
-import { loadTask, loadFiles } from './helper';
-import { Logger } from '../helpers/logging/logger';
+import { TrainingSetup } from '../helpers/training/training_setup.js';
+import { loadTask, loadFiles } from './helper.js';
+import { Logger } from '../helpers/logging/logger.js';
 const _ = require('lodash');
 const yargs = require('yargs');
 

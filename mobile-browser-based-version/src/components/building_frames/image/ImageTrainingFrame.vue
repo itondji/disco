@@ -1,8 +1,8 @@
 <template>
   <training-frame
     :Id="Id"
-    :Task="Task"
-    :nbrClasses="Task.trainingInformation.LABEL_LIST.length"
+    :task="task"
+    :nbrClasses="task.trainingInformation.LABEL_LIST.length"
   >
     <template v-slot:dataExample>
       <!-- Data Point Example -->
@@ -25,7 +25,7 @@ export default {
   name: 'image-training-frame',
   props: {
     Id: String,
-    Task: Object,
+    task: Object,
   },
   components: {
     TrainingFrame,
@@ -46,15 +46,15 @@ export default {
       }
       var images = require.context('../../../../example_training_data/', false);
       return images(url);
-    }
+    },
   },
   async mounted() {
     // This method is called when the component is created
     this.$nextTick(async function () {
       // initialize information variables
-      this.dataExample = this.Task.displayInformation.dataExample;
-      this.taskLabels = this.Task.trainingInformation.LABEL_LIST;
-      this.dataExampleImage = this.Task.displayInformation.dataExampleImage;
+      this.dataExample = this.task.displayInformation.dataExample;
+      this.taskLabels = this.task.trainingInformation.LABEL_LIST;
+      this.dataExampleImage = this.task.displayInformation.dataExampleImage;
     });
   },
 };

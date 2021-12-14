@@ -1,5 +1,5 @@
 <template>
-  <training-frame :Id="Id" :Task="Task" :nbrClasses="1" :context="context">
+  <training-frame :Id="Id" :task="task" :nbrClasses="1" :context="context">
     <template v-slot:dataExample>
       <!-- Data Point Example -->
       <div class="relative p-4 overflow-x-hidden">
@@ -120,7 +120,7 @@ export default {
   name: 'csv-training-frame',
   props: {
     Id: String,
-    Task: Object,
+    task: Object,
   },
   data() {
     return {
@@ -137,8 +137,8 @@ export default {
   async mounted() {
     // This method is called when the component is created
     this.$nextTick(async function () {
-      this.dataExample = this.Task.displayInformation.dataExample;
-      this.Task.displayInformation.headers.forEach((item) => {
+      this.dataExample = this.task.displayInformation.dataExample;
+      this.task.displayInformation.headers.forEach((item) => {
         this.context.headers.push({ id: item, userHeader: item });
       });
     });

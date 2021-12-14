@@ -1,8 +1,8 @@
 <template>
   <testing-frame
     :Id="Id"
-    :Task="Task"
-    :nbrClasses="Task.trainingInformation.LABEL_LIST.length"
+    :task="task"
+    :nbrClasses="task.trainingInformation.LABEL_LIST.length"
     :filterData="filterData"
     :makePredictions="makePredictions"
     :predictionsToCsv="predictionsToCsv"
@@ -120,7 +120,7 @@ export default {
   },
   props: {
     Id: String,
-    Task: Object,
+    task: Object,
   },
   data() {
     return {
@@ -152,7 +152,7 @@ export default {
     },
 
     async makePredictions(filesElement) {
-      const classes = await this.Task.predict(filesElement);
+      const classes = await this.task.predict(filesElement);
       const ids = Object.keys(classes);
       var predictions;
       if (ids.length == 1) {
@@ -202,10 +202,10 @@ export default {
        * #######################################
        */
       // Initialize variables used by the components
-      this.dataExampleImage = this.Task.displayInformation.dataExampleImage;
-      this.IMAGE_HEIGHT = this.Task.trainingInformation.IMAGE_HEIGHT;
-      this.IMAGE_WIDTH = this.Task.trainingInformation.IMAGE_WIDTH;
-      this.taskLabels = this.Task.trainingInformation.taskLabels;
+      this.dataExampleImage = this.task.displayInformation.dataExampleImage;
+      this.IMAGE_HEIGHT = this.task.trainingInformation.IMAGE_HEIGHT;
+      this.IMAGE_WIDTH = this.task.trainingInformation.IMAGE_WIDTH;
+      this.taskLabels = this.task.trainingInformation.taskLabels;
 
       const imageTempl = document.getElementById('image-template'),
         empty = document.getElementById('empty');

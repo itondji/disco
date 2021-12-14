@@ -1,12 +1,12 @@
 <template>
-  <action-frame :Task="Task">
+  <action-frame :task="task">
     <template v-slot:dataExample><slot name="dataExample"></slot></template>
     <template v-slot:action>
       <!-- Upload Training Data -->
       <div class="relative">
         <uploading-frame
           v-bind:Id="Id"
-          v-bind:Task="Task"
+          v-bind:task="task"
           v-bind:fileUploadManager="trainingSetup.fileUploadManager"
           v-if="trainingSetup.fileUploadManager"
         />
@@ -106,7 +106,7 @@ export default {
   name: 'TrainingFrame',
   props: {
     Id: String,
-    Task: Object,
+    task: Object,
     nbrClasses: Number,
     context: Object,
   },
@@ -121,7 +121,7 @@ export default {
   data() {
     return {
       trainingSetup: new TrainingSetup(
-        this.Task,
+        this.task,
         this.$store.getters.platform,
         this.useIndexedDB,
         () => this.$toast
@@ -145,11 +145,11 @@ export default {
     async saveModelButton() {
       if (this.useIndexedDB) {
         await saveWorkingModel(
-          this.Task.taskID,
-          this.Task.trainingInformation.modelID
+          this.task.taskID,
+          this.task.trainingInformation.modelID
         );
         this.$toast.success(
-          `The current ${this.Task.displayInformation.taskTitle} model has been saved.`
+          `The current ${this.task.displayInformation.taskTitle} model has been saved.`
         );
       } else {
         this.$toast.error(

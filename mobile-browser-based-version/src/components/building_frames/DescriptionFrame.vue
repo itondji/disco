@@ -26,7 +26,7 @@ import { serializeWeights } from '../helpers/tfjs_helpers.js';
                   FeAI cached the last model you were working on for you. Select
                   it to start training from it. Otherwise, it will be overridden
                   the next time you train the
-                  {{ Task.displayInformation.taskTitle }} task. This model was
+                  {{ task.displayInformation.taskTitle }} task. This model was
                   last updated the
                   <span class="text-primary-dark dark:text-primary-light">
                     {{ dateSaved }}
@@ -177,7 +177,7 @@ export default {
     ModelText: String,
     TradeOffsText: String,
     Id: String,
-    Task: Object,
+    task: Object,
   },
   components: {
     CustomButton,
@@ -200,9 +200,9 @@ export default {
     useWorkingModel() {
       let modelInUseMessage;
       if (this.useWorkingModel) {
-        modelInUseMessage = `The previous ${this.Task.displayInformation.taskTitle} model has been selected. You can start training!`;
+        modelInUseMessage = `The previous ${this.task.displayInformation.taskTitle} model has been selected. You can start training!`;
       } else {
-        modelInUseMessage = `A new ${this.Task.displayInformation.taskTitle} model will be created. You can start training!`;
+        modelInUseMessage = `A new ${this.task.displayInformation.taskTitle} model will be created. You can start training!`;
       }
       this.$toast.success(modelInUseMessage);
       
@@ -223,7 +223,7 @@ export default {
         await this.loadFreshModel();
         this.isModelCreated = true;
         this.$toast.success(
-          `A new ${this.Task.displayInformation.taskTitle} model has been created. You can start training!`
+          `A new ${this.task.displayInformation.taskTitle} model has been created. You can start training!`
         );
         
       }
@@ -235,21 +235,21 @@ export default {
     async deleteModel() {
       this.workingModelExists = false;
       await memory.deleteWorkingModel(
-        this.Task.taskID,
-        this.Task.trainingInformation.modelID
+        this.task.taskID,
+        this.task.trainingInformation.modelID
       );
       this.$toast.success(
-        `Deleted the cached ${this.Task.displayInformation.taskTitle} model.`
+        `Deleted the cached ${this.task.displayInformation.taskTitle} model.`
       );
       
     },
     async saveModel() {
       await memory.saveWorkingModel(
-        this.Task.taskID,
-        this.Task.trainingInformation.modelID
+        this.task.taskID,
+        this.task.trainingInformation.modelID
       );
       this.$toast.success(
-        `Saved the cached ${this.Task.displayInformation.taskTitle} model to the model library`
+        `Saved the cached ${this.task.displayInformation.taskTitle} model to the model library`
       );
       
     },
@@ -257,10 +257,10 @@ export default {
       this.useWorkingModel = !this.useWorkingModel;
     },
     async loadFreshModel() {
-      await this.Task.createModel().then((freshModel) => {
+      await this.task.createModel().then((freshModel) => {
         memory.updateWorkingModel(
-          this.Task.taskID,
-          this.Task.trainingInformation.modelID,
+          this.task.taskID,
+          this.task.trainingInformation.modelID,
           freshModel
         );
       });
@@ -285,8 +285,8 @@ export default {
        */
       if (this.useIndexedDB) {
         let workingModelMetadata = await memory.getWorkingModelMetadata(
-          this.Task.taskID,
-          this.Task.trainingInformation.modelID
+          this.task.taskID,
+          this.task.trainingInformation.modelID
         );
         if (workingModelMetadata) {
           this.workingModelExistsOnMount = true;

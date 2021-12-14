@@ -1,12 +1,12 @@
 <template>
-  <action-frame :Task="Task">
+  <action-frame :task="task">
     <template v-slot:dataExample><slot name="dataExample"></slot></template>
     <template v-slot:action>
       <!-- Upload File -->
       <div class="relative">
         <uploading-frame
           v-bind:Id="Id"
-          v-bind:Task="Task"
+          v-bind:task="task"
           v-bind:fileUploadManager="fileUploadManager"
           v-if="fileUploadManager"
           :displayLabels="false"
@@ -35,7 +35,7 @@ export default {
   name: 'TestingFrame',
   props: {
     Id: String,
-    Task: Object,
+    task: Object,
     nbrClasses: Number,
     makePredictions: Function,
     predictionsToCsv: Function,
@@ -89,7 +89,7 @@ export default {
           // data checking is optional
           filesElement = await this.filterData(
             filesElement,
-            this.Task.trainingInformation
+            this.task.trainingInformation
           );
         }
         // prediction

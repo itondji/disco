@@ -5,7 +5,7 @@
       <div v-for="item in formatLabels()" :key="item">
         <single-upload-frame
           :Id="Id"
-          :Task="Task"
+          :task="task"
           :fileUploadManager="fileUploadManager"
           :preview="preview()"
           :label="String(item)"
@@ -25,7 +25,7 @@ export default {
   name: 'uploading-frame',
   props: {
     Id: String,
-    Task: Object,
+    task: Object,
     fileUploadManager: Object,
     displayLabels: { default: true, type: Boolean },
   },
@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     preview() {
-      if(this.Task.trainingInformation.modelID == "cifar10-model") {
+      if(this.task.trainingInformation.modelID == "cifar10-model") {
         return false
       }
       return this.csvLabels || this.nbrLabels == 1;
@@ -66,13 +66,13 @@ export default {
     },
   },
   mounted() {
-    if (this.Task.trainingInformation.LABEL_LIST) {
-      this.labels = this.Task.trainingInformation.LABEL_LIST;
-      this.nbrLabels = this.Task.trainingInformation.LABEL_LIST.length;
+    if (this.task.trainingInformation.LABEL_LIST) {
+      this.labels = this.task.trainingInformation.LABEL_LIST;
+      this.nbrLabels = this.task.trainingInformation.LABEL_LIST.length;
     } else {
       this.nbrLabels = 1;
     }
-    if (this.Task.trainingInformation.LABEL_ASSIGNMENT) {
+    if (this.task.trainingInformation.LABEL_ASSIGNMENT) {
       this.csvLabels = true;
     }
   },

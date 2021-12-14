@@ -93,7 +93,7 @@ export default {
         path: '/'.concat(newTaskFrame.taskID),
         name: newTaskFrame.taskID,
         component: MainTaskFrame,
-        props: { Id: newTaskFrame.taskID, Task: newTaskFrame },
+        props: { Id: newTaskFrame.taskID, task: newTaskFrame },
         children: _.map(this.taskFramesInfo, (t) => {
           const [info, Frame] = t;
           const name = `${newTaskFrame.taskID}.${info}`;
@@ -109,7 +109,7 @@ export default {
             component: component,
             props: {
               Id: newTaskFrame.taskID,
-              Task: newTaskFrame,
+              task: newTaskFrame,
             },
           };
         }),

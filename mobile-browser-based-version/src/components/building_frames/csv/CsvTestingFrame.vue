@@ -1,7 +1,7 @@
 <template>
   <testing-frame
     :Id="Id"
-    :Task="Task"
+    :task="task"
     :nbrClasses="1"
     :makePredictions="makePredictions"
   >
@@ -123,7 +123,7 @@ export default {
   name: 'csv-testing-frame',
   props: {
     Id: String,
-    Task: Object,
+    task: Object,
   },
   components: {
     IconCard,
@@ -149,7 +149,7 @@ export default {
         let reader = new FileReader();
         reader.onload = async (e) => {
           // Preprocess the data and get object of the form {accepted: True/False, Xtrain: training data, ytrain: lavels}
-          var predictions = await this.Task.predict(e, this.headers);
+          var predictions = await this.task.predict(e, this.headers);
           resolve(predictions);
         };
         reader.readAsText(filesElement);
@@ -160,13 +160,13 @@ export default {
     // This method is called when the component is created
     this.$nextTick(async function () {
       // initialize information variables
-      this.classColumn = this.Task.trainingInformation.outputColumn;
-      this.Task.displayInformation.headers.forEach((item) => {
+      this.classColumn = this.task.trainingInformation.outputColumn;
+      this.task.displayInformation.headers.forEach((item) => {
         if (item !== this.classColumn) {
           this.headers.push({ id: item, userHeader: item });
         }
       });
-      this.dataExample = this.Task.displayInformation.dataExample.filter(
+      this.dataExample = this.task.displayInformation.dataExample.filter(
         (item) => item.columnName !== this.classColumn
       );
     });

@@ -3,14 +3,14 @@
   <!--TODO-->
   <!-- image tasks -->
   <image-testing-frame
-    v-if="Task.trainingInformation.dataType == 'image'"
+    v-if="task.trainingInformation.dataType == 'image'"
     v-bind:Id="Id"
-    v-bind:Task="Task"
+    v-bind:task="task"
   />
   <csv-testing-frame
-    v-else-if="Task.trainingInformation.dataType == 'csv'"
+    v-else-if="task.trainingInformation.dataType == 'csv'"
     v-bind:Id="Id"
-    v-bind:Task="Task"
+    v-bind:task="task"
   />
 </template>
 
@@ -22,7 +22,7 @@ export default {
   name: 'main-testing-frame',
   props: {
     Id: String,
-    Task: Object,
+    task: Object,
   },
   components: {
     ImageTestingFrame,

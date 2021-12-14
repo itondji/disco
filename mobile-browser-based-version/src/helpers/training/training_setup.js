@@ -1,9 +1,9 @@
 const fs = require('fs');
 
-import { TrainingInformant } from './decentralised/training_informant';
-import { TrainingManager } from './training_manager';
-import { getClient } from '../communication/helpers';
-import { FileUploadManager } from '../data_validation/file_upload_manager';
+import { TrainingInformant } from './decentralised/training_informant.js';
+import { TrainingManager } from './training_manager.js';
+import { getClient } from '../communication/helpers.js';
+import { FileUploadManager } from '../data_validation/file_upload_manager.js';
 import { getTaskInfo } from '../../task_definition/helper.js';
 
 export class TrainingSetup {
@@ -86,7 +86,7 @@ export class TrainingSetup {
           ? this.fileUploadManager.getFilesList()
           : this.fileUploadManager.getFirstFile();
       var statusValidation = { accepted: true };
-      // get task  specific information (preprocessing steps, precheck function, etc.)
+      // get task  specific information (preprocessing steps, precheck function)
       const taskInfo = getTaskInfo(this.task.trainingInformation.dataType);
       if (taskInfo.precheckData) {
         // data checking is optional

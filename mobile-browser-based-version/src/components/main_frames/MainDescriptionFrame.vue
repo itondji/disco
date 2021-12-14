@@ -19,7 +19,7 @@
           v-bind:ModelText="ModelText"
           v-bind:TradeOffsText="TradeOffsText"
           v-bind:Id="taskID"
-          v-bind:Task="Task"
+          v-bind:task="task"
           v-if="TradeOffsText"
         />
       </keep-alive>
@@ -33,7 +33,7 @@ export default {
   name: 'main-description-frame',
   props: {
     Id: String,
-    Task: Object,
+    task: Object,
   },
   data() {
     return {
@@ -48,11 +48,11 @@ export default {
     DescriptionFrame,
   },
   mounted() {
-    this.OverviewText = this.Task.displayInformation.overview;
-    this.ModelText = this.Task.displayInformation.model;
-    this.TradeOffsText = this.Task.displayInformation.tradeoffs;
-    this.taskID = this.Task.taskID;
-    this.modelID = this.Task.trainingInformation.modelID;
+    this.OverviewText = this.task.displayInformation.overview;
+    this.ModelText = this.task.displayInformation.model;
+    this.TradeOffsText = this.task.displayInformation.tradeoffs;
+    this.taskID = this.task.taskID;
+    this.modelID = this.task.trainingInformation.modelID;
   },
 };
 </script>

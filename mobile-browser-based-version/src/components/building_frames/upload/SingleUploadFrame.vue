@@ -284,7 +284,7 @@ export default {
   name: 'SingleUploadFrame',
   props: {
     Id: String,
-    Task: Object,
+    task: Object,
     // The file upload manager associated to the task
     fileUploadManager: Object,
     // Preview is used to know if we have to show a snippet of the uploaded files or not
@@ -410,8 +410,8 @@ export default {
         }
       };
     }
-    if (this.Task.trainingInformation.LABEL_LIST) {
-      this.nbrClasses = this.Task.trainingInformation.LABEL_LIST.length;
+    if (this.task.trainingInformation.LABEL_LIST) {
+      this.nbrClasses = this.task.trainingInformation.LABEL_LIST.length;
     }
     if (!this.displayLabels) {
       this.nbrClasses = 0;

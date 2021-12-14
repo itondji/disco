@@ -1,7 +1,6 @@
 const fs = require('fs');
-
-import { loadTasks } from '../task_definition/helper';
-import { Logger } from '../helpers/logging/logger';
+import { loadTasks } from '../task_definition/helper.js';
+import { Logger } from '../helpers/logging/logger.js';
 const _ = require('lodash');
 /*
  * For command line interface
