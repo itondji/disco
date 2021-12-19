@@ -2,7 +2,7 @@ import {
   getWorkingModel,
   updateWorkingModel,
   getWorkingModelMetadata,
-} from '../memory/helpers';
+} from '../memory/helpers.js';
 
 /**
  * Class that deals with the model of a task.

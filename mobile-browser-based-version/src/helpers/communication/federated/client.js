@@ -1,6 +1,6 @@
 import * as msgpack from 'msgpack-lite';
-import { makeID, serializeWeights, assignWeightsToModel } from '../helpers';
-import { Client } from '../client';
+import { makeID, serializeWeights, assignWeightsToModel } from '../helpers.js';
+import { Client } from '../client.js';
 
 /**
  * The waiting time between performing requests to the centralized server.

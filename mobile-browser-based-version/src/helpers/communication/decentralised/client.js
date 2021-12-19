@@ -6,10 +6,10 @@ import {
   serializeWeights,
   assignWeightsToModel,
   authenticate,
-} from '../helpers';
-import { checkBufferUntil, checkBufferWeightsUntil } from './helpers';
-import { Client } from '../client';
-import CMD_CODES from './communication_codes';
+} from '../helpers.js';
+import { checkBufferUntil, checkBufferWeightsUntil } from './helpers.js';
+import { Client } from '../client.js';
+import CMD_CODES from './communication_codes.js';
 var Hashes = require('jshashes');
 
 /**

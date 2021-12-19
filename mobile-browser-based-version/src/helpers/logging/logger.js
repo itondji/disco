@@ -1,5 +1,5 @@
 /**
- * Same properties as Toaster but on the console 
+ * Same properties as Toaster but on the console
  *
  * @class Logger
  */
@@ -12,3 +12,5 @@ class Logger {
     console.log(message, 'color: #e52c10');
   }
 }
+
+export const logger = logger();
