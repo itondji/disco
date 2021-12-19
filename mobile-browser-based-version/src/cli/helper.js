@@ -1,26 +1,27 @@
-const fs = require('fs');
-import { loadTasks } from '../task_definition/helper.js';
-import { Logger } from '../helpers/logging/logger.js';
-const _ = require('lodash');
+import fs from 'fs';
+import _ from 'lodash';
+import task_helper from '../task_definition/helper.js';
+const { loadTasks } = task_helper;
+import logger from '../helpers/logging/logger.js';
 /*
  * For command line interface
  */
 
-export function loadTask(taskID) {
+function loadTask(taskID) {
   const tasks = loadTasks(true);
   var task = _.filter(tasks, (t) => t.taskID == taskID);
   if (task.size == 0) {
-    Logger().error(`Task ${taskID} is not valid`);
+    logger.error(`Task ${taskID} is not valid`);
     return undefined;
   }
   return task[0];
 }
 
-export function loadFiles(dataDir, fileUploadManager) {
+function loadFiles(dataDir, fileUploadManager) {
   fs.readdir(dataDir, function (err, files) {
     //handling error
     if (err) {
-      Logger().error(`Unable to scan data directory: ${err}`);
+      logger.error(`Unable to scan data directory: ${err}`);
     }
     //listing all files using forEach
     files.forEach(function (file) {
@@ -28,3 +29,5 @@ export function loadFiles(dataDir, fileUploadManager) {
     });
   });
 }
+
+export { loadTask, loadFiles };

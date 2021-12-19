@@ -4,7 +4,7 @@ import { checkData } from '../helpers/data_validation/helpers_image_tasks.js';
 import * as config from './task.config.js';
 import _ from 'lodash';
 
-export function getTaskInfo(name) {
+function getTaskInfo(name) {
   switch (name) {
     case config.CSV_TASK:
       return {
@@ -41,7 +41,7 @@ export function getTaskInfo(name) {
   }
 }
 
-export function createTaskClass(task) {
+function createTaskClass(task) {
   let TaskClass = getTaskInfo(task.trainingInformation.dataType).frameClass;
   if (!TaskClass) {
     console.log(`Task ${task.taskID} was not processed`);
@@ -55,8 +55,10 @@ export function createTaskClass(task) {
   return newTaskFrame;
 }
 
-export async function loadTasks(convert = false) {
+async function loadTasks(convert = false) {
   let tasksURL = process.env.VUE_APP_DEAI_SERVER.concat('tasks');
   let rawTasks = await fetch(tasksURL).then((response) => response.json());
   return convert ? _.map(rawTasks, createTaskClass) : rawTasks;
 }
+
+export { getTaskInfo, createTaskClass, loadTasks };

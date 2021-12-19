@@ -1,6 +1,7 @@
-import { TrainingSetup } from '../helpers/training/training_setup.js';
+import pkg from '../helpers/training/training_setup.js';
+const { TrainingSetup } = pkg;
 import { loadTask, loadFiles } from './helper.js';
-import { logger } from '../helpers/logging/logger.js';
+import logger from '../helpers/logging/logger.js';
 const _ = require('lodash');
 const yargs = require('yargs');
 
@@ -31,7 +32,7 @@ yargs
   .help().argv;
 
 async function deai(argv) {
-  Logger().success('Welcome to DeAI !');
+  logger.success('Welcome to DeAI !');
   const task = loadTask(argv.task);
   const trainingSetup = new TrainingSetup(task, 'deai', false, logger);
   trainingSetup.connect();
