@@ -1,8 +1,8 @@
 import fs from 'fs';
 import _ from 'lodash';
-import task_helper from '../helpers/task_definition/helper.js';
+import task_helper from '../task_definition/helper.js';
 const { loadTasks } = task_helper;
-import logger from '../helpers/logging/logger.js';
+import logger from '../logging/logger.js';
 /*
  * For command line interface
  */
