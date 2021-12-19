@@ -1,7 +1,7 @@
-import pkg from '../helpers/training/training_setup.js';
+import pkg from '../training/training_setup.js';
 const { TrainingSetup } = pkg;
 import { loadTask, loadFiles } from './cli_helper.js';
-import { logger } from '../helpers/logging/logger.js';
+import { logger } from '../logging/logger.js';
 const _ = require('lodash');
 const yargs = require('yargs');
 
