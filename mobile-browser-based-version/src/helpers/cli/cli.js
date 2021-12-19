@@ -1,5 +1,4 @@
-import pkg from '../training/training_setup.js';
-const { TrainingSetup } = pkg;
+import { Trainer } from '../training/trainer.js';
 import { loadTask, loadFiles } from './cli_helper.js';
 import { logger } from '../logging/logger.js';
 const _ = require('lodash');
@@ -34,9 +33,9 @@ yargs
 async function deai(argv) {
   logger.success('Welcome to DeAI !');
   const task = loadTask(argv.task);
-  const trainingSetup = new TrainingSetup(task, 'deai', false, logger);
-  trainingSetup.connect();
-  loadFiles(argv.dataDir, trainingSetup.fileUploadManager);
-  await trainingSetup.joinTraining(argv.distributed);
-  trainingSetup.disconnect();
+  const trainer = new Trainer(task, 'deai', false, logger);
+  trainer.connect();
+  loadFiles(argv.dataDir, trainer.fileUploadManager);
+  await trainer.joinTraining(argv.distributed);
+  trainer.disconnect();
 }

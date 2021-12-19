@@ -7,8 +7,8 @@
         <uploading-frame
           v-bind:Id="Id"
           v-bind:task="task"
-          v-bind:fileUploadManager="trainingSetup.fileUploadManager"
-          v-if="trainingSetup.fileUploadManager"
+          v-bind:fileUploadManager="trainer.fileUploadManager"
+          v-if="trainer.fileUploadManager"
         />
       </div>
 
@@ -17,13 +17,13 @@
       <!-- Train Button -->
       <div class="flex items-center justify-center p-4">
         <custom-button
-          v-on:click="trainingSetup.joinTraining(false, context)"
+          v-on:click="trainer.joinTraining(false, context)"
           :center="true"
         >
           Train Alone
         </custom-button>
         <custom-button
-          v-on:click="trainingSetup.joinTraining(true, context)"
+          v-on:click="trainer.joinTraining(true, context)"
           :center="true"
         >
           Train {{ this.$t('platform') }}
@@ -32,8 +32,8 @@
       <!-- Training Board -->
       <div>
         <training-information-frame
-          v-bind:trainingInformant="trainingSetup.trainingInformant"
-          v-if="trainingSetup.trainingInformant"
+          v-bind:trainingInformant="trainer.trainingInformant"
+          v-if="trainer.trainingInformant"
         />
       </div>
 
@@ -99,7 +99,7 @@ import CustomButton from '../../simple/CustomButton.vue';
 import Download from '../../../assets/svg/Download.vue';
 
 import { saveWorkingModel } from '../../../helpers/memory/helpers';
-import { TrainingSetup } from '../../../helpers/training/training_setup';
+import { Trainer } from '../../../helpers/training/trainer';
 import { mapState } from 'vuex';
 
 export default {
@@ -120,7 +120,7 @@ export default {
   },
   data() {
     return {
-      trainingSetup: new TrainingSetup(
+      trainer: new Trainer(
         this.task,
         this.$store.getters.platform,
         this.useIndexedDB,
@@ -133,7 +133,7 @@ export default {
   },
   watch: {
     useIndexedDB(newValue) {
-      this.trainingSetup.setIndexedDB(newValue);
+      this.trainer.setIndexedDB(newValue);
     },
   },
   methods: {
@@ -160,10 +160,10 @@ export default {
   },
   async mounted() {
     // This method is called when the component is created
-    this.$nextTick(() => this.trainingSetup.connect(this.useIndexedDB));
+    this.$nextTick(() => this.trainer.connect(this.useIndexedDB));
   },
   async unmounted() {
-    this.trainingSetup.disconnect();
+    this.trainer.disconnect();
   },
 };
 </script>

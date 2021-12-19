@@ -4,9 +4,9 @@ import { TrainingInformant } from './decentralised/training_informant.js';
 import { TrainingManager } from './training_manager.js';
 import { getClient } from '../communication/helpers.js';
 import { FileUploadManager } from '../data_validation/file_upload_manager.js';
-import { getTaskInfo } from '../../helpers/task_definition/helper.js';
+import { getTaskInfo } from '../task_definition/helper.js';
 
-export class TrainingSetup {
+export class Trainer {
   constructor(task, platform, useIndexedDB, getLogger) {
     // task can either be a json or string corresponding to the taskID
     this.task = task;
@@ -116,4 +116,4 @@ export class TrainingSetup {
   }
 }
 
-export default TrainingSetup;
+export default Trainer;
