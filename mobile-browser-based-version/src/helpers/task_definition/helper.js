@@ -1,6 +1,6 @@
 import { CsvTask } from './csv_task';
 import { ImageTask } from './image_task';
-import { checkData } from '../helpers/data_validation/helpers_image_tasks.js';
+import { checkData } from '../data_validation/helpers_image_tasks.js';
 import * as config from './task.config.js';
 import _ from 'lodash';
 
