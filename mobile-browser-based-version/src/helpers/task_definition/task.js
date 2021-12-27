@@ -1,5 +1,5 @@
 import * as tf from '@tensorflow/tfjs';
-
+import { getWorkingModel } from '../memory/helpers.js';
 export class Task {
   constructor(taskID, displayInformation, trainingInformation) {
     this.taskID = taskID;
@@ -18,10 +18,12 @@ export class Task {
 
   // Should not be here
   async getModelFromStorage() {
+    return getWorkingModel(this.taskID, this.trainingInformation.modelID);
+    /*
     let savePath = 'indexeddb://working_'.concat(
       this.trainingInformation.modelID
     );
     let model = await tf.loadLayersModel(savePath);
-    return model;
+    return model;*/
   }
 }
