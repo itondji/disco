@@ -1,5 +1,3 @@
-const fs = require('fs');
-
 import { TrainingInformant } from './decentralised/training_informant.js';
 import { TrainingManager } from './training_manager.js';
 import { getClient } from '../communication/helpers.js';
@@ -7,13 +5,13 @@ import { FileUploadManager } from '../data_validation/file_upload_manager.js';
 import { getTaskInfo } from '../task_definition/helper.js';
 
 export class Trainer {
-  constructor(task, platform, useIndexedDB, getLogger) {
+  constructor(task, platform, useIndexedDB, logger) {
     // task can either be a json or string corresponding to the taskID
     this.task = task;
 
     this.isConnected = false;
     this.useIndexedDB = useIndexedDB;
-    this.getLogger = getLogger;
+    this.logger = logger;
     // Manager that returns feedbacks when training
     this.trainingInformant = new TrainingInformant(10, this.task.taskID);
     // Manager for the file uploading process
@@ -50,12 +48,12 @@ export class Trainer {
     // Connect to centralized server
     this.isConnected = await this.client.connect();
     if (this.isConnected) {
-      this.getLogger().success(
+      this.logger.success(
         'Succesfully connected to server. Distributed training available.'
       );
     } else {
       console.log('Error in connecting');
-      this.getLogger().error(
+      this.logger.error(
         'Failed to connect to server. Fallback to training alone.'
       );
     }
@@ -67,18 +65,16 @@ export class Trainer {
 
   async joinTraining(distributed, context) {
     if (distributed && !this.isConnected) {
-      this.getLogger().error('Distributed training is not available.');
+      this.logger.error('Distributed training is not available.');
       return;
     }
     const nbrFiles = this.fileUploadManager.numberOfFiles();
     // Check that the user indeed gave a file
     if (nbrFiles == 0) {
-      this.getLogger().error(
-        `Training aborted. No uploaded file given as input.`
-      );
+      this.logger.error(`Training aborted. No uploaded file given as input.`);
     } else {
       // Assume we only read the first file
-      this.getLogger().success(
+      this.logger.success(
         `Thank you for your contribution. Data preprocessing has started`
       );
       const filesElement =
@@ -97,7 +93,7 @@ export class Trainer {
       }
       if (!statusValidation.accepted) {
         // print error message
-        this.getLogger().error(
+        this.logger.error(
           `Invalid input format : Number of data points with valid format: ${statusValidation.nr_accepted} out of ${nbrFiles}`
         );
       } else {
@@ -107,7 +103,7 @@ export class Trainer {
           filesElement,
           context
         );
-        this.getLogger().success(
+        this.logger.success(
           `Data preprocessing has finished and training has started`
         );
         this.trainingManager.trainModel(processedDataset, distributed);

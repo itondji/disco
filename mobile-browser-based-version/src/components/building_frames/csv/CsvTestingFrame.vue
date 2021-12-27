@@ -1,10 +1,5 @@
 <template>
-  <testing-frame
-    :Id="Id"
-    :task="task"
-    :nbrClasses="1"
-    :makePredictions="makePredictions"
-  >
+  <testing-frame :Id="Id" :task="task" :nbrClasses="1" :context="context">
     <template v-slot:dataExample>
       <!-- Data Point Example -->
       <div class="relative p-4 overflow-x-hidden">
@@ -53,7 +48,7 @@
             >
               <li
                 class="border-gray-400"
-                v-for="header in headers"
+                v-for="header in context.headers"
                 :key="header.id"
               >
                 <div
@@ -133,23 +128,18 @@ export default {
   data() {
     return {
       // Headers related to training task of containing item of the form {id: "", userHeader: ""}
-      headers: [],
+      context: { headers: [], makePredictions: this.makePredictions },
       predictions: null,
     };
   },
 
   methods: {
-    async predictionsToCsv(predictions) {
-      let pred = predictions.join('\n');
-      const csvContent = this.classColumn + '\n' + pred;
-      return csvContent;
-    },
-    async makePredictions(filesElement) {
+    async makePredictions(filesElement, context) {
       return new Promise((resolve, reject) => {
         let reader = new FileReader();
         reader.onload = async (e) => {
           // Preprocess the data and get object of the form {accepted: True/False, Xtrain: training data, ytrain: lavels}
-          var predictions = await this.task.predict(e, this.headers);
+          var predictions = await this.task.predict(e, context.headers);
           resolve(predictions);
         };
         reader.readAsText(filesElement);
@@ -163,7 +153,7 @@ export default {
       this.classColumn = this.task.trainingInformation.outputColumn;
       this.task.displayInformation.headers.forEach((item) => {
         if (item !== this.classColumn) {
-          this.headers.push({ id: item, userHeader: item });
+          this.context.headers.push({ id: item, userHeader: item });
         }
       });
       this.dataExample = this.task.displayInformation.dataExample.filter(

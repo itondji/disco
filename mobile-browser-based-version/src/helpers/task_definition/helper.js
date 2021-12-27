@@ -23,6 +23,11 @@ function getTaskInfo(name) {
             reader.readAsText(filesElement);
           });
         },
+        predictionsToCsv: async function (predictions, context) {
+          let pred = predictions.join('\n');
+          const csvContent = context.classColumn + '\n' + pred;
+          return csvContent;
+        },
       };
     case config.IMAGE_TASK:
       return {
@@ -34,6 +39,22 @@ function getTaskInfo(name) {
           });
         },
         preCheckData: checkData,
+        predictionsToCsv: async function (predictions, context) {
+          let pred = '';
+          let header_length = 0;
+          for (const [id, prediction] of Object.entries(predictions)) {
+            header_length = prediction.length;
+            pred += `id,${prediction
+              .map((dict) => dict['className'] + ',' + dict['probability'])
+              .join(',')} \n`;
+          }
+          let header = 'id,';
+          for (let i = 1; i <= header_length; ++i) {
+            header += `top ${i},probability${i != header_length ? ',' : '\n'}`;
+          }
+          const csvContent = header + pred;
+          return csvContent;
+        },
       };
     default:
       console.log('No task object available');

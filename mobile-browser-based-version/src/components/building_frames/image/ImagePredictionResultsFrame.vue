@@ -1,7 +1,7 @@
 <template>
   <!-- Predictions Results Example Card -->
   <a id="limitations-target">
-    <icon-card header="Predictions Results" :description="dataExampleText">
+    <icon-card header="Predictions Results" description="">
       <template v-slot:icon><file-earmark-ruled-vue /></template>
       <!-- Data Point Example -->
       <template v-slot:extra>
@@ -30,14 +30,13 @@ export default {
   props: {
     Id: String,
     classes: Array,
-    imageElement: HTMLImageElement,
   },
   components: {
     FileEarmarkRuledVue,
   },
   data() {
     return {
-      imageId: 'image_'.concat(this.Id),
+      imageId: `image_${this.Id}`,
     };
   },
 };

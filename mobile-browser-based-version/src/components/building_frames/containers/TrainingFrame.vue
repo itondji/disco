@@ -98,8 +98,8 @@ import IconCard from '../../containers/IconCard.vue';
 import CustomButton from '../../simple/CustomButton.vue';
 import Download from '../../../assets/svg/Download.vue';
 
-import { saveWorkingModel } from '../../../helpers/memory/helpers';
-import { Trainer } from '../../../helpers/training/trainer';
+import { saveWorkingModel } from '../../../helpers/memory/helpers.js';
+import { Trainer } from '../../../helpers/training/trainer.js';
 import { mapState } from 'vuex';
 
 export default {
@@ -124,7 +124,7 @@ export default {
         this.task,
         this.$store.getters.platform,
         this.useIndexedDB,
-        () => this.$toast
+        this.$toast
       ),
     };
   },

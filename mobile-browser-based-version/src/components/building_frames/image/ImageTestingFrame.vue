@@ -4,8 +4,7 @@
     :task="task"
     :nbrClasses="task.trainingInformation.LABEL_LIST.length"
     :filterData="filterData"
-    :makePredictions="makePredictions"
-    :predictionsToCsv="predictionsToCsv"
+    :context="context"
   >
     <template v-slot:dataExample>
       <!-- Data Point Example -->
@@ -22,8 +21,8 @@
     <template v-slot:predictionResults>
       <image-prediction-results-frame
         v-if="gotResults"
+        :Id="Id"
         :classes="classes"
-        :imageElement="imgTested"
       />
 
       <div id="predictions"></div>
@@ -134,6 +133,11 @@ export default {
       classes: null,
       imgTested: null,
       expectedFiles: 0,
+
+      context: {
+        makePredictions: (filesElement, context) =>
+          this.makePredictions(filesElement, context),
+      },
     };
   },
   methods: {
@@ -151,7 +155,7 @@ export default {
       return this.FILES;
     },
 
-    async makePredictions(filesElement) {
+    async makePredictions(filesElement, context) {
       const classes = await this.task.predict(filesElement);
       const ids = Object.keys(classes);
       var predictions;
@@ -160,27 +164,10 @@ export default {
         this.classes = classes[ids[0]];
         this.gotResults = true;
         this.$toast.success(`Predictions are available below.`);
-        
       } else {
         predictions = classes;
       }
       return predictions;
-    },
-    async predictionsToCsv(predictions) {
-      let pred = '';
-      let header_length = 0;
-      for (const [id, prediction] of Object.entries(predictions)) {
-        header_length = prediction.length;
-        pred += `id,${prediction
-          .map((dict) => dict['className'] + ',' + dict['probability'])
-          .join(',')} \n`;
-      }
-      let header = 'id,';
-      for (let i = 1; i <= header_length; ++i) {
-        header += `top ${i},probability${i != header_length ? ',' : '\n'}`;
-      }
-      const csvContent = header + pred;
-      return csvContent;
     },
     getImage(url) {
       if (url == '') {
