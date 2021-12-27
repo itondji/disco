@@ -1,6 +1,6 @@
 import msgpack from 'msgpack-lite';
-import Peer from 'peerjs';
-
+//import Peer from 'peerjs';
+import Peer from '../../cli/peerjs_wrapper.js';
 import {
   makeID,
   serializeWeights,
