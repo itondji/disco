@@ -82,4 +82,18 @@ async function loadTasks(convert = false) {
   return convert ? _.map(rawTasks, createTaskClass) : rawTasks;
 }
 
-export { getTaskInfo, createTaskClass, loadTasks };
+function onFileLoad(filesElement, callback, readAs = 'text') {
+  return new Promise((resolve, reject) => {
+    let reader = new FileReader();
+    reader.onload = async (e) => {
+      // Preprocess the data and get object of the form {accepted: True/False, Xtrain: training data, ytrain: lavels}
+      var res = await callback(e);
+      resolve(res);
+    };
+    (readAs === 'text' ? reader.readAsText : reader.readAsDataURL)(
+      filesElement
+    );
+  });
+}
+
+export { getTaskInfo, createTaskClass, loadTasks, onFileLoad };

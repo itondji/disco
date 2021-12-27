@@ -591,6 +591,7 @@ import sections from '../helpers/task_definition/form.config.js';
 import TitleCard from './containers/TitleCard.vue';
 import axios from 'axios';
 import * as task_config from '../helpers/task_definition/task.config.js';
+import { onFileLoad } from '../helpers/task_definition/helper.js';
 
 import {
   Field as VeeField,
