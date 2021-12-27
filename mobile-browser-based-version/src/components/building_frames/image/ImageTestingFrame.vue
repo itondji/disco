@@ -3,7 +3,6 @@
     :Id="Id"
     :task="task"
     :nbrClasses="task.trainingInformation.LABEL_LIST.length"
-    :filterData="filterData"
     :context="context"
   >
     <template v-slot:dataExample>
@@ -137,6 +136,7 @@ export default {
       context: {
         makePredictions: (filesElement, context) =>
           this.makePredictions(filesElement, context),
+        filterData: (filesElement) => this.filterData(filesElement),
       },
     };
   },

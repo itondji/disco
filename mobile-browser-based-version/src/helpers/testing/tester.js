@@ -27,9 +27,9 @@ export class Tester {
           : this.fileUploadManager.getFirstFile();
       const taskInfo = getTaskInfo(this.task.trainingInformation.dataType);
       // filtering phase (optional)
-      if (XXX.filterData) {
+      if (context.filterData) {
         // data checking is optional
-        filesElement = await XXX.filterData(
+        filesElement = await context.filterData(
           filesElement,
           this.task.trainingInformation
         );
