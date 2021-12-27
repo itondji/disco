@@ -321,8 +321,8 @@ export default {
       return `${prefix}_${this.Id}_${this.label}`;
     },
     addFile(target, file) {
-      const isImage = file.type.match('image.*'),
-        objectURL = URL.createObjectURL(file);
+      const isImage = file.type.match('image.*');
+      const objectURL = URL.createObjectURL(file);
       if (this.preview) {
         const clone = isImage
           ? this.imageTempl.cloneNode(true)

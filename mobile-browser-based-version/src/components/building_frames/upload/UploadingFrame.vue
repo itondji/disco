@@ -2,15 +2,17 @@
   <icon-card :header="header()">
     <template v-slot:icon><upload /></template>
     <template v-slot:extra>
-      <div v-for="item in formatLabels()" :key="item">
-        <single-upload-frame
-          :Id="Id"
-          :task="task"
-          :fileUploadManager="fileUploadManager"
-          :preview="preview()"
-          :label="String(item)"
-          :displayLabels="displayLabels"
-        />
+      <div v-if="isMounted">
+        <div v-for="item in formatLabels()" :key="item">
+          <single-upload-frame
+            :Id="Id"
+            :task="task"
+            :fileUploadManager="fileUploadManager"
+            :preview="preview"
+            :label="String(item)"
+            :displayLabels="displayLabels"
+          />
+        </div>
       </div>
     </template>
   </icon-card>
@@ -39,15 +41,11 @@ export default {
       labels: null,
       nbrLabels: null,
       csvLabels: false,
+      preview: false,
+      isMounted: false,
     };
   },
   methods: {
-    preview() {
-      if(this.task.trainingInformation.modelID == "cifar10-model") {
-        return false
-      }
-      return this.csvLabels || this.nbrLabels == 1;
-    },
     header() {
       return !this.displayLabels
         ? 'Upload My Data'
@@ -75,6 +73,11 @@ export default {
     if (this.task.trainingInformation.LABEL_ASSIGNMENT) {
       this.csvLabels = true;
     }
+
+    if (this.task.trainingInformation.modelID != 'cifar10-model') {
+      this.preview = this.csvLabels || this.nbrLabels == 1;
+    }
+    this.isMounted = true;
   },
 };
 </script>
