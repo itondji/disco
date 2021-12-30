@@ -13,4 +13,4 @@ class Logger {
   }
 }
 
-export const logger = logger();
+export const logger = new Logger();

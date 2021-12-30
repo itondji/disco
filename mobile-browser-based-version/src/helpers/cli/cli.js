@@ -1,12 +1,12 @@
+import * as config from './cli.config.js';
 import { Trainer } from '../training/trainer.js';
 import { loadTask, loadFiles } from './cli_helper.js';
 import { logger } from '../logging/logger.js';
-const _ = require('lodash');
-const yargs = require('yargs');
+import _ from 'lodash';
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
 
-yargs
-  .scriptName('deai')
-  .usage('$0 <cmd> [args]')
+yargs(hideBin(process.argv))
   .command({
     command: 'train <task> <dataDir> [distributed]',
     describe: 'Train your model using the DeAI module',

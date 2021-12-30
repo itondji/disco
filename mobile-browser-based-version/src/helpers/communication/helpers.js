@@ -1,7 +1,7 @@
 import * as tf from '@tensorflow/tfjs';
 import { DecentralisedClient } from './decentralised/client.js';
 import { FederatedClient } from './federated/client.js';
-var Hashes = require('jshashes');
+import Hashes from 'jshashes';
 
 export function getClient(platform, task, ...args) {
   switch (platform) {

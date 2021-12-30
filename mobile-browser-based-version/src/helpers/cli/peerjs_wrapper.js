@@ -1,4 +1,4 @@
-import Peer from 'peerjs';
+/*import Peer from 'peerjs';
 const window = global;
 const XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 var wrtc = require('electron-webrtc')();
@@ -23,4 +23,4 @@ export default function Peer2(id, options) {
   }
 
   return new Peer(id, options);
-}
+}*/

@@ -1,6 +1,6 @@
 import msgpack from 'msgpack-lite';
-//import Peer from 'peerjs';
-import Peer from '../../cli/peerjs_wrapper.js';
+import Peer from 'peerjs';
+//import Peer from '../../cli/peerjs_wrapper.js';
 import {
   makeID,
   serializeWeights,
@@ -10,7 +10,7 @@ import {
 import { checkBufferUntil, checkBufferWeightsUntil } from './helpers.js';
 import { Client } from '../client.js';
 import CMD_CODES from './communication_codes.js';
-var Hashes = require('jshashes');
+import Hashes from 'jshashes';
 
 /**
  * NOTE: peer.js seems to convert all array types to ArrayBuffer, making the original
