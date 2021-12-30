@@ -1,6 +1,7 @@
 import { CsvTask } from './csv_task.js';
 import { ImageTask } from './image_task.js';
 import { checkData } from '../data_validation/helpers_image_tasks.js';
+import axios from 'axios';
 import * as config from './task.config.js';
 import _ from 'lodash';
 
@@ -77,8 +78,12 @@ function createTaskClass(task) {
 }
 
 async function loadTasks(convert = false) {
-  let tasksURL = process.env.VUE_APP_DEAI_SERVER.concat('tasks');
-  let rawTasks = await fetch(tasksURL).then((response) => response.json());
+  //TODO: remove the server variable (cli problem)
+  const server =
+    process.env.VUE_APP_DEAI_SERVER || 'http://localhost:8080/deai/';
+  const tasksURL = server.concat('tasks');
+  let response = await axios.get(tasksURL);
+  const rawTasks = response.data;
   return convert ? _.map(rawTasks, createTaskClass) : rawTasks;
 }
 

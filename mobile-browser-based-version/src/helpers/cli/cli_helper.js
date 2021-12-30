@@ -6,10 +6,10 @@ import { logger } from '../logging/logger.js';
  * For command line interface
  */
 
-function loadTask(taskID) {
-  const tasks = loadTasks(true);
+async function loadTask(taskID) {
+  const tasks = await loadTasks(true);
   var task = _.filter(tasks, (t) => t.taskID == taskID);
-  if (task.size == 0) {
+  if (task.length == 0) {
     logger.error(`Task ${taskID} is not valid`);
     return undefined;
   }
