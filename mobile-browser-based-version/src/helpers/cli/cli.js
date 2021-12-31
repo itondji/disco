@@ -38,6 +38,10 @@ async function deai(argv) {
   const trainer = new Trainer(task, 'deai', false, logger);
   trainer.connect();
   loadFiles(argv.dataDir, trainer.fileUploadManager);
-  await trainer.joinTraining(argv.distributed && trainer.isConnected);
+  const context = { headers: [] };
+  task.displayInformation.headers.forEach((item) => {
+    context.headers.push({ id: item, userHeader: item });
+  });
+  await trainer.joinTraining(argv.distributed && trainer.isConnected, context);
   trainer.disconnect();
 }

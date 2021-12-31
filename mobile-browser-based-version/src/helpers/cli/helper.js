@@ -4,6 +4,8 @@ import _ from 'lodash';
 import { loadTasks } from '../task_definition/helper.js';
 import { logger } from '../logging/logger.js';
 import * as config from './cli.config.js';
+import FileAPI from 'file-api';
+const File = FileAPI.File;
 
 /*
  * For command line interface
@@ -28,12 +30,14 @@ function loadFiles(dataDirRel, fileUploadManager) {
   }
   //listing all files using forEach
   _.forEach(
+    // filter unwanted files
     _.filter(fileNames, (f) => !config.FILTER_FILES.has(f)),
     (fileName) => {
       const filePath = path.join(dataDir, fileName);
       //const file = fs.readFileSync(filePath);
       //TODO: update code for multiclass classification
-      fileUploadManager.addFile(fileName, fileName, fileName);
+      const file = new File(filePath);
+      fileUploadManager.addFile(fileName, file, fileName);
     }
   );
 }
