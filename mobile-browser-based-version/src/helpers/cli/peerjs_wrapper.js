@@ -1,13 +1,16 @@
-/*import Peer from 'peerjs';
-const window = global;
-const XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
-var wrtc = require('electron-webrtc')();
+/*import peer from 'peerjs';
+//import XMLHttpRequest from 'xmlhttprequest';
+import Wrtc from 'electron-webrtc';
+import WebSocket from 'ws';
+const Peer = peer.peerjs ? peer.peerjs.Peer : peer;
+//const XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+var wrtc = Wrtc();
 
 const RTCPeerConnection = wrtc.RTCPeerConnection;
 const RTCSessionDescription = wrtc.RTCSessionDescription;
 const RTCIceCandidate = wrtc.RTCIceCandidate;
 
-const WebSocket = require('ws');
+//const WebSocket = require('ws');
 const location = {
   protocol: 'http',
 };
@@ -23,4 +26,5 @@ export default function Peer2(id, options) {
   }
 
   return new Peer(id, options);
-}*/
+}
+*/

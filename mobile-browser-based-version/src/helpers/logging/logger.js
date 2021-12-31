@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 /**
  * Same properties as Toaster but on the console
  *
@@ -5,11 +6,11 @@
  */
 class Logger {
   success(message) {
-    console.log(message, 'color: #28A744');
+    console.log(chalk.green(message));
   }
 
   error(message) {
-    console.log(message, 'color: #e52c10');
+    console.log(chalk.red(message));
   }
 }
 

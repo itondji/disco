@@ -1,6 +1,6 @@
 import msgpack from 'msgpack-lite';
-import Peer from 'peerjs';
-//import Peer from '../../cli/peerjs_wrapper.js';
+import peer from 'peerjs';
+// import peer from '../../cli/peerjs_wrapper.js'
 import {
   makeID,
   serializeWeights,
@@ -11,6 +11,9 @@ import { checkBufferUntil, checkBufferWeightsUntil } from './helpers.js';
 import { Client } from '../client.js';
 import CMD_CODES from './communication_codes.js';
 import Hashes from 'jshashes';
+// format peer import depending on which app we are using (cli or vue)
+const Peer = peer.peerjs ? peer.peerjs.Peer : peer;
+
 
 /**
  * NOTE: peer.js seems to convert all array types to ArrayBuffer, making the original

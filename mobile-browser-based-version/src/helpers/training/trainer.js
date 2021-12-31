@@ -44,7 +44,6 @@ export class Trainer {
       this.trainingInformant,
       this.useIndexedDB
     );
-    console.log(this.trainingManager);
     // Connect to centralized server
     this.isConnected = await this.client.connect();
     if (this.isConnected) {

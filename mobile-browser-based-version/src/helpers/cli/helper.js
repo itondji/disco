@@ -1,7 +1,10 @@
 import fs from 'fs';
+import path from 'path';
 import _ from 'lodash';
 import { loadTasks } from '../task_definition/helper.js';
 import { logger } from '../logging/logger.js';
+import * as config from './cli.config.js';
+
 /*
  * For command line interface
  */
@@ -16,15 +19,20 @@ async function loadTask(taskID) {
   return task[0];
 }
 
-function loadFiles(dataDir, fileUploadManager) {
-  fs.readdir(dataDir, function (err, files) {
+function loadFiles(dataDirRel, fileUploadManager) {
+  const dataDir = config.DATA_DIR(dataDirRel);
+  fs.readdir(dataDir, function (err, fileNames) {
     //handling error
     if (err) {
       logger.error(`Unable to scan data directory: ${err}`);
     }
     //listing all files using forEach
-    files.forEach(function (file) {
-      fileUploadManager.addFile(URL.createObjectURL(file), file, file.name);
+    fileNames.forEach(function (fileName) {
+      const filePath = path.join(dataDir, fileName);
+      const file = fs.readFileSync(filePath);
+      //console.log(file);
+      //TODO: update code for multiclass classification
+      fileUploadManager.addFile(fileName, file, fileName);
     });
   });
 }

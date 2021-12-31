@@ -87,17 +87,19 @@ export class TrainingInformant {
     this.messages.push(msg);
   }
 
-  cssColors = color => {
-    return getComputedStyle(document.documentElement)
-      .getPropertyValue(color)
-      .trim();
+  cssColors = (color) => {
+    // getComputedStyle(document.documentElement)
+    //  .getPropertyValue(color)
+    //  .trim();
+    return "#0891b2";
   };
 
   /**
    * Returns the colors depending on user's choice graphs should be rendered in
    */
   getColor = () => {
-    return window.localStorage.getItem('color') ?? 'cyan';
+    //return window.localStorage.getItem('color') ?? 'cyan';
+    return 'cyan';
   };
 
   colors = {

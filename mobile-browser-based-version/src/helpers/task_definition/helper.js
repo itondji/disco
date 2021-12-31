@@ -80,7 +80,7 @@ function createTaskClass(task) {
 async function loadTasks(convert = false) {
   //TODO: remove the server variable (cli problem)
   const server =
-    process.env.VUE_APP_DEAI_SERVER || 'http://localhost:8080/deai/';
+    process.env.VUE_APP_DEAI_SERVER ?? 'http://localhost:8080/deai/';
   const tasksURL = server.concat('tasks');
   let response = await axios.get(tasksURL);
   const rawTasks = response.data;

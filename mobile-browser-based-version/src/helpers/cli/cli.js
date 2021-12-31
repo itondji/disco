@@ -1,6 +1,7 @@
+import * as env from './browser_env.js';
 import * as config from './cli.config.js';
 import { Trainer } from '../training/trainer.js';
-import { loadTask, loadFiles } from './cli_helper.js';
+import { loadTask, loadFiles } from './helper.js';
 import { logger } from '../logging/logger.js';
 import _ from 'lodash';
 import yargs from 'yargs';
