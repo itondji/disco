@@ -27,7 +27,7 @@ const sections = [
         yup: yup.string().required(),
         as: 'input',
         type: 'select',
-        options: config.ALL,
+        options: config.ALL_TASKS,
         default: 'eg. : other',
       },
     ],
