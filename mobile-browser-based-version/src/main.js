@@ -1,4 +1,4 @@
-import devtools from '@vue/devtools'
+import devtools from '@vue/devtools';
 import { createApp } from 'vue';
 import App from './components/App.vue';
 import router from './router';
@@ -10,7 +10,7 @@ import { createCustomI18n } from './platforms/i18n.js';
 import VueApexCharts from 'vue3-apexcharts';
 
 if (process.env.NODE_ENV === 'development') {
-    devtools.connect('http://localhost', 8081);
+  devtools.connect('http://localhost', 8081);
 }
 // create vue app
 const app = createApp(App);

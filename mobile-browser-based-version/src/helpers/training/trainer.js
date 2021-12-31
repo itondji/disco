@@ -6,9 +6,7 @@ import { getTaskInfo } from '../task_definition/helper.js';
 
 export class Trainer {
   constructor(task, platform, useIndexedDB, logger) {
-    // task can either be a json or string corresponding to the taskID
     this.task = task;
-
     this.isConnected = false;
     this.useIndexedDB = useIndexedDB;
     this.logger = logger;
@@ -20,7 +18,7 @@ export class Trainer {
     this.client = getClient(
       platform,
       this.task,
-      null //this.$store.getters.password(this.Id)
+      null //TODO: this.$store.getters.password(this.Id)
     );
     // Assist with the training loop
     this.trainingManager = new TrainingManager(

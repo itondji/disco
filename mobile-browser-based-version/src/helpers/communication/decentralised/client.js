@@ -14,7 +14,6 @@ import Hashes from 'jshashes';
 // format peer import depending on which app we are using (cli or vue)
 const Peer = peer.peerjs ? peer.peerjs.Peer : peer;
 
-
 /**
  * NOTE: peer.js seems to convert all array types to ArrayBuffer, making the original
  * type unrecoverable (Float32Array, Uint8Array, ...). The solution is to encode any payload

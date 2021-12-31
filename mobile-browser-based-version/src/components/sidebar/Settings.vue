@@ -45,15 +45,37 @@
               <span class="text-s"> Use model library </span>
               <div class="relative focus:outline-none">
                 <div
-                  class="w-12 h-6 transition rounded-full outline-none bg-primary-100 dark:bg-primary-darker"
+                  class="
+                    w-12
+                    h-6
+                    transition
+                    rounded-full
+                    outline-none
+                    bg-primary-100
+                    dark:bg-primary-darker
+                  "
                 ></div>
                 <div
-                  class="absolute top-0 left-0 inline-flex w-6 h-6 transition-all duration-200 ease-in-out transform scale-110 rounded-full shadow-sm"
+                  class="
+                    absolute
+                    top-0
+                    left-0
+                    inline-flex
+                    w-6
+                    h-6
+                    transition-all
+                    duration-200
+                    ease-in-out
+                    transform
+                    scale-110
+                    rounded-full
+                    shadow-sm
+                  "
                   :class="{
-                    'translate-x-0 bg-white dark:bg-primary-100': !this.$store
-                      .state.useIndexedDB,
-                    'translate-x-6 bg-primary-light dark:bg-primary': this
-                      .$store.state.useIndexedDB,
+                    'translate-x-0 bg-white dark:bg-primary-100':
+                      !this.$store.state.useIndexedDB,
+                    'translate-x-6 bg-primary-light dark:bg-primary':
+                      this.$store.state.useIndexedDB,
                   }"
                 ></div>
               </div>
@@ -100,17 +122,17 @@
   </tippy-container>
 </template>
 <script>
-import { mapMutations } from "vuex";
-import TippyCard from "./containers/TippyCard.vue";
-import TippyContainer from "./containers/TippyContainer.vue";
-import MoonIcon from "../../assets/svg/MoonIcon.vue";
-import StarIcon from "../../assets/svg/StarIcon.vue";
-import DecentralisedIcon from "../../assets/svg/DecentralisedIcon.vue";
-import FederatedIcon from "../../assets/svg/FederatedIcon.vue";
-import SettingsIcon from "../../assets/svg/SettingsIcon.vue";
+import { mapMutations } from 'vuex';
+import TippyCard from './containers/TippyCard.vue';
+import TippyContainer from './containers/TippyContainer.vue';
+import MoonIcon from '../../assets/svg/MoonIcon.vue';
+import StarIcon from '../../assets/svg/StarIcon.vue';
+import DecentralisedIcon from '../../assets/svg/DecentralisedIcon.vue';
+import FederatedIcon from '../../assets/svg/FederatedIcon.vue';
+import SettingsIcon from '../../assets/svg/SettingsIcon.vue';
 
 export default {
-  name: "settings",
+  name: 'settings',
   components: {
     TippyCard,
     TippyContainer,
@@ -120,59 +142,59 @@ export default {
     FederatedIcon,
     SettingsIcon,
   },
-  data: function() {
+  data: function () {
     return {
-      colors: ["cyan", "teal", "green", "fuchsia", "blue", "violet"],
+      colors: ['cyan', 'teal', 'green', 'fuchsia', 'blue', 'violet'],
     };
   },
   methods: {
-    buttonClass: function(
+    buttonClass: function (
       state,
-      defaultClass = "flex items-center justify-center px-4 py-2 space-x-4 transition-colors border rounded-md hover:text-gray-900 hover:border-gray-900 dark:border-primary dark:hover:text-primary-100 dark:hover:border-primary-light focus:outline-none focus:ring focus:ring-primary-lighter focus:ring-offset-2 dark:focus:ring-offset-dark dark:focus:ring-primary-dark"
+      defaultClass = 'flex items-center justify-center px-4 py-2 space-x-4 transition-colors border rounded-md hover:text-gray-900 hover:border-gray-900 dark:border-primary dark:hover:text-primary-100 dark:hover:border-primary-light focus:outline-none focus:ring focus:ring-primary-lighter focus:ring-offset-2 dark:focus:ring-offset-dark dark:focus:ring-primary-dark'
     ) {
       return (
         defaultClass +
         (state === undefined
-          ? " "
+          ? ' '
           : state
-          ? " border-gray-900 text-gray-900 dark:border-primary-light dark:text-primary-100"
-          : " text-gray-500 dark:text-primary-light")
+          ? ' border-gray-900 text-gray-900 dark:border-primary-light dark:text-primary-100'
+          : ' text-gray-500 dark:text-primary-light')
       );
     },
-    ...mapMutations(["setIndexedDB", "setAppTheme", "setPlatform"]),
+    ...mapMutations(['setIndexedDB', 'setAppTheme', 'setPlatform']),
     toggleIndexedDB() {
       this.setIndexedDB(!this.$store.state.useIndexedDB && window.indexedDB);
     },
     setAppColors(color) {
       const root = document.documentElement;
-      root.style.setProperty("--color-primary", `var(--color-${color})`);
-      root.style.setProperty("--color-primary-50", `var(--color-${color}-50)`);
+      root.style.setProperty('--color-primary', `var(--color-${color})`);
+      root.style.setProperty('--color-primary-50', `var(--color-${color}-50)`);
       root.style.setProperty(
-        "--color-primary-100",
+        '--color-primary-100',
         `var(--color-${color}-100)`
       );
       root.style.setProperty(
-        "--color-primary-light",
+        '--color-primary-light',
         `var(--color-${color}-light)`
       );
       root.style.setProperty(
-        "--color-primary-lighter",
+        '--color-primary-lighter',
         `var(--color-${color}-lighter)`
       );
       root.style.setProperty(
-        "--color-primary-dark",
+        '--color-primary-dark',
         `var(--color-${color}-dark)`
       );
       root.style.setProperty(
-        "--color-primary-darker",
+        '--color-primary-darker',
         `var(--color-${color}-darker)`
       );
     },
     setBrowserColors(color) {
-      window.localStorage.setItem("color", color);
+      window.localStorage.setItem('color', color);
     },
     setBrowserTheme(value) {
-      window.localStorage.setItem("dark", value);
+      window.localStorage.setItem('dark', value);
     },
     setColors(color) {
       this.setAppColors(color);
@@ -188,11 +210,11 @@ export default {
     },
     setDecentralized() {
       this.setPlatform(true);
-      this.$i18n.locale = "deai";
+      this.$i18n.locale = 'deai';
     },
     setFederated() {
       this.setPlatform(false);
-      this.$i18n.locale = "feai";
+      this.$i18n.locale = 'feai';
     },
   },
 };

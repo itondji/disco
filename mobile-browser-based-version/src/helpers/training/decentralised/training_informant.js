@@ -91,7 +91,7 @@ export class TrainingInformant {
     // getComputedStyle(document.documentElement)
     //  .getPropertyValue(color)
     //  .trim();
-    return "#0891b2";
+    return '#0891b2';
   };
 
   /**
@@ -109,7 +109,6 @@ export class TrainingInformant {
     primaryDark: this.cssColors(`--color-${this.getColor()}-dark`),
     primaryDarker: this.cssColors(`--color-${this.getColor()}-darker`),
   };
-
 
   /**
    * Update the Heatmap for Interoperability.

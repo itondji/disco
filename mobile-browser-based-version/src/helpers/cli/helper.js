@@ -5,10 +5,12 @@ import { loadTasks } from '../task_definition/helper.js';
 import { logger } from '../logging/logger.js';
 import * as config from './cli.config.js';
 
-/*
- * For command line interface
+/**
+ * Loads the single task with the given taskID
+ *
+ * @param {*} taskID : task identifier
+ * @returns the loaded task
  */
-
 async function loadTask(taskID) {
   const tasks = await loadTasks(true);
   var task = _.filter(tasks, (t) => t.taskID == taskID);
@@ -19,6 +21,11 @@ async function loadTask(taskID) {
   return task[0];
 }
 
+/**
+ * Loads all files present in the `dataDirRel` directory and add them to the fileUploadManager
+ * @param {*} dataDirRel : directory where the files are located
+ * @param {*} fileUploadManager : object to which the file shall be added
+ */
 function loadFiles(dataDirRel, fileUploadManager) {
   const dataDir = config.DATA_DIR(dataDirRel);
   const fileNames = fs.readdirSync(dataDir);
@@ -26,13 +33,11 @@ function loadFiles(dataDirRel, fileUploadManager) {
     //handling error
     logger.error(`Unable to scan data directory`);
   }
-  //listing all files using forEach
   _.forEach(
     // filter unwanted files
     _.filter(fileNames, (f) => !config.FILTER_FILES.has(f)),
     (fileName) => {
       const filePath = path.join(dataDir, fileName);
-      //const file = fs.readFileSync(filePath);
       //TODO: update code for multiclass classification
       const file = new File(filePath);
       fileUploadManager.addFile(fileName, file, fileName);

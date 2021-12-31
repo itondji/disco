@@ -53,7 +53,10 @@ import CustomButton from './simple/CustomButton.vue';
 import _ from 'lodash';
 import { defineComponent } from 'vue';
 import { mapMutations } from 'vuex';
-import { createTaskClass, loadTasks } from '../helpers/task_definition/helper.js';
+import {
+  createTaskClass,
+  loadTasks,
+} from '../helpers/task_definition/helper.js';
 
 export default {
   name: 'task-list',

@@ -1,5 +1,7 @@
 import browserEnv from 'browser-env';
 import FileAPI from 'file-api';
+
+console.log('aniestaiesrt');
 const env = browserEnv(['window', 'navigator']);
 
 // cli environment
