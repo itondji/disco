@@ -1,6 +1,6 @@
 import path from 'path';
 import * as tf from '@tensorflow/tfjs';
-import mobilenet from '@tensorflow-models/mobilenet'
+import mobilenet from '@tensorflow-models/mobilenet';
 import '@tensorflow/tfjs-node';
 import * as config from '../../server.config.js';
 import fs from 'fs';

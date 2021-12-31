@@ -1,4 +1,4 @@
-import * as tf from '@tensorflow/tfjs';
+import tf from '../tf.config.js';
 import { Task } from './task.js';
 import { getTopKClasses } from '../testing/testing_script.js';
 import Papa from 'papaparse';

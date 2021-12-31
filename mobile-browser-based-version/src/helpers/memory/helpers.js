@@ -6,7 +6,7 @@
  * folder via the model library. The working/ folder is only used by the backend.
  * The working model is loaded from IndexedDB for training (model.fit) only.
  */
-import * as tf from '@tensorflow/tfjs';
+import tf from '../tf.config.js';
 import path from 'path';
 
 const INDEXEDDB_SCHEME = 'indexeddb://';

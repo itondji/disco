@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import * as tf from '@tensorflow/tfjs';
+import tf from '../tf.config.js';
 import { checkData } from '../data_validation/helpers_csv_tasks.js';
 import { Task } from './task.js';
 /**
