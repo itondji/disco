@@ -1,9 +1,7 @@
-import * as d3Wrapper from 'd3';
+import * as d3 from 'd3';
 import * as tf from '@tensorflow/tfjs';
 import { checkData } from '../data_validation/helpers_csv_tasks.js';
 import { Task } from './task.js';
-// Cli d3 wrapper
-const d3 = d3Wrapper.default ? d3Wrapper.default : d3Wrapper;
 /**
  * Dummy class to hold the Titanic Task information
  */
