@@ -4,7 +4,9 @@ import { checkData } from '../data_validation/helpers_image_tasks.js';
 import axios from 'axios';
 import * as config from './task.config.js';
 import _ from 'lodash';
+import FileReader from 'filereader';
 
+console.log(FileReader);
 function getTaskInfo(name) {
   switch (name) {
     case config.CSV_TASK:
