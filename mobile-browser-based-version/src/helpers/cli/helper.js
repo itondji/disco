@@ -21,19 +21,16 @@ async function loadTask(taskID) {
 
 function loadFiles(dataDirRel, fileUploadManager) {
   const dataDir = config.DATA_DIR(dataDirRel);
-  fs.readdir(dataDir, function (err, fileNames) {
-    //handling error
-    if (err) {
-      logger.error(`Unable to scan data directory: ${err}`);
-    }
-    //listing all files using forEach
-    fileNames.forEach(function (fileName) {
-      const filePath = path.join(dataDir, fileName);
-      const file = fs.readFileSync(filePath);
-      //console.log(file);
-      //TODO: update code for multiclass classification
-      fileUploadManager.addFile(fileName, file, fileName);
-    });
+  const fileNames = fs.readdirSync(dataDir);
+  if (!fileNames) { //handling error
+    logger.error(`Unable to scan data directory`);
+  }
+  //listing all files using forEach
+  fileNames.forEach(function (fileName) {
+    const filePath = path.join(dataDir, fileName);
+    const file = fs.readFileSync(filePath);
+    //TODO: update code for multiclass classification
+    fileUploadManager.addFile(fileName, file, fileName);
   });
 }
 

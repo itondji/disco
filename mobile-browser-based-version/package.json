@@ -19,6 +19,7 @@
     "d3": "^6.6.1",
     "danfojs": "^0.2.4",
     "dfd": "^0.2.0",
+    "electron-webrtc": "^0.3.0",
     "jshashes": "^1.0.8",
     "msgpack-lite": "^0.1.26",
     "papaparse": "^5.3.1",
