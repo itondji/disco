@@ -4,8 +4,6 @@ import _ from 'lodash';
 import { loadTasks } from '../task_definition/helper.js';
 import { logger } from '../logging/logger.js';
 import * as config from './cli.config.js';
-import FileAPI from 'file-api';
-const File = FileAPI.File;
 
 /*
  * For command line interface

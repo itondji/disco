@@ -4,9 +4,6 @@ import { checkData } from '../data_validation/helpers_image_tasks.js';
 import axios from 'axios';
 import * as config from './task.config.js';
 import _ from 'lodash';
-//import FileReader from 'filereader';
-import FileAPI from 'file-api';
-const FileReader = FileAPI.FileReader;
 
 function getTaskInfo(name) {
   switch (name) {
@@ -81,10 +78,7 @@ function createTaskClass(task) {
 }
 
 async function loadTasks(convert = false) {
-  //TODO: remove the server variable (cli problem)
-  const server =
-    process.env.VUE_APP_DEAI_SERVER ?? 'http://localhost:8080/deai/';
-  const tasksURL = server.concat('tasks');
+  const tasksURL = process.env.VUE_APP_DEAI_SERVER.concat('tasks');
   let response = await axios.get(tasksURL);
   const rawTasks = response.data;
   return convert ? _.map(rawTasks, createTaskClass) : rawTasks;
