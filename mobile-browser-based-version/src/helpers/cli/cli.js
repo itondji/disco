@@ -34,7 +34,6 @@ yargs(hideBin(process.argv))
 async function deai(argv) {
   logger.success('Welcome to DeAI !');
   const task = await loadTask(argv.task);
-  //console.log(task);
   const trainer = new Trainer(task, 'deai', false, logger);
   trainer.connect();
   loadFiles(argv.dataDir, trainer.fileUploadManager);

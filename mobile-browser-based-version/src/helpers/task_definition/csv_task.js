@@ -26,7 +26,6 @@ export class CsvTask extends Task {
     // If user's file respects our format, parse it and start training
     if (startTraining) {
       console.log('User File Validated. Start parsing.');
-      console.log(headerCopied);
 
       let originalHeaders = headers.map((element) => element['userHeader']);
       let inputColumns = this.trainingInformation.inputColumns;
