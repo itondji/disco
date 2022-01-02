@@ -2,7 +2,7 @@ import { TrainingInformant } from './decentralised/training_informant.js';
 import { TrainingManager } from './training_manager.js';
 import { getClient } from '../communication/helpers.js';
 import { FileUploadManager } from '../data_validation/file_upload_manager.js';
-import { getTaskInfo } from '../task_definition/helper.js';
+import { createTaskHelper } from '../task_definition/helper.js';
 
 export class Trainer {
   constructor(task, platform, useIndexedDB, logger) {
@@ -27,6 +27,7 @@ export class Trainer {
       this.trainingInformant,
       this.useIndexedDB
     );
+    this.taskHelper = createTaskHelper(this.task);
   }
 
   setIndexedDB(newValue) {
@@ -60,7 +61,7 @@ export class Trainer {
     this.client.disconnect();
   }
 
-  async joinTraining(distributed, context) {
+  async joinTraining(distributed) {
     if (distributed && !this.isConnected) {
       this.logger.error('Distributed training is not available.');
       return;
@@ -80,10 +81,9 @@ export class Trainer {
           : this.fileUploadManager.getFirstFile();
       var statusValidation = { accepted: true };
       // get task  specific information (preprocessing steps, precheck function)
-      const taskInfo = getTaskInfo(this.task.trainingInformation.dataType);
-      if (taskInfo.precheckData) {
+      if (this.taskHelper.precheckData) {
         // data checking is optional
-        statusValidation = await taskInfo.precheckData(
+        statusValidation = await this.taskHelper.precheckData(
           filesElement,
           this.task.trainingInformation
         );
@@ -95,10 +95,8 @@ export class Trainer {
         );
       } else {
         // preprocess data
-        const processedDataset = await taskInfo.dataPreprocessing(
-          this.task,
-          filesElement,
-          context
+        const processedDataset = await this.taskHelper.dataPreprocessing(
+          filesElement
         );
         this.logger.success(
           `Data preprocessing has finished and training has started`

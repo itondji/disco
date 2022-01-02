@@ -1,5 +1,5 @@
 import { FileUploadManager } from '../data_validation/file_upload_manager.js';
-import { getTaskInfo } from '../task_definition/helper.js';
+import { createTaskHelper } from '../task_definition/helper.js';
 
 export class Tester {
   constructor(task, logger) {
@@ -8,9 +8,10 @@ export class Tester {
     this.logger = logger;
     // takes care of uploading file process
     this.fileUploadManager = new FileUploadManager(1, this);
+    this.taskHelper = createTaskHelper(this.task);
   }
 
-  async testModel(downloadPredictions, context) {
+  async testModel(downloadPredictions) {
     //callback function that downloads the predictions
     const nbrFiles = this.fileUploadManager.numberOfFiles();
     // Check that the user indeed gave a file
@@ -25,21 +26,20 @@ export class Tester {
         nbrFiles > 1
           ? this.fileUploadManager.getFilesList()
           : this.fileUploadManager.getFirstFile();
-      const taskInfo = getTaskInfo(this.task.trainingInformation.dataType);
       // filtering phase (optional)
-      if (context.filterData) {
+      if (this.taskHelper.filterData) {
         // data checking is optional
-        filesElement = await context.filterData(
+        filesElement = await this.taskHelper.filterData(
           filesElement,
           this.task.trainingInformation
         );
       }
       // prediction
-      const predictions = await context.makePredictions(filesElement, context);
+      const predictions = await this.taskHelper.makePredictions(filesElement);
       // reset fileloader
       this.fileUploadManager.clear();
       if (predictions) {
-        let csvContent = await taskInfo.predictionsToCsv(predictions, context);
+        let csvContent = await this.taskHelper.predictionsToCsv(predictions);
         await downloadPredictions(csvContent);
       }
     }

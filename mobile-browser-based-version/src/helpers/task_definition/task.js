@@ -27,3 +27,26 @@ export class Task {
     return model;*/
   }
 }
+
+/**
+ * Abstract Class TaskHelpe.
+ *
+ * @class TaskHelper
+ */
+export class TaskHelper {
+  constructor(task) {
+    this.task = task;
+    this.context = this.createContext();
+  }
+  dataPreprocessing(filesElement) {
+    throw new Error("Method 'dataPreprocessing()' must be implemented.");
+  }
+
+  async predictionsToCsv(predictions) {
+    throw new Error("Method 'predictionsToCsv()' must be implemented.");
+  }
+
+  createContext() {
+    throw new Error("Method 'createContext()' must be implemented.");
+  }
+}
