@@ -1,5 +1,4 @@
-import tf from '../tf.config.js';
-
+import * as tf from '@tensorflow/tfjs';
 export class Client {
   constructor(serverURL, task) {
     this.serverURL = serverURL;

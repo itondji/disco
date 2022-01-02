@@ -1,4 +1,4 @@
-import tf from '../tf.config.js';
+import * as tf from '@tensorflow/tfjs';
 import { DecentralisedClient } from './decentralised/client.js';
 import { FederatedClient } from './federated/client.js';
 import Hashes from 'jshashes';

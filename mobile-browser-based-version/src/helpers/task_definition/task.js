@@ -1,4 +1,4 @@
-import tf from '../tf.config.js';
+import * as tf from '@tensorflow/tfjs';
 import { getWorkingModel } from '../memory/helpers.js';
 export class Task {
   constructor(taskID, displayInformation, trainingInformation) {
