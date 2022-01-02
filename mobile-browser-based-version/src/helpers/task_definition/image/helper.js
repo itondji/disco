@@ -1,5 +1,5 @@
 import { TaskHelper } from '../task.js';
-import { checkData } from '../data_validation/helpers_image_tasks.js';
+import { checkData } from '../../data_validation/helpers_image_tasks.js';
 
 export class ImageTaskHelper extends TaskHelper {
   createContext() {

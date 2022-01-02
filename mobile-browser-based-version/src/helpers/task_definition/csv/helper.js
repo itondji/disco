@@ -29,4 +29,16 @@ export class CsvTaskHelper extends TaskHelper {
     const csvContent = this.context.classColumn + '\n' + pred;
     return csvContent;
   }
+
+  async makePredictions(filesElement) {
+    return new Promise((resolve, reject) => {
+      let reader = new FileReader();
+      reader.onload = async (e) => {
+        // Preprocess the data and get object of the form {accepted: True/False, Xtrain: training data, ytrain: lavels}
+        var predictions = await this.task.predict(e, this.context.headers);
+        resolve(predictions);
+      };
+      reader.readAsText(filesElement);
+    });
+  }
 }

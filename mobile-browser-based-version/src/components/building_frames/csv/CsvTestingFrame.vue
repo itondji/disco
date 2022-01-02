@@ -1,5 +1,5 @@
 <template>
-  <testing-frame :Id="Id" :task="task" :nbrClasses="1" :context="context">
+  <testing-frame :Id="Id" :task="task" :nbrClasses="1" :helper="helper">
     <template v-slot:dataExample>
       <!-- Data Point Example -->
       <div class="relative p-4 overflow-x-hidden">
@@ -42,7 +42,7 @@
             >
               <li
                 class="border-gray-400"
-                v-for="header in context.headers"
+                v-for="header in helper.context.headers"
                 :key="header.id"
               >
                 <div
@@ -80,6 +80,7 @@
 import TestingFrame from '../containers/TestingFrame.vue';
 import IconCard from '../../containers/IconCard.vue';
 import Bezier2 from '../../../assets/svg/Bezier2.vue';
+import { CsvTaskHelper } from '../../../helpers/task_definition/csv/helper';
 
 export default {
   name: 'csv-testing-frame',
@@ -95,36 +96,19 @@ export default {
   data() {
     return {
       // Headers related to training task of containing item of the form {id: "", userHeader: ""}
-      context: { headers: [], makePredictions: this.makePredictions },
-      predictions: null,
+      helper: new CsvTaskHelper(this.task),
+      dataExample: null,
     };
-  },
-
-  methods: {
-    async makePredictions(filesElement, context) {
-      return new Promise((resolve, reject) => {
-        let reader = new FileReader();
-        reader.onload = async (e) => {
-          // Preprocess the data and get object of the form {accepted: True/False, Xtrain: training data, ytrain: lavels}
-          var predictions = await this.task.predict(e, context.headers);
-          resolve(predictions);
-        };
-        reader.readAsText(filesElement);
-      });
-    },
   },
   async mounted() {
     // This method is called when the component is created
     this.$nextTick(async function () {
       // initialize information variables
-      this.classColumn = this.task.trainingInformation.outputColumn;
-      this.task.displayInformation.headers.forEach((item) => {
-        if (item !== this.classColumn) {
-          this.context.headers.push({ id: item, userHeader: item });
-        }
-      });
+      this.helper.context.headers = this.helper.context.headers.filter(
+        (elem) => elem.id != this.helper.context.classColumn
+      );
       this.dataExample = this.task.displayInformation.dataExample.filter(
-        (item) => item.columnName !== this.classColumn
+        (item) => item.columnName !== this.helper.context.classColumn
       );
     });
   },

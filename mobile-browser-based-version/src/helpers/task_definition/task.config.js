@@ -8,11 +8,11 @@ export const IMAGE_TASK = 'image';
 export const ALL_TASKS = [CSV_TASK, IMAGE_TASK];
 
 export const TASK_INFO = {
-  CSV_TASK: {
+  csv: {
     frameClass: CsvTask,
     helperClass: CsvTaskHelper,
   },
-  IMAGE_TASK: {
+  image: {
     frameClass: ImageTask,
     helperClass: ImageTaskHelper,
   },

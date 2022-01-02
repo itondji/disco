@@ -2,7 +2,8 @@
   <training-frame
     :Id="Id"
     :task="task"
-    :nbrClasses="task.trainingInformation.LABEL_LIST.length"
+    :nbrClasses="this.task.trainingInformation.LABEL_LIST.length"
+    :helper="helper"
   >
     <template v-slot:dataExample>
       <!-- Data Point Example -->
@@ -19,6 +20,7 @@
 </template>
 
 <script>
+import { ImageTaskHelper } from '../../../helpers/task_definition/image/helper';
 import TrainingFrame from '../containers/TrainingFrame.vue';
 
 export default {
@@ -33,10 +35,9 @@ export default {
   data() {
     return {
       // variables for general informations
-      dataExampleImage: '',
-      dataExample: null,
-      // different task labels
-      taskLabels: [],
+      dataExampleImage: this.task.displayInformation.dataExampleImage,
+      dataExample: this.task.displayInformation.dataExample,
+      helper: new ImageTaskHelper(this.task),
     };
   },
   methods: {
@@ -47,15 +48,6 @@ export default {
       var images = require.context('../../../../example_training_data/', false);
       return images(url);
     },
-  },
-  async mounted() {
-    // This method is called when the component is created
-    this.$nextTick(async function () {
-      // initialize information variables
-      this.dataExample = this.task.displayInformation.dataExample;
-      this.taskLabels = this.task.trainingInformation.LABEL_LIST;
-      this.dataExampleImage = this.task.displayInformation.dataExampleImage;
-    });
   },
 };
 </script>

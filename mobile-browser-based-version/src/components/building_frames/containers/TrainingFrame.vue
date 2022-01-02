@@ -16,16 +16,10 @@
 
       <!-- Train Button -->
       <div class="flex items-center justify-center p-4">
-        <custom-button
-          v-on:click="trainer.joinTraining(false, context)"
-          :center="true"
-        >
+        <custom-button v-on:click="trainer.joinTraining(false)" :center="true">
           Train Alone
         </custom-button>
-        <custom-button
-          v-on:click="trainer.joinTraining(true, context)"
-          :center="true"
-        >
+        <custom-button v-on:click="trainer.joinTraining(true)" :center="true">
           Train {{ this.$t('platform') }}
         </custom-button>
       </div>
@@ -108,7 +102,7 @@ export default {
     Id: String,
     task: Object,
     nbrClasses: Number,
-    context: Object,
+    helper: Object,
   },
   components: {
     UploadingFrame,
@@ -124,7 +118,8 @@ export default {
         this.task,
         this.$store.getters.platform,
         this.useIndexedDB,
-        this.$toast
+        this.$toast,
+        this.helper
       ),
     };
   },

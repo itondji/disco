@@ -5,7 +5,7 @@ import { FileUploadManager } from '../data_validation/file_upload_manager.js';
 import { createTaskHelper } from '../task_definition/helper.js';
 
 export class Trainer {
-  constructor(task, platform, useIndexedDB, logger) {
+  constructor(task, platform, useIndexedDB, logger, helper) {
     this.task = task;
     this.isConnected = false;
     this.useIndexedDB = useIndexedDB;
@@ -27,7 +27,7 @@ export class Trainer {
       this.trainingInformant,
       this.useIndexedDB
     );
-    this.taskHelper = createTaskHelper(this.task);
+    this.taskHelper = helper;
   }
 
   setIndexedDB(newValue) {

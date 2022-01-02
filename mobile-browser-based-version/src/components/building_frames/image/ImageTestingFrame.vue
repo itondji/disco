@@ -30,48 +30,15 @@
         <li class="block p-1 w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6 xl:w-1/8 h-24">
           <article
             tabindex="0"
-            class="
-              group
-              hasImage
-              w-full
-              h-full
-              rounded-md
-              focus:outline-none focus:shadow-outline
-              bg-gray-100
-              cursor-pointer
-              relative
-              text-transparent
-              hover:text-white
-              shadow-sm
-            "
+            class="group hasImage w-full h-full rounded-md focus:outline-none focus:shadow-outline bg-gray-100 cursor-pointer relative text-transparent hover:text-white shadow-sm"
           >
             <img
               alt="upload preview"
-              class="
-                img-preview
-                w-full
-                h-full
-                sticky
-                object-cover
-                rounded-md
-                bg-fixed
-              "
+              class="img-preview w-full h-full sticky object-cover rounded-md bg-fixed"
             />
 
             <section
-              class="
-                flex flex-col
-                rounded-md
-                text-xs
-                break-words
-                w-full
-                h-full
-                z-20
-                absolute
-                top-0
-                py-2
-                px-3
-              "
+              class="flex flex-col rounded-md text-xs break-words w-full h-full z-20 absolute top-0 py-2 px-3"
             >
               <h1 class="flex-1"></h1>
               <div class="flex">
@@ -83,14 +50,7 @@
 
                 <p class="p-1 size text-xs"></p>
                 <button
-                  class="
-                    delete
-                    ml-auto
-                    focus:outline-none
-                    hover:bg-gray-300
-                    p-1
-                    rounded-md
-                  "
+                  class="delete ml-auto focus:outline-none hover:bg-gray-300 p-1 rounded-md"
                 >
                   <bin />
                 </button>
@@ -108,6 +68,7 @@ import TestingFrame from '../containers/TestingFrame.vue';
 import ImagePredictionResultsFrame from './ImagePredictionResultsFrame.vue';
 import PictureBackground from '../../../assets/svg/PictureBackground.vue';
 import Bin from '../../../assets/svg/Bin.vue';
+import { ImageTaskHelper } from '../../../helpers/task_definition/image/helper';
 
 export default {
   components: {
@@ -124,9 +85,6 @@ export default {
     return {
       dataExampleImage: '',
       // Different Task Labels
-      taskLabels: [],
-      IMAGE_HEIGHT: null,
-      IMAGE_WIDTH: null,
       FILES: {},
       gotResults: false,
       classes: null,
@@ -138,6 +96,7 @@ export default {
           this.makePredictions(filesElement, context),
         filterData: (filesElement) => this.filterData(filesElement),
       },
+      helper: new ImageTaskHelper(this.task),
     };
   },
   methods: {
@@ -190,9 +149,6 @@ export default {
        */
       // Initialize variables used by the components
       this.dataExampleImage = this.task.displayInformation.dataExampleImage;
-      this.IMAGE_HEIGHT = this.task.trainingInformation.IMAGE_HEIGHT;
-      this.IMAGE_WIDTH = this.task.trainingInformation.IMAGE_WIDTH;
-      this.taskLabels = this.task.trainingInformation.taskLabels;
 
       const imageTempl = document.getElementById('image-template'),
         empty = document.getElementById('empty');

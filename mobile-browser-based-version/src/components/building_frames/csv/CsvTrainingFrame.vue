@@ -1,5 +1,5 @@
 <template>
-  <training-frame :Id="Id" :task="task" :nbrClasses="1" :context="context">
+  <training-frame :Id="Id" :task="task" :nbrClasses="1" :helper="helper">
     <template v-slot:dataExample>
       <!-- Data Point Example -->
       <div class="relative p-4 overflow-x-hidden">
@@ -7,7 +7,7 @@
           <thead>
             <tr>
               <th
-                v-for="example in dataExample"
+                v-for="example in task.displayInformation.dataExample"
                 :key="example"
                 class="px-4 py-2 text-emerald-600"
               >
@@ -18,15 +18,9 @@
           <tbody>
             <tr>
               <td
-                v-for="example in dataExample"
+                v-for="example in task.displayInformation.dataExample"
                 :key="example"
-                class="
-                  border border-emerald-500
-                  px-4
-                  py-2
-                  text-emerald-600
-                  font-medium
-                "
+                class="border border-emerald-500 px-4 py-2 text-emerald-600 font-medium"
               >
                 {{ example.columnData }}
               </td>
@@ -50,24 +44,11 @@
             >
               <li
                 class="border-gray-400"
-                v-for="header in context.headers"
+                v-for="header in helper.context.headers"
                 :key="header.id"
               >
                 <div
-                  class="
-                    select-none
-                    p-2
-                    transition
-                    duration-500
-                    ease-in-out
-                    transform
-                    hover:-translate-y-2
-                    rounded-2xl
-                    border-2
-                    p-6
-                    hover:shadow-2xl
-                    border-primary-dark
-                  "
+                  class="select-none p-2 transition duration-500 ease-in-out transform hover:-translate-y-2 rounded-2xl border-2 p-6 hover:shadow-2xl border-primary-dark"
                 >
                   <div class="grid grid-cols-3 items-center p-2">
                     <div class="pl-1">
@@ -83,21 +64,7 @@
                         type="text"
                         v-model="header.userHeader"
                         placeholder="Enter your header"
-                        class="
-                          p-1
-                          placeholder-gray-400
-                          text-gray-700
-                          dark:text-white
-                          relative
-                          bg-white
-                          dark:bg-dark
-                          rounded
-                          text-sm
-                          shadow
-                          outline-none
-                          focus:outline-none focus:shadow-outline
-                          w-full
-                        "
+                        class="p-1 placeholder-gray-400 text-gray-700 dark:text-white relative bg-white dark:bg-dark rounded text-sm shadow outline-none focus:outline-none focus:shadow-outline w-full"
                       />
                     </div>
                   </div>
@@ -115,6 +82,7 @@
 import TrainingFrame from '../containers/TrainingFrame.vue';
 import IconCard from '../../containers/IconCard.vue';
 import Bezier2 from '../../../assets/svg/Bezier2.vue';
+import { CsvTaskHelper } from '../../../helpers/task_definition/csv/helper';
 
 export default {
   name: 'csv-training-frame',
@@ -124,24 +92,13 @@ export default {
   },
   data() {
     return {
-      // Headers related to training task of containing item of the form {id: "", userHeader: ""}
-      context: { headers: [] },
-      dataExample: null,
+      helper: new CsvTaskHelper(this.task),
     };
   },
   components: {
     TrainingFrame,
     IconCard,
     Bezier2,
-  },
-  async mounted() {
-    // This method is called when the component is created
-    this.$nextTick(async function () {
-      this.dataExample = this.task.displayInformation.dataExample;
-      this.task.displayInformation.headers.forEach((item) => {
-        this.context.headers.push({ id: item, userHeader: item });
-      });
-    });
   },
 };
 </script>

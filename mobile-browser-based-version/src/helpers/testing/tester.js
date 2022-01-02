@@ -2,13 +2,13 @@ import { FileUploadManager } from '../data_validation/file_upload_manager.js';
 import { createTaskHelper } from '../task_definition/helper.js';
 
 export class Tester {
-  constructor(task, logger) {
+  constructor(task, logger, helper) {
     // task can either be a json or string corresponding to the taskID
     this.task = task;
     this.logger = logger;
     // takes care of uploading file process
     this.fileUploadManager = new FileUploadManager(1, this);
-    this.taskHelper = createTaskHelper(this.task);
+    this.taskHelper = helper;
   }
 
   async testModel(downloadPredictions) {

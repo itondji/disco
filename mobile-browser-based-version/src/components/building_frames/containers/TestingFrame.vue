@@ -16,7 +16,7 @@
       <!-- Test Button -->
       <div class="flex items-center justify-center p-4">
         <custom-button
-          v-on:click="tester.testModel(downloadPredictions, context)"
+          v-on:click="tester.testModel(downloadPredictions)"
           :center="true"
         >
           Test
@@ -41,7 +41,7 @@ export default {
     task: Object,
     nbrClasses: Number,
     makePredictions: Function,
-    context: Object,
+    helper: Object,
   },
   components: {
     ActionFrame,
@@ -52,7 +52,7 @@ export default {
     return {
       predictions: null,
       // takes care of uploading file process
-      tester: new Tester(this.task, this.$toast),
+      tester: new Tester(this.task, this.$toast, this.helper),
     };
   },
 

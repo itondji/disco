@@ -3,9 +3,8 @@ import * as config from './task.config.js';
 import _ from 'lodash';
 
 function createTaskClass(task) {
-  let TaskClass = config.TASK_INFO(
-    task.trainingInformation.dataType
-  ).frameClass;
+  let TaskClass =
+    config.TASK_INFO[task.trainingInformation.dataType].frameClass;
   if (!TaskClass) {
     console.log(`Task ${task.taskID} was not processed`);
     return;
@@ -19,9 +18,8 @@ function createTaskClass(task) {
 }
 
 function createTaskHelper(task) {
-  let TaskHelper = config.TASK_INFO(
-    task.trainingInformation.dataType
-  ).helperClass;
+  let TaskHelper =
+    config.TASK_INFO[task.trainingInformation.dataType].helperClass;
   if (!TaskHelper) {
     console.log(`Task ${task.taskID} Helper cannot be created`);
     return;
