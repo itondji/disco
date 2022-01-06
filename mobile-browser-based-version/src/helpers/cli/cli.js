@@ -1,15 +1,13 @@
 import * as env from './browser_env.js';
 import * as config from './cli.config.js';
-import { Trainer } from '../training/trainer.js';
-import { loadTask, loadFiles } from './helper.js';
-import { logger } from '../logging/logger.js';
-import _ from 'lodash';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
+import { deai } from './deai/handler.js';
+import { feai } from './feai/handler.js';
 
 yargs(hideBin(process.argv))
   .command({
-    command: 'train <task> <dataDir> [distributed]',
+    command: 'train [type] <task> <dataDir> <outDir>',
     describe: 'Train your model using the DeAI module',
     builder: (yargs) => {
       yargs
@@ -21,28 +19,24 @@ yargs(hideBin(process.argv))
           type: 'string',
           describe: 'Directory containing the Training set',
         })
-        .positional('distributed', {
-          type: 'boolean',
-          describe: 'Training decentralised (or local)',
+        .positional('type', {
+          type: 'string',
+          describe: 'Type of training',
         })
-        .default('distributed', true);
+        .choices('type', ['decentralised', 'federated', 'local'])
+        .default('type', 'decentralised');
     },
-    handler: deai,
+    handler: handler,
   })
   .help().argv;
 
-async function deai(argv) {
-  logger.success('Welcome to DeAI !');
-  // only load required task
-  const task = await loadTask(argv.task);
-  const trainer = new Trainer(task, 'deai', false, logger);
-  trainer.connect();
-  // add all files in specified data directory in the file upload manager
-  loadFiles(argv.dataDir, trainer.fileUploadManager);
-  const context = { headers: [] };
-  task.displayInformation.headers.forEach((item) => {
-    context.headers.push({ id: item, userHeader: item });
-  });
-  await trainer.joinTraining(argv.distributed && trainer.isConnected, context);
-  trainer.disconnect();
+function handler(argv) {
+  switch (argv.type) {
+    case 'decentralised':
+      return deai(argv);
+    case 'federated':
+      return feai(argv);
+    case 'local':
+      return deai(argv, false);
+  }
 }
