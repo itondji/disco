@@ -8,7 +8,7 @@ export class Tester {
     this.logger = logger;
     // takes care of uploading file process
     this.fileUploadManager = new FileUploadManager(1, this);
-    this.taskHelper = helper;
+    this.taskHelper = helper ?? createTaskHelper(this.task);
   }
 
   async testModel(downloadPredictions) {

@@ -27,7 +27,8 @@ export class Trainer {
       this.trainingInformant,
       this.useIndexedDB
     );
-    this.taskHelper = helper;
+
+    this.taskHelper = helper ?? createTaskHelper(this.task);
   }
 
   setIndexedDB(newValue) {

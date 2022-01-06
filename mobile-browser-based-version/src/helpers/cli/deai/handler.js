@@ -7,7 +7,7 @@ export async function deai(argv) {
   logger.success('Welcome to DeAI !');
   // only load required task
   const task = await loadTask(argv.task);
-  const trainer = new Trainer(task, 'deai', false, logger);
+  const trainer = new Trainer(task, 'deai', false, logger, );
   trainer.connect();
   // add all files in specified data directory in the file upload manager
   loadFiles(argv.dataDir, trainer.fileUploadManager);
