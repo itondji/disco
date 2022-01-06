@@ -3,6 +3,7 @@ import { TrainingInformant } from './decentralised/training_informant.js';
 import { TrainingManager } from './training_manager.js';
 import { getClient } from '../communication/helpers.js';
 
+// number of files that should be loaded (required by the task)
 function nbrFiles(task) {
   const llist = task.trainingInformation.LABEL_LIST;
   return llist ? llist.length : 1;
@@ -29,12 +30,16 @@ export class Trainer extends Actor {
     );
   }
 
+  // wrapper for Vue interface update
   setIndexedDB(newValue) {
     this.useIndexedDB = newValue;
   }
 
+  // connect
   async connect(useIndexedDB) {
-    this.setIndexedDB(useIndexedDB);
+    if (useIndexedDB !== undefined) {
+      this.setIndexedDB(useIndexedDB);
+    }
     // Create the training manager
     this.trainingManager = new TrainingManager(
       this.task,
