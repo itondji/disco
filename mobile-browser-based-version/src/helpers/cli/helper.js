@@ -45,4 +45,9 @@ function loadFiles(dataDirRel, fileUploadManager) {
   );
 }
 
-export { loadTask, loadFiles };
+function storeFiles(outDirRel, fileContent, fileName) {
+  const outDir = config.DATA_DIR(outDirRel);
+  fs.writeFileSync(fileName, fileContent);
+}
+
+export { loadTask, loadFiles, storeFiles };

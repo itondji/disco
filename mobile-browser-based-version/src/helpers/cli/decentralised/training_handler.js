@@ -4,7 +4,7 @@ import { logger } from '../../logging/logger.js';
 import _ from 'lodash';
 
 export async function trainDecentralised(argv, useDecentralised) {
-  logger.success('Welcome to DeAI !');
+  logger.success('[Train] Welcome to DeAI !');
   // only load required task
   const task = await loadTask(argv.task);
   const trainer = new Trainer(task, 'deai', false, logger);
