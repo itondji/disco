@@ -1,8 +1,4 @@
-import {
-  getWorkingModel,
-  updateWorkingModel,
-  getWorkingModelMetadata,
-} from '../memory/helpers.js';
+import { memory } from '../memory/indexedb/memory.js';
 
 /**
  * Class that deals with the model of a task.
@@ -49,8 +45,11 @@ export class TrainingManager {
      */
     let modelParams = [this.task.taskID, this.task.trainingInformation.modelID];
     let model;
-    if (this.useIndexedDB && (await getWorkingModelMetadata(...modelParams))) {
-      model = await getWorkingModel(...modelParams);
+    if (
+      this.useIndexedDB &&
+      (await memory.getWorkingModelMetadata(...modelParams))
+    ) {
+      model = await memory.getWorkingModel(...modelParams);
     } else {
       model = await this.task.createModel();
     }
@@ -131,7 +130,7 @@ export class TrainingManager {
             );
             console.log(`loss ${logs.loss.toFixed(4)}`);
             if (this.useIndexedDB) {
-              await updateWorkingModel(
+              await memory.updateWorkingModel(
                 this.task.taskID,
                 trainingInformation.modelID,
                 model
@@ -184,7 +183,7 @@ export class TrainingManager {
             Val Accuracy:  ${(logs.val_acc * 100).toFixed(2)}\n`
             );
             if (this.useIndexedDB) {
-              await updateWorkingModel(
+              await memory.updateWorkingModel(
                 this.task.taskID,
                 trainingInformation.modelID,
                 model

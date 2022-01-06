@@ -83,7 +83,7 @@
   </tippy-container>
 </template>
 <script>
-import * as memory from '../../helpers/memory/helpers';
+import { memory } from '../../helpers/memory/indexedb/memory.js';
 import * as tf from '@tensorflow/tfjs';
 import { mapState } from 'vuex';
 import Bin2Icon from '../../assets/svg/Bin2Icon.vue';

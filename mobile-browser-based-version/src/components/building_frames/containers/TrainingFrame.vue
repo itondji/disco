@@ -92,7 +92,7 @@ import IconCard from '../../containers/IconCard.vue';
 import CustomButton from '../../simple/CustomButton.vue';
 import Download from '../../../assets/svg/Download.vue';
 
-import { saveWorkingModel } from '../../../helpers/memory/helpers.js';
+import { memory } from '../../../helpers/memory/indexedb/memory.js';
 import { Trainer } from '../../../helpers/training/trainer.js';
 import { mapState } from 'vuex';
 
@@ -139,7 +139,7 @@ export default {
     },
     async saveModelButton() {
       if (this.useIndexedDB) {
-        await saveWorkingModel(
+        await memory.saveWorkingModel(
           this.task.taskID,
           this.task.trainingInformation.modelID
         );

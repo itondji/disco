@@ -86,6 +86,7 @@ export class DecentralisedClient extends Client {
               ],
             },
           };
+    console.log(peerConfig);
     this.peer = new Peer(makeID(10), peerConfig);
 
     return new Promise((resolve, reject) => {
