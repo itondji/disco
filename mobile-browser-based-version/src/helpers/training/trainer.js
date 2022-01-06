@@ -1,19 +1,19 @@
+import { Actor } from '../actor.js';
 import { TrainingInformant } from './decentralised/training_informant.js';
 import { TrainingManager } from './training_manager.js';
 import { getClient } from '../communication/helpers.js';
-import { FileUploadManager } from '../data_validation/file_upload_manager.js';
-import { createTaskHelper } from '../task_definition/helper.js';
 
-export class Trainer {
+function nbrFiles(task) {
+  const llist = task.trainingInformation.LABEL_LIST;
+  return llist ? llist.length : 1;
+}
+export class Trainer extends Actor {
   constructor(task, platform, useIndexedDB, logger, helper) {
-    this.task = task;
+    super(task, logger, nbrFiles(task), helper);
     this.isConnected = false;
     this.useIndexedDB = useIndexedDB;
-    this.logger = logger;
     // Manager that returns feedbacks when training
     this.trainingInformant = new TrainingInformant(10, this.task.taskID);
-    // Manager for the file uploading process
-    this.fileUploadManager = new FileUploadManager(this.nbrClasses, this);
     // Take care of communication processes
     this.client = getClient(
       platform,
@@ -27,8 +27,6 @@ export class Trainer {
       this.trainingInformant,
       this.useIndexedDB
     );
-
-    this.taskHelper = helper ?? createTaskHelper(this.task);
   }
 
   setIndexedDB(newValue) {
