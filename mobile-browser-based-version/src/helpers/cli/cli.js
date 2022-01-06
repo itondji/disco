@@ -11,29 +11,37 @@ import { logger } from '../logging/logger.js';
 yargs(hideBin(process.argv))
   .command({
     command: 'train [type] <task> <dataDir> <outDir>',
-    describe: 'Train your model using the DeAI module',
-    builder: (yargs) => {
-      yargs
-        .positional('task', {
-          type: 'string',
-          describe: 'Selected task',
-        })
-        .positional('dataDir', {
-          type: 'string',
-          describe: 'Directory containing the Training set',
-        })
-        .positional('type', {
-          type: 'string',
-          describe: 'Type of training',
-        })
-        .choices('type', ['decentralised', 'federated', 'local'])
-        .default('type', 'decentralised');
-    },
-    handler: handler,
+    describe: 'Train your model',
+    builder: builder,
+    handler: trainHandler,
+  })
+  .command({
+    command: 'test [type] <task> <dataDir> <outDir>',
+    describe: 'Test your model',
+    builder: builder,
+    handler: testHandler,
   })
   .help().argv;
 
-function handler(argv) {
+function builder(yargs) {
+  yargs
+    .positional('task', {
+      type: 'string',
+      describe: 'Selected task',
+    })
+    .positional('dataDir', {
+      type: 'string',
+      describe: 'Directory containing the Training set',
+    })
+    .positional('type', {
+      type: 'string',
+      describe: 'Type of training',
+    })
+    .choices('type', ['decentralised', 'federated', 'local'])
+    .default('type', 'decentralised');
+}
+
+function trainHandler(argv) {
   switch (argv.type) {
     case 'decentralised':
       return trainDecentralised(argv, true);
@@ -41,6 +49,17 @@ function handler(argv) {
       return trainFederated(argv);
     case 'local':
       return trainDecentralised(argv, false);
+  }
+  logger.error('Wrong type of training');
+}
+function testHandler(argv) {
+  switch (argv.type) {
+    case 'decentralised':
+      return testDecentralised(argv, true);
+    case 'federated':
+      return testFederated(argv);
+    case 'local':
+      return testDecentralised(argv, false);
   }
   logger.error('Wrong type of training');
 }
