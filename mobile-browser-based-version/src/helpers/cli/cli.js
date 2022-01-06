@@ -2,8 +2,11 @@ import * as env from './browser_env.js';
 import * as config from './cli.config.js';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { deai } from './deai/handler.js';
-import { feai } from './feai/handler.js';
+import { trainDecentralised } from './decentralised/training_handler.js';
+import { trainFederated } from './federated/training_handler.js';
+import { testDecentralised } from './decentralised/testing_handler.js';
+import { testFederated } from './federated/testing_handler.js';
+import { logger } from '../logging/logger.js';
 
 yargs(hideBin(process.argv))
   .command({
@@ -33,10 +36,11 @@ yargs(hideBin(process.argv))
 function handler(argv) {
   switch (argv.type) {
     case 'decentralised':
-      return deai(argv);
+      return trainDecentralised(argv, true);
     case 'federated':
-      return feai(argv);
+      return trainFederated(argv);
     case 'local':
-      return deai(argv, false);
+      return trainDecentralised(argv, false);
   }
+  logger.error('Wrong type of training');
 }

@@ -3,6 +3,6 @@ import { loadTask, loadFiles } from '../helper.js';
 import { logger } from '../../logging/logger.js';
 import _ from 'lodash';
 
-export async function feai(argv) {
+export async function trainFederated(argv) {
   logger.error('Not implemented');
 }
