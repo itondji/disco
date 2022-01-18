@@ -182,6 +182,14 @@ const sections = [
         default: 'eg. : 10',
       },
       {
+        id: 'roundDuration',
+        name: 'Round duration',
+        yup: yup.number().integer().positive().required(),
+        as: 'input',
+        type: 'number',
+        default: 'eg. : 5',
+      },
+      {
         id: 'validationSplit',
         name: 'Validation split',
         yup: yup.number().positive().lessThan(1).required(),
