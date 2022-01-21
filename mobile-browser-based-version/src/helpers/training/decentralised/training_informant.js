@@ -88,6 +88,7 @@ export class TrainingInformant {
   }
 
   cssColors = (color) => {
+    //TODO: create local store wrapper node.js
     // getComputedStyle(document.documentElement)
     //  .getPropertyValue(color)
     //  .trim();

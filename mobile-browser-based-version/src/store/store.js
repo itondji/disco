@@ -1,5 +1,6 @@
 import { createStore } from 'vuex';
 import _ from 'lodash';
+import { Platform } from '../platforms/platform';
 export const store = createStore({
   state: {
     count: 0,
@@ -9,7 +10,7 @@ export const store = createStore({
     newTasks: [], // buffer containing
     useIndexedDB: true,
     isDark: false,
-    isDecentralized: true,
+    platform: Platform.decentralized,
     activePage: 'home',
   },
   mutations: {
@@ -49,8 +50,8 @@ export const store = createStore({
       state.isDark = payload ? true : false;
     },
 
-    setPlatform(state, payload) {
-      state.isDecentralized = payload ? true : false;
+    setPlatform(state, platform) {
+      state.platform = platform;
     },
 
     setActivePage(state, payload) {
@@ -65,7 +66,9 @@ export const store = createStore({
       taskID in state.passwords ? state.passwords[taskID] : null,
     taskFrame: (state) => (modelID) => state.tasksFrames[modelID],
     tasksFramesList: (state) => _.values(state.tasksFrames),
-    platform: (state) => (state.isDecentralized ? 'deai' : 'feai'),
+    platform: (state) => state.platform,
+    isDecentralized: (state) => state.platform == Platform.decentralized,
+    isFederated: (state) => state.platform == Platform.federated,
   },
 });
 

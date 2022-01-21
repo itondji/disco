@@ -67,11 +67,18 @@ async function createLUSCovidModel() {
 }
 
 async function createCifar10Model() {
-  const mobilenet =  await
-  tf.loadLayersModel('https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json');
-  const x=mobilenet.getLayer('global_average_pooling2d_1');
-  const predictions= tf.layers.dense({units: 10,  activation: 'softmax', name: 'denseModified'}).apply(x.output); 
-  const model = tf.model({inputs: mobilenet.input, outputs:  predictions, name: 'modelModified' });
+  const mobilenet = await tf.loadLayersModel(
+    'https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json'
+  );
+  const x = mobilenet.getLayer('global_average_pooling2d_1');
+  const predictions = tf.layers
+    .dense({ units: 10, activation: 'softmax', name: 'denseModified' })
+    .apply(x.output);
+  const model = tf.model({
+    inputs: mobilenet.input,
+    outputs: predictions,
+    name: 'modelModified',
+  });
 
   const savePath = path.join(config.MODELS_DIR, 'cifar10');
   await model.save(config.SAVING_SCHEME.concat(savePath));

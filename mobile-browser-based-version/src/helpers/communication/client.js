@@ -1,4 +1,4 @@
-import * as tf from '@tensorflow/tfjs';
+ import * as tf from '@tensorflow/tfjs';
 export class Client {
   constructor(serverURL, task) {
     this.serverURL = serverURL;
@@ -19,6 +19,10 @@ export class Client {
    */
   async disconnect() {
     throw new Error('Abstract method');
+  }
+
+  async onTrainBeginCommunication(model, trainingInformant) {
+    return;
   }
 
   /**
