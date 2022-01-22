@@ -66,10 +66,32 @@
               <span class="text-s"> Use model library </span>
               <div class="relative focus:outline-none">
                 <div
-                  class="w-12 h-6 transition rounded-full outline-none bg-primary-100 dark:bg-primary-darker"
+                  class="
+                    w-12
+                    h-6
+                    transition
+                    rounded-full
+                    outline-none
+                    bg-primary-100
+                    dark:bg-primary-darker
+                  "
                 ></div>
                 <div
-                  class="absolute top-0 left-0 inline-flex w-6 h-6 transition-all duration-200 ease-in-out transform scale-110 rounded-full shadow-sm"
+                  class="
+                    absolute
+                    top-0
+                    left-0
+                    inline-flex
+                    w-6
+                    h-6
+                    transition-all
+                    duration-200
+                    ease-in-out
+                    transform
+                    scale-110
+                    rounded-full
+                    shadow-sm
+                  "
                   :class="{
                     'translate-x-0 bg-white dark:bg-primary-100':
                       !this.$store.state.useIndexedDB,
@@ -244,6 +266,6 @@ export default {
   goToHome() {
     this.setActivePage('home');
     this.$router.push({ name: 'home' });
-  },y
+  },
 };
 </script>
