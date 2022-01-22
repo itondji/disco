@@ -45,7 +45,6 @@
 import Sidebar from './sidebar/Sidebar.vue';
 import { mapState, mapMutations } from 'vuex';
 import { Platform } from '../platforms/platform';
-
 export default {
   name: 'app',
   components: {
