@@ -92,7 +92,6 @@ import LoadIcon from '../../assets/svg/LoadIcon.vue';
 import StackIcon from '../../assets/svg/StackIcon.vue';
 import TippyCard from './containers/TippyCard.vue';
 import TippyContainer from './containers/TippyContainer.vue';
-
 export default {
   name: 'model-library',
   emits: ['switch-panel'],
@@ -132,7 +131,6 @@ export default {
           if (!(location === 'indexeddb:' && directory === 'saved')) {
             continue;
           }
-
           let modelMetadata = models[savePath];
           let date = new Date(modelMetadata.dateSaved);
           let zeroPad = (number) => String(number).padStart(2, '0');
@@ -150,7 +148,6 @@ export default {
             modelMetadata.modelTopologyBytes +
             modelMetadata.weightSpecsBytes +
             modelMetadata.weightDataBytes;
-
           this.modelMap.set(savePath, {
             modelName: name,
             taskID: task,
@@ -162,21 +159,17 @@ export default {
         }
       });
     },
-
     deleteModel(savePath) {
       let modelMetadata = this.modelMap.get(savePath);
       this.modelMap.delete(savePath);
       memory.deleteSavedModel(modelMetadata.taskID, modelMetadata.modelName);
     },
-
     openTesting(modelMetadata) {
       this.$router.push({ name: modelMetadata.taskID.concat('.testing') });
     },
-
     downloadModel(modelMetadata) {
       memory.downloadSavedModel(modelMetadata.taskID, modelMetadata.modelName);
     },
-
     async loadModel(modelMetadata) {
       await memory.loadSavedModel(
         modelMetadata.taskID,

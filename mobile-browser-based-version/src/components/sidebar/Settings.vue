@@ -1,271 +1,227 @@
 <template>
-  <tippy-container title="Settings">
-    <template v-slot:icon> <settings-icon /></template>
-    <template v-slot:content>
-      <!-- Platform -->
-      <tippy-card title="Platform">
-        <div class="flex items-center space-x-8">
-          <!-- Decentralized button -->
-          <button
-            :disabled="this.$store.getters.isDecentralized"
-            v-on:click="setRequestPlatformChangeTrue"
-            :class="buttonClass(this.$store.getters.isDecentralized)"
-          >
-            <span><decentralised-icon /></span>
-            <span>Decentralized</span>
-          </button>
+  <!-- Mini Sidebar (LHS) -->
+  <nav
+    class="
+      flex flex-col flex-shrink-0
+      h-full
+      px-2
+      py-4
+      border-r
+      dark:border-primary-darker
+    "
+  >
+    <!-- Brand -->
+    <div class="flex-shrink-0">
+      <a
+        v-on:click="goToHome"
+        class="
+          p-1
+          inline-block
+          text-xl
+          font-bold
+          tracking-wider
+          text-primary-dark
+          dark:text-light
+        "
+      >
+        {{ $t('home.title.name') }}
+      </a>
+    </div>
+    <!-- Mini Sidebar content-->
+    <div class="flex flex-col items-center justify-center flex-1 space-y-4">
+      <!-- Go to Home page -->
+      <!-- Active classes "bg-primary text-white" -->
+      <!-- inActive classes "bg-primary-50 text-primary-lighter" -->
+      <SidebarButton
+        v-on:click="goToHome"
+        hoverText="home"
+        :activePage="activePage"
+      >
+        <home-icon />
+      </SidebarButton>
+      <!-- Go to Task List page -->
+      <SidebarButton
+        v-on:click="goToTaskList"
+        hoverText="tasks"
+        :activePage="activePage"
+      >
+        <list-icon />
+      </SidebarButton>
+      <!-- Display Model Library panel -->
+      <SidebarButton
+        v-on:click="openModelLibrary"
+        hoverText="models"
+        :activePage="activePage"
+      >
+        <file-icon />
+      </SidebarButton>
+      <!-- Go to Information page -->
+      <SidebarButton
+        v-on:click="goToInformation"
+        hoverText="information"
+        :activePage="activePage"
+      >
+        <info-icon />
+      </SidebarButton>
+      <!-- Display Settings panel-->
+      <SidebarButton
+        v-on:click="openSettingsPanel"
+        hoverText="settings"
+        :activePage="activePage"
+      >
+        <settings-icon />
+      </SidebarButton>
+    </div>
+  </nav>
 
-          <!-- Federated button -->
+  <!-- Menu (RHS) -->
+  <div class="absolute">
+    <!-- Backdrop -->
+    <transition
+      enter-class="transition duration-300 ease-in-out"
+      enter-from-class="opacity-0"
+      enter-to-class="opacity-100"
+      leave-class="transition duration-300 ease-in-out"
+      leave-from-class="opacity-100"
+      leave-to-class="opacity-0"
+    >
+      <div
+        v-show="isMenuOpen"
+        v-on:click="closeMenu()"
+        class="transform fixed inset-0 z-10 bg-primary-darker"
+        style="opacity: 0.5"
+        aria-hidden="true"
+      ></div>
+    </transition>
+
+    <!-- Panel -->
+    <transition
+      enter-active-class="transition duration-300 ease-in-out sm:duration-500"
+      enter-from-class="translate-x-full"
+      enter-class="translate-x-0"
+      leave-active-class="transition duration-300 ease-in-out sm:duration-500"
+      leave-class="translate-x-0"
+      leave-to-class="translate-x-full"
+    >
+      <section
+        x-ref="panel"
+        tabindex="-1"
+        v-show="isMenuOpen"
+        class="
+          transform
+          fixed
+          inset-y-0
+          right-0
+          z-20
+          w-full
+          max-w-xs
+          bg-white
+          shadow-xl
+          dark:bg-darker dark:text-light
+          sm:max-w-md
+          focus:outline-none
+        "
+        aria-labelledby="panelLabel"
+      >
+        <!-- Close button -->
+        <div class="absolute left-0 p-2 transform -translate-x-full">
           <button
-            :disabled="this.$store.getters.isFederated"
-            v-on:click="setRequestPlatformChangeTrue"
-            :class="buttonClass(this.$store.getters.isFederated)"
+            v-on:click="closeMenu()"
+            class="p-2 text-white rounded-md focus:outline-none focus:ring"
           >
-            <span><federated-icon /></span>
-            <span>Federated</span>
+            <cross-icon />
           </button>
         </div>
-      </tippy-card>
-      <!-- Confirm change platform -->
-      <tippy-card title="Confirm platform change" v-if="requestPlatformChange">
-        <span class="text-s">
-          Changing the platform will refresh the app, if a model is currently
-          training progess might be lost.
-        </span>
-        <div class="flex items-center justify-center space-x-8">
-          <button
-            :class="buttonClass()"
-            v-on:click="setRequestPlatformChangeFalse"
-          >
-            <span class="text-s"> Cancel </span>
-          </button>
-
-          <button :class="buttonClass()" v-on:click="changePlatform">
-            <span class="text-s"> Confirm </span>
-          </button>
-        </div>
-      </tippy-card>
-      <div v-else class="overflow-hidden hover:overflow-y-auto">
-        <!-- IndexedDB -->
-        <tippy-card title="Model library">
-          <span class="text-s">
-            Turn on to get storage options for your trained models. This uses
-            your browser's own database, namely
-            <button class="text-blue-600">
-              <a
-                href="https://en.wikipedia.org/wiki/Indexed_Database_API"
-                target="_blank"
-              >
-                IndexedDB</a
-              ></button
-            >.<br />
-          </span>
-
-          <div class="flex items-center justify-center">
-            <button :class="buttonClass()" v-on:click="toggleIndexedDB()">
-              <span class="text-s"> Use model library </span>
-              <div class="relative focus:outline-none">
-                <div
-                  class="
-                    w-12
-                    h-6
-                    transition
-                    rounded-full
-                    outline-none
-                    bg-primary-100
-                    dark:bg-primary-darker
-                  "
-                ></div>
-                <div
-                  class="
-                    absolute
-                    top-0
-                    left-0
-                    inline-flex
-                    w-6
-                    h-6
-                    transition-all
-                    duration-200
-                    ease-in-out
-                    transform
-                    scale-110
-                    rounded-full
-                    shadow-sm
-                  "
-                  :class="{
-                    'translate-x-0 bg-white dark:bg-primary-100':
-                      !this.$store.state.useIndexedDB,
-                    'translate-x-6 bg-primary-light dark:bg-primary':
-                      this.$store.state.useIndexedDB,
-                  }"
-                ></div>
-              </div>
-            </button>
-          </div>
-        </tippy-card>
-        <!-- Theme -->
-        <tippy-card title="Theme mode">
-          <div class="flex items-center justify-center space-x-8">
-            <!-- Light button -->
-            <button
-              v-on:click="setLightTheme"
-              :class="buttonClass(!this.$store.state.isDark)"
-            >
-              <span><star-icon /></span>
-              <span>Light</span>
-            </button>
-
-            <!-- Dark button -->
-            <button
-              v-on:click="setDarkTheme"
-              :class="buttonClass(this.$store.state.isDark)"
-            >
-              <span><moon-icon /></span>
-              <span>Dark</span>
-            </button>
-          </div>
-        </tippy-card>
-
-        <!-- Colors -->
-        <tippy-card title="Secondary colors">
-          <div class="flex justify-center">
-            <div v-for="color in colors" :key="color">
-              <button
-                v-on:click="setColors(color)"
-                class="w-10 h-10 rounded-full"
-                :style="`background-color: var(--color-${color})`"
-              />
-            </div>
-          </div>
-        </tippy-card>
-      </div>
-    </template>
-  </tippy-container>
+        <!-- Panel content -->
+        <settings v-if="isSettingsPanelOpen" />
+        <model-library
+          v-else-if="isModelLibraryOpen"
+          v-on:switch-panel="switchFromModelLibraryToSettings()"
+        />
+      </section>
+    </transition>
+  </div>
 </template>
 <script>
-import { mapMutations } from 'vuex';
-import TippyCard from './containers/TippyCard.vue';
-import TippyContainer from './containers/TippyContainer.vue';
-import MoonIcon from '../../assets/svg/MoonIcon.vue';
-import StarIcon from '../../assets/svg/StarIcon.vue';
-import DecentralisedIcon from '../../assets/svg/DecentralisedIcon.vue';
-import FederatedIcon from '../../assets/svg/FederatedIcon.vue';
+import Settings from './Settings.vue';
+import ModelLibrary from './ModelLibrary.vue';
+import tippy from 'tippy.js';
+import { mapState, mapMutations } from 'vuex';
+import HomeIcon from '../../assets/svg/HomeIcon.vue';
+import ListIcon from '../../assets/svg/ListIcon.vue';
+import InfoIcon from '../../assets/svg/InfoIcon.vue';
+import FileIcon from '../../assets/svg/FileIcon.vue';
 import SettingsIcon from '../../assets/svg/SettingsIcon.vue';
-import { Platform } from '../../platforms/platform';
-
+import CrossIcon from '../../assets/svg/CrossIcon.vue';
+import SidebarButton from './containers/SidebarButton.vue';
 export default {
-  name: 'settings',
+  name: 'Sidebar',
   components: {
-    TippyCard,
-    TippyContainer,
-    MoonIcon,
-    StarIcon,
-    DecentralisedIcon,
-    FederatedIcon,
+    Settings,
+    ModelLibrary,
+    HomeIcon,
+    FileIcon,
+    InfoIcon,
     SettingsIcon,
+    ListIcon,
+    CrossIcon,
+    SidebarButton,
   },
-  data: function () {
+  data() {
     return {
-      colors: ['cyan', 'teal', 'green', 'fuchsia', 'blue', 'violet'],
-      requestPlatformChange: false,
+      loading: false,
+      isMenuOpen: false,
+      isSettingsPanelOpen: false,
+      isModelLibraryOpen: false,
     };
   },
-  buttonClass: function (
-    state,
-    defaultClass = 'flex items-center justify-center px-4 py-2 space-x-4 transition-colors border rounded-md hover:text-gray-900 hover:border-gray-900 dark:border-primary dark:hover:text-primary-100 dark:hover:border-primary-light focus:outline-none focus:ring focus:ring-primary-lighter focus:ring-offset-2 dark:focus:ring-offset-dark dark:focus:ring-primary-dark'
-  ) {
-    return (
-      defaultClass +
-      (state === undefined
-        ? ' '
-        : state
-        ? ' border-gray-900 text-gray-900 dark:border-primary-light dark:text-primary-100'
-        : ' text-gray-500 dark:text-primary-light')
-    );
+  computed: {
+    ...mapState(['activePage']),
   },
-  ...mapMutations([
-    'setIndexedDB',
-    'setAppTheme',
-    'setActivePage',
-    'setPlatform',
-  ]),
-  toggleIndexedDB() {
-    this.setIndexedDB(!this.$store.state.useIndexedDB && window.indexedDB);
+  methods: {
+    ...mapMutations(['setActivePage']),
+    switchFromModelLibraryToSettings() {
+      this.isModeLibraryOpen = false;
+      this.isSettingsPanelOpen = true;
+    },
+    openModelLibrary() {
+      this.isMenuOpen = true;
+      this.isModelLibraryOpen = true;
+    },
+    openSettingsPanel() {
+      this.isMenuOpen = true;
+      this.isSettingsPanelOpen = true;
+    },
+    closeMenu() {
+      this.isMenuOpen = false;
+      this.isSettingsPanelOpen = false;
+      this.isModelLibraryOpen = false;
+    },
+    goToHome() {
+      this.setActivePage('home');
+      this.$router.push({ name: 'home' });
+    },
+    goToTaskList() {
+      this.setActivePage('tasks');
+      this.$router.push({ name: 'tasks' });
+    },
+    goToInformation() {
+      this.setActivePage('info');
+      this.$router.push({ name: 'information' });
+    },
   },
-  setAppColors(color) {
-    const root = document.documentElement;
-    root.style.setProperty('--color-primary', `var(--color-${color})`);
-    root.style.setProperty('--color-primary-50', `var(--color-${color}-50)`);
-    root.style.setProperty('--color-primary-100', `var(--color-${color}-100)`);
-    root.style.setProperty(
-      '--color-primary-light',
-      `var(--color-${color}-light)`
-    );
-    root.style.setProperty(
-      '--color-primary-lighter',
-      `var(--color-${color}-lighter)`
-    );
-    root.style.setProperty(
-      '--color-primary-dark',
-      `var(--color-${color}-dark)`
-    );
-    root.style.setProperty(
-      '--color-primary-darker',
-      `var(--color-${color}-darker)`
-    );
-  },
-  setBrowserColors(color) {
-    window.localStorage.setItem('color', color);
-  },
-  setBrowserTheme(value) {
-    window.localStorage.setItem('dark', value);
-  },
-  setColors(color) {
-    this.setAppColors(color);
-    this.setBrowserColors(color);
-  },
-  setLightTheme() {
-    this.setAppTheme(false);
-    this.setBrowserTheme(false);
-  },
-  setDarkTheme() {
-    this.setAppTheme(true);
-    this.setBrowserTheme(true);
-  },
-  setRequestPlatformChangeTrue() {
-    this.requestPlatformChange = true;
-  },
-  setRequestPlatformChangeFalse() {
-    this.requestPlatformChange = false;
-  },
-  getDefaultPlatformColor(platform) {
-    return platform == Platform.decentralized ? 'cyan' : 'violet';
-  },
-  getNewPlatform(platform) {
-    return platform == Platform.decentralized
-      ? Platform.federated
-      : Platform.decentralized;
-  },
-  changePlatform() {
-    // Get new platform and color
-    let platform = this.getNewPlatform(this.$store.state.platform);
-    let color = this.getDefaultPlatformColor(platform);
-
-    // Set platform and color
-    this.setPlatform(platform);
-    this.setColors(color);
-    this.$i18n.locale = platform;
-    window.localStorage.setItem('platform', platform);
-
-    this.setRequestPlatformChangeFalse();
-
-    // TODO
-    // Add logout from server behavior.
-    this.goToHome();
-  },
-  goToHome() {
-    this.setActivePage('home');
-    this.$router.push({ name: 'home' });
+  async mounted() {
+    tippy('a', {
+      theme: 'custom-dark',
+      delay: 0,
+      duration: 0,
+      content: (reference) => reference.getAttribute('data-title'),
+      onMount(instance) {
+        instance.popperInstance.setOptions({
+          placement: instance.reference.getAttribute('data-placement'),
+        });
+      },
+    });
   },
 };
 </script>
