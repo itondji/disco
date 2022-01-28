@@ -1,0 +1,230 @@
+<!DOCTYPE html><html class="default"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>mobile-app</title><meta name="description" content="Documentation for mobile-app"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">mobile-app</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label><input type="checkbox" id="tsd-filter-externals" checked/><label class="tsd-widget" for="tsd-filter-externals">Externals</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><h1> mobile-app</h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography">
+<a href="#deai---developer-guide" id="deai---developer-guide" style="color: inherit; text-decoration: none;">
+  <h1>DeAI - Developer Guide</h1>
+</a>
+
+<a href="#code-organisation" id="code-organisation" style="color: inherit; text-decoration: none;">
+  <h2>Code Organisation</h2>
+</a>
+<pre><code><span class="hl-0">.</span><br/><span class="hl-0">├── </span><span class="hl-1">assets</span><span class="hl-0">       # </span><span class="hl-1">contains</span><span class="hl-0"> </span><span class="hl-1">the</span><span class="hl-0"> </span><span class="hl-1">resources</span><span class="hl-0"> </span><span class="hl-2">of</span><span class="hl-0"> </span><span class="hl-1">the</span><span class="hl-0"> </span><span class="hl-1">app</span><br/><span class="hl-0">│ ├── </span><span class="hl-1">css</span><span class="hl-0">        # </span><span class="hl-1">css</span><span class="hl-0"> </span><span class="hl-1">files</span><br/><span class="hl-0">│ ├── </span><span class="hl-1">svg</span><span class="hl-0">        # </span><span class="hl-1">svg</span><span class="hl-0"> </span><span class="hl-1">image</span><span class="hl-0"> / </span><span class="hl-1">icons</span><br/><span class="hl-0">├── </span><span class="hl-1">components</span><span class="hl-0">   # </span><span class="hl-1">vue</span><span class="hl-0"> </span><span class="hl-1">file</span><span class="hl-0"> </span><span class="hl-1">folder</span><br/><span class="hl-0">│ ├── </span><span class="hl-3">XXX</span><span class="hl-0">.</span><span class="hl-1">vue</span><span class="hl-0">    # </span><span class="hl-1">vue</span><span class="hl-0"> </span><span class="hl-1">example</span><span class="hl-0"> </span><span class="hl-1">file</span><br/><span class="hl-0">├── </span><span class="hl-1">helpers</span><span class="hl-0">      # </span><span class="hl-1">javascript</span><span class="hl-0"> </span><span class="hl-1">helpers</span><span class="hl-0"> </span><span class="hl-1">folder</span><br/><span class="hl-0">│ ├── </span><span class="hl-3">XXX</span><span class="hl-0">.</span><span class="hl-1">js</span><span class="hl-0">     # </span><span class="hl-1">js</span><span class="hl-0"> </span><span class="hl-1">example</span><span class="hl-0"> </span><span class="hl-1">file</span><br/><span class="hl-0">├── </span><span class="hl-1">platforms</span><span class="hl-0">    # </span><span class="hl-1">i18n</span><span class="hl-0"> </span><span class="hl-1">related</span><span class="hl-0"> </span><span class="hl-1">folder</span><br/><span class="hl-0">│ ├── ...</span><br/><span class="hl-0">├── </span><span class="hl-1">router</span><span class="hl-0">       # </span><span class="hl-1">vue</span><span class="hl-0">-</span><span class="hl-1">router</span><span class="hl-0"> </span><span class="hl-1">related</span><span class="hl-0"> </span><span class="hl-1">folder</span><br/><span class="hl-0">│ ├── </span><span class="hl-1">index</span><span class="hl-0">.</span><span class="hl-1">js</span><br/><span class="hl-0">├── </span><span class="hl-1">store</span><span class="hl-0">        # </span><span class="hl-1">vuex</span><span class="hl-0"> </span><span class="hl-1">related</span><span class="hl-0"> </span><span class="hl-1">folder</span><br/><span class="hl-0">│ ├── </span><span class="hl-1">store</span><span class="hl-0">.</span><span class="hl-1">js</span><br/><span class="hl-0">├── </span><span class="hl-1">main</span><span class="hl-0">.</span><span class="hl-1">js</span><span class="hl-0">      # </span><span class="hl-1">root</span><span class="hl-0"> </span><span class="hl-1">file</span><span class="hl-0"> </span><span class="hl-2">of</span><span class="hl-0"> </span><span class="hl-1">the</span><span class="hl-0"> </span><span class="hl-1">app</span><br/><span class="hl-0">├── .</span><span class="hl-1">env</span><span class="hl-0">.</span><span class="hl-3">XXX</span><span class="hl-0">     # </span><span class="hl-1">environment</span><span class="hl-0"> </span><span class="hl-1">specific</span><span class="hl-0"> </span><span class="hl-1">variables</span><br/><span class="hl-0">└── ...          # </span><span class="hl-1">rest</span><span class="hl-0"> </span><span class="hl-2">of</span><span class="hl-0"> </span><span class="hl-1">the</span><span class="hl-0"> </span><span class="hl-1">files</span>
+</code></pre>
+
+<a href="#how-to-run-the-app" id="how-to-run-the-app" style="color: inherit; text-decoration: none;">
+  <h2>How to run the app</h2>
+</a>
+<p>All commands are ran from the folder ./mobile-browser-based-version.</p>
+
+<a href="#development-environment" id="development-environment" style="color: inherit; text-decoration: none;">
+  <h3>Development Environment</h3>
+</a>
+<p>We recommand the <a href="https://code.visualstudio.com/">VS code</a> IDE with the following extensions :</p>
+<ol>
+<li>Vue.js Extension Pack</li>
+<li>Git Extension Pack</li>
+<li>JavaScript (ES6) code snippets</li>
+</ol>
+<p>To benenfit from all offered functionalities, open <code>VS code</code> using</p>
+<pre><code><span class="hl-1">code</span><span class="hl-0"> .</span>
+</code></pre>
+<p>from the <code>mobile-based-version</code> directory.</p>
+<blockquote>
+<p><strong>Tip</strong> : you can use the <code>⇧⌘P</code> shortcut to open the <strong>command palette</strong> of <code>VS code</code> and use the <code>ESLint: Fix all auto-fixable Problems</code> command to lint the currently opened file.</p>
+</blockquote>
+
+<a href="#node-installation-and-npm-installation" id="node-installation-and-npm-installation" style="color: inherit; text-decoration: none;">
+  <h3>Node Installation and NPM installation</h3>
+</a>
+<p>The app is running under Node 15.12.0. It can be downloaded from <a href="https://nodejs.org/en/download/releases/">here</a>.</p>
+<p>NPM is a package manager for the JavaScript runtime environment Node.js.<br>To start the application (running locally) run the following command.<br>Note: the application is currently developed using <a href="https://www.npmjs.com/package/npm/v/7.6.3">NPM 7.6.3</a>.</p>
+<pre><code><span class="hl-1">npm</span><span class="hl-0"> </span><span class="hl-1">install</span>
+</code></pre>
+<p>This command will install the necessary libraries required to run the application (defined in the <code>package.json</code> and <code>package-lock.json</code>). The latter command is only required when one is using the app for the first time.</p>
+<blockquote>
+<p><strong>⚠ WARNING: Apple Silicon.</strong><br><code>TensorFlow.js</code> in version <code>3.13.0</code> currently suportes for M1 mac laptops. However, make sure you have an <code>arm</code> node executable installed (not <code>x86</code>). It can be checked using:</p>
+</blockquote>
+<pre><code><span class="hl-1">node</span><span class="hl-0"> -</span><span class="hl-1">p</span><span class="hl-0"> </span><span class="hl-4">&quot;process.arch&quot;</span>
+</code></pre>
+
+<a href="#compiling-and-hot-reload-for-development" id="compiling-and-hot-reload-for-development" style="color: inherit; text-decoration: none;">
+  <h3>Compiling and hot-reload for development</h3>
+</a>
+<p>To launch the application run the following command:</p>
+<pre><code><span class="hl-1">npm</span><span class="hl-0"> </span><span class="hl-1">run</span><span class="hl-0"> </span><span class="hl-1">serve</span>
+</code></pre>
+<p>This will start the application locally with two visualization options:</p>
+<ol>
+<li>One can access the running app locally, with a <code> localhost link</code></li>
+<li>One can access the running app on any device that has access to the network of his machine. To do so, use the <code>network link</code>.</li>
+</ol>
+<blockquote>
+<p>Note : the node.js sever application in <code>server/</code> needs to launched first (see <a href="server/README.md">corresponding README</a>) to be able to run the <code>vue-app</code></p>
+</blockquote>
+<p>To <strong>test decentralized learning</strong> between two peers, run the aformentioned command twice (on different terminal pages). This will create another link that can be used to represent a second user. Open the two links on two different page windows.</p>
+<p>To choose between <strong>decentralized</strong> and <strong>federated</strong> learning go to the settings found in menu.</p>
+
+<a href="#compiling-and-minifying-for-production" id="compiling-and-minifying-for-production" style="color: inherit; text-decoration: none;">
+  <h3>Compiling and minifying for production</h3>
+</a>
+<pre><code><span class="hl-1">npm</span><span class="hl-0"> </span><span class="hl-1">run</span><span class="hl-0"> </span><span class="hl-1">build</span>
+</code></pre>
+
+<a href="#lint-files" id="lint-files" style="color: inherit; text-decoration: none;">
+  <h3>Lint files</h3>
+</a>
+<pre><code><span class="hl-1">npm</span><span class="hl-0"> </span><span class="hl-1">run</span><span class="hl-0"> </span><span class="hl-1">lint</span>
+</code></pre>
+
+<a href="#customize-configuration" id="customize-configuration" style="color: inherit; text-decoration: none;">
+  <h3>Customize configuration</h3>
+</a>
+<p>See <a href="https://cli.vuejs.org/config/">Configuration Reference</a>.</p>
+
+<a href="#how-to-create-a-new-custom-ml-task" id="how-to-create-a-new-custom-ml-task" style="color: inherit; text-decoration: none;">
+  <h2>How to create a new custom ML task</h2>
+</a>
+<p>This is not necessary if you want to use some of our already supported data modalities (tabular/csv, or image classification). For new tasks based on our existing data modalities and preprocessing steps, simply use the <code>Create Task</code> button on the landing page of the app.</p>
+<p>For creating a customized task from scratch, please follow the following steps:</p>
+<ol>
+<li>In the folder ./src/components create a new folder for a new task.</li>
+<li>If one desires to create a task that relies on tabular data (i.e CSV files), in the created folder, you can copy the files from the titanic example. On the other hand, if one wishes to create a model that uses images as input, you can copy the files from the MNIST example into the previously created folder .</li>
+<li>Rename the copied file using your task name. For instance, titanic_desc can be renamed [your_task_name]_desc.</li>
+<li>Change the information in the javascript file to suit the requirements of the created task. There are three main objects to change. The first one is called display_informations. It contains all the textual task-related information. The second one is called training_information and holds all the information about the model (i.e model&#39;s name, architecture ...). The third one is the data_preprocessing function. This function takes the user&#39;s uploaded files and returns the processed data as a tensor.</li>
+<li>In each vue file, look for the script part of the code (after <script>) and replace the first import with the javascript associated with your task. For instance, replace import {...} from "titanic_script" with import {...} from "[your_task_name]_script".</li>
+<li>Add your task to the vue routing file in ./src/router/index.js. More instructions soon to come.</li>
+</ol>
+
+<a href="#explanation-of-the-current-architecture-of-the-app" id="explanation-of-the-current-architecture-of-the-app" style="color: inherit; text-decoration: none;">
+  <h2>Explanation of the current architecture of the app</h2>
+</a>
+
+<a href="#overview-of-the-architecture" id="overview-of-the-architecture" style="color: inherit; text-decoration: none;">
+  <h3>Overview of the architecture</h3>
+</a>
+<p>Tasks are organized around the following files:</p>
+<ul>
+<li>vue files are used to render the task-related user interface. Users should not modify the core code of these files.</li>
+<li>a javascript file contains all the task-related information and methods. For instance, in this file, one can find the specific data-processing function or the textual description of the task.</li>
+</ul>
+
+<a href="#use-of-vuejs" id="use-of-vuejs" style="color: inherit; text-decoration: none;">
+  <h3>Use of Vue.js</h3>
+</a>
+<p>The main front-end framework used by the application is Vue.js, a widely used framework to build single-page UI (See <a href="https://router.vuejs.org/guide/">Reference</a>).<br>The application is built around Vue.js components. Essentially, components are defined around two parts:</p>
+<ol>
+<li>An HTML template that states how the component should be rendered</li>
+<li>A script that defines the behaviors of the components</li>
+</ol>
+
+<a href="#component-architecture-of-the-project" id="component-architecture-of-the-project" style="color: inherit; text-decoration: none;">
+  <h3>Component architecture of the project</h3>
+</a>
+<p>Components can be organized in a parent/child relation. Meaning that one can have a parent component that holds many other child components.<br><code>routers</code> are used to define which components are displayed to the user depending on the user's inputs.</p>
+<p>The application runs the following architecture:</p>
+<ul>
+<li><strong>The global component</strong> of the app is called <code>App.vue</code>. This component implements a mini-side bar that is always displayed to the user. This mini-sidebar allows the user to directly access the available list of tasks available, and change some parameters of the page (color and night mode).</li>
+<li><strong>Information Display Components</strong> are components that are displayed on the right side of the mini-side bar. Depending on the user's path choice, a component is displayed. The following components can be displayed:<ul>
+<li><strong>The task list component</strong> is called <code>TaskList.vue</code>. It's the default component used to fill this space. It shows which ML tasks are open for collaborative training.</li>
+<li><strong>Task-related Components</strong> are components used to display the interface associated with a particular task. The UI components for an ML task come in a parent-child relation: one global component (called <code>[taskName]_model.vue</code>) is used to implement a sidebar that allows the user to navigate through the different components associated with a task. On the right side of this global component, the following components are used to create a task (and note that all of them need to be created for each task):<ul>
+<li><strong>Description of the task</strong> under the name `[taskName]_description.vue. It gives an overview of the task.</li>
+<li><strong>Training of the task</strong> under the name <code>[taskName]_training.vue</code>. Allows the users to train a model, either collaboratively using p2p communication, or alone by local training. As a side note, components are created only when they are called by the user. Meaning that until the user reaches the training page of the task, the <code>[taskName]_training.vue</code>is not created. When a user reaches for the first time the training components, the component is created, and only then the NN model is created and stored in the browser's indexdb database. The training is done in a seperated script. To start training, the function named <code>join_training</code>is called. This function preprocess the data using the task specific data pre-processing function and then train the model using the shared <code>train</code>function.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>All these are served by the javascript file associated to the task.</p>
+
+<a href="#training-loop" id="training-loop" style="color: inherit; text-decoration: none;">
+  <h3>Training Loop</h3>
+</a>
+<p>A shared function <code>training</code> is called by all components that are training a model. This function is located in the file ./helpers/training.js.<br>The idea is that the training part for all tasks relies on the same ML backend, while the pre-processing of the training data is done in a custom version (at the component level) by each task.<br>The training process works as follows:</p>
+<ol>
+<li>When a user has stated that he wishes to join the training of a task, a TF.js model is initialized (for now with a standard initialization) and stored into the browser's local storage. (call to <code>create_model</code>, a function embedded into the task's training component)</li>
+<li>Once the user connects their dataset, a pre-processing function is called. The pre-processing function is specifically tailored for each task and so is embedded in the task's training component under the name <code>data_preprocessing</code>. This can be either one-off preprocessing of the entire dataset, or a batch-wise pre-processing function which will then be repeatedly called during training, for each new minibatch of training data.</li>
+<li>The <code>training</code> function function loads the model from the browser's local storage and updates the model by training it on the given dataset (and communicating with peers or a federated learning server). As mentioned earlier, the training function is shared by all training components.</li>
+</ol>
+
+<a href="#communication-between-peers" id="communication-between-peers" style="color: inherit; text-decoration: none;">
+  <h2>Communication between peers</h2>
+</a>
+<p>Explanations on communication between peers will be added soon.</p>
+<p>The decentralized training version relies on p2p communication via <a href="https://peerjs.com/">peer2js</a>. The federated trainind does not need <code>peer2js</code> but direclty communicates with the server.</p>
+
+<a href="#some-further-integrations-notes" id="some-further-integrations-notes" style="color: inherit; text-decoration: none;">
+  <h2>Some further integrations notes</h2>
+</a>
+
+<a href="#using-on-mobile-devices" id="using-on-mobile-devices" style="color: inherit; text-decoration: none;">
+  <h3>Using on mobile devices</h3>
+</a>
+<p>Depending on the user's screen width, the left hand sidebar associated to task's components can disapear and be opened using the button located on the top left corner of the user's screen.
+For now a template that shows how to create tasks can be found.</p>
+
+<a href="#main-packages-used" id="main-packages-used" style="color: inherit; text-decoration: none;">
+  <h3>Main packages used</h3>
+</a>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th align="center">Keyword</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://vuex.vuejs.org/">vuex</a></td>
+<td align="center"><code>Store</code></td>
+<td align="left">It serves as a centralized store for all the components in an application</td>
+</tr>
+<tr>
+<td><a href="https://vee-validate.logaretm.com/v4/">vee-validate</a></td>
+<td align="center"><code>Form</code></td>
+<td align="left">Form Validation for Vue.js</td>
+</tr>
+<tr>
+<td><a href="https://github.com/MeForma/vue-toaster">vue-toaster</a></td>
+<td align="center"><code>Notifications</code></td>
+<td align="left">Toast notification plugin for Vue.js</td>
+</tr>
+<tr>
+<td><a href="https://atomiks.github.io/tippyjs/">tippy</a></td>
+<td align="center"><code>Menu</code></td>
+<td align="left">Pluging to build menu / side bars</td>
+</tr>
+<tr>
+<td><a href="https://vue-i18n.intlify.dev/">vue-i18n</a></td>
+<td align="center"><code>Internation.</code></td>
+<td align="left">Internationalization plugin for Vue.js</td>
+</tr>
+<tr>
+<td><a href="https://router.vuejs.org/">vue-router</a></td>
+<td align="center"><code>Routing</code></td>
+<td align="left">Official router plugin for Vue.js</td>
+</tr>
+<tr>
+<td><a href="https://www.tensorflow.org/js">tfjs</a></td>
+<td align="center"><code>ML backend</code></td>
+<td align="left">Library for machine learning in JavaScript</td>
+</tr>
+<tr>
+<td><a href="https://axios-http.com/">axios</a></td>
+<td align="center"><code>HTTP requests</code></td>
+<td align="left">Axios is a promise-based HTTP Client for node.js and the browser.</td>
+</tr>
+<tr>
+<td><a href="https://lodash.com/">lodash</a></td>
+<td align="center"><code>JS Helpers</code></td>
+<td align="left">Functional library for higher order function on list and js objects</td>
+</tr>
+<tr>
+<td><a href="https://github.com/jquense/yup">yup</a></td>
+<td align="center"><code>Form</code></td>
+<td align="left">Schema builder for runtime value parsing and validation (forms).</td>
+</tr>
+<tr>
+<td><a href="https://peerjs.com/">peerjs</a></td>
+<td align="center"><code>Communication</code></td>
+<td align="left">P2P communication libary for DeAI</td>
+</tr>
+</tbody></table>
+</div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Modules</a></li><li class=" tsd-kind-module"><a href="modules/helpers_communication_client.html">helpers/communication/client</a></li><li class=" tsd-kind-module"><a href="modules/helpers_communication_decentralised_client.html">helpers/communication/decentralised/client</a></li><li class=" tsd-kind-module"><a href="modules/helpers_communication_decentralised_communication_codes.html">helpers/communication/decentralised/communication_<wbr/>codes</a></li><li class=" tsd-kind-module"><a href="modules/helpers_communication_decentralised_helpers.html">helpers/communication/decentralised/helpers</a></li><li class=" tsd-kind-module"><a href="modules/helpers_communication_federated_api.html">helpers/communication/federated/api</a></li><li class=" tsd-kind-module"><a href="modules/helpers_communication_federated_client.html">helpers/communication/federated/client</a></li><li class=" tsd-kind-module"><a href="modules/helpers_communication_federated_helpers.html">helpers/communication/federated/helpers</a></li><li class=" tsd-kind-module"><a href="modules/helpers_communication_helpers.html">helpers/communication/helpers</a></li><li class=" tsd-kind-module"><a href="modules/helpers_data_validation_file_upload_manager.html">helpers/data_<wbr/>validation/file_<wbr/>upload_<wbr/>manager</a></li><li class=" tsd-kind-module"><a href="modules/helpers_data_validation_helpers_csv_tasks.html">helpers/data_<wbr/>validation/helpers_<wbr/>csv_<wbr/>tasks</a></li><li class=" tsd-kind-module"><a href="modules/helpers_data_validation_helpers_image_tasks.html">helpers/data_<wbr/>validation/helpers_<wbr/>image_<wbr/>tasks</a></li><li class=" tsd-kind-module"><a href="modules/helpers_memory_helpers.html">helpers/memory/helpers</a></li><li class=" tsd-kind-module"><a href="modules/helpers_testing_testing_script.html">helpers/testing/testing_<wbr/>script</a></li><li class=" tsd-kind-module"><a href="modules/helpers_training_decentralised_training_informant.html">helpers/training/decentralised/training_<wbr/>informant</a></li><li class=" tsd-kind-module"><a href="modules/helpers_training_federated_training_informant.html">helpers/training/federated/training_<wbr/>informant</a></li><li class=" tsd-kind-module"><a href="modules/helpers_training_training_manager.html">helpers/training/training_<wbr/>manager</a></li><li class=" tsd-kind-module"><a href="modules/platforms_i18n.html">platforms/i18n</a></li><li class=" tsd-kind-module"><a href="modules/platforms_platform.html">platforms/platform</a></li><li class=" tsd-kind-module"><a href="modules/platforms_platforms_config.html">platforms/platforms.config</a></li><li class=" tsd-kind-module"><a href="modules/router.html">router</a></li><li class=" tsd-kind-module"><a href="modules/shims_vue.html">shims-<wbr/>vue</a></li><li class=" tsd-kind-module"><a href="modules/store_store.html">store/store</a></li><li class=" tsd-kind-module"><a href="modules/task_definition_converter.html">task_<wbr/>definition/converter</a></li><li class=" tsd-kind-module"><a href="modules/task_definition_csv_task.html">task_<wbr/>definition/csv_<wbr/>task</a></li><li class=" tsd-kind-module"><a href="modules/task_definition_form_config.html">task_<wbr/>definition/form.config</a></li><li class=" tsd-kind-module"><a href="modules/task_definition_image_task.html">task_<wbr/>definition/image_<wbr/>task</a></li><li class=" tsd-kind-module"><a href="modules/task_definition_task.html">task_<wbr/>definition/task</a></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-namespace"><span class="tsd-kind-icon">Namespace</span></li><li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li><li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="assets/main.js"></script></body></html>

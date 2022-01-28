@@ -3,5 +3,13 @@
       "target": "es6",
       "module": "CommonJS",
       "esModuleInterop": true,
+      "skipLibCheck": true
     },
+    "typedocOptions": {
+      "entryPoints": ["./src"],
+      "entryPointStrategy": "expand",
+      "out": "docs",
+      "readme": "README.md",
+      "exclude": ["**/topologies/**", "**/node_modules/**"]
+    }
 }

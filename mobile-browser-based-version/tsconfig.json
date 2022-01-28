@@ -10,5 +10,13 @@
         "src/*"
       ]
     },
+    "skipLibCheck": true
   },
+  "typedocOptions": {
+    "entryPoints": ["./src"],
+    "entryPointStrategy": "expand",
+    "out": "docs",
+    "readme": "README.md",
+    "exclude": ["**/topologies/**", "**/node_modules/**"]
+  }
 }

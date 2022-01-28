@@ -1,0 +1,160 @@
+<!DOCTYPE html><html class="default"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>server</title><meta name="description" content="Documentation for server"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">server</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label><input type="checkbox" id="tsd-filter-externals" checked/><label class="tsd-widget" for="tsd-filter-externals">Externals</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><h1> server</h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography">
+<a href="#servers" id="servers" style="color: inherit; text-decoration: none;">
+  <h2>Servers</h2>
+</a>
+
+<a href="#helper-server-for-federated-and-decentralized-training" id="helper-server-for-federated-and-decentralized-training" style="color: inherit; text-decoration: none;">
+  <h3>Helper server for federated and decentralized training</h3>
+</a>
+<p>This directory contains the helper server providing the APIs used by the decentralized and federated learning available in <code>epfml/deai</code>.
+For federated learning, the helper server receives all weight updates (but never any training data). For decentralized training, the helper server never receives models or data, but helps keeping a list of available tasks, and participants (clients) available for each task, to help peering via <code>peerjs</code>.</p>
+
+<a href="#requirements" id="requirements" style="color: inherit; text-decoration: none;">
+  <h3>Requirements</h3>
+</a>
+<p>The server is running as a single ExpressJS app. It mainly requires <a href="https://nodejs.org/en/">Node</a>, <a href="https://expressjs.com/">Express</a>, <a href="https://github.com/peers/peerjs-server">PeerServer</a> and <a href="https://www.tensorflow.org/js">Tensorflow</a>. All library requirements are included in the <code>package.json</code> file.</p>
+
+<a href="#running-the-server-locally" id="running-the-server-locally" style="color: inherit; text-decoration: none;">
+  <h3>Running the server locally</h3>
+</a>
+<p>From this folder, you can run the server on localhost:8080 with <code>npm start</code> after running <code>npm install</code>.</p>
+<p>To automatically restarts the process after changes, the server also supports the <code>nodemon</code> package. It can be installed using</p>
+<pre><code><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-0">i</span><span class="hl-1"> -</span><span class="hl-0">g</span><span class="hl-1"> </span><span class="hl-0">nodemon</span>
+</code></pre>
+<p>To use it, run the following command</p>
+<pre><code><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-0">run</span><span class="hl-1"> </span><span class="hl-0">nodemon</span>
+</code></pre>
+
+<a href="#testing-the-servers-before-deploying" id="testing-the-servers-before-deploying" style="color: inherit; text-decoration: none;">
+  <h3>Testing the servers before deploying</h3>
+</a>
+<p>The server is deployed inside a docker container, thus before deploying it, we can locally test the container to see if any new dependencies work (The container runs a 20.04 Ubuntu server). See <a href="https://docs.docker.com/get-started/">docker guide</a></p>
+
+<a href="#deploying-the-server-to-the-cloud" id="deploying-the-server-to-the-cloud" style="color: inherit; text-decoration: none;">
+  <h3>Deploying the server to the cloud</h3>
+</a>
+<p>Google App Engine (GAE) creates an HTTPS certificate automatically, making this the easiest way to deploy the helper server in the Google Cloud Platform.</p>
+<p>Since we need to install some required dependencies we deploy using Docker, we do this by choosing:</p>
+<pre><code><span class="hl-2">runtime</span><span class="hl-1">: </span><span class="hl-0">custom</span>
+</code></pre>
+<p>in the <code>app.yaml</code> file.</p>
+<p>Deployment files:</p>
+<ul>
+<li><code>app.yaml</code> - GAE app config file.</li>
+<li><code>Dockerfile</code> - Docker <a href="https://docs.docker.com/engine/reference/builder/">commands</a> we specify.</li>
+<li><code>.dockerignore</code> - Files to ignore while building the image, e.g. <code>node_module/</code>.</li>
+</ul>
+<p>To change the GAE app configuration, you can modify the file <code>app.yaml</code>.</p>
+<p>To deploy the app on GAE, you can run the following command, where deai-313515 is the current PROJECT-ID:</p>
+<pre><code><span class="hl-0">gcloud</span><span class="hl-1"> </span><span class="hl-0">app</span><span class="hl-1"> </span><span class="hl-0">deploy</span><span class="hl-1"> --</span><span class="hl-0">project</span><span class="hl-1">=</span><span class="hl-0">deai</span><span class="hl-1">-</span><span class="hl-3">313515</span><span class="hl-1"> --</span><span class="hl-0">app</span><span class="hl-1">.</span><span class="hl-0">yaml</span>
+</code></pre>
+<p>Some useful resources:</p>
+<ul>
+<li><a href="https://docs.docker.com/get-started/02_our_app/">Docker sample app</a></li>
+<li><a href="https://docs.docker.com/engine/reference/builder/#from">Dockerfile reference</a></li>
+<li><a href="https://cloud.google.com/appengine/docs/standard/nodejs/building-app/deploying-web-service">GAE sample app</a></li>
+</ul>
+
+<a href="#deai-helper-server-for-decentralized-training" id="deai-helper-server-for-decentralized-training" style="color: inherit; text-decoration: none;">
+  <h2>DeAI Helper Server, for decentralized training</h2>
+</a>
+
+<a href="#components" id="components" style="color: inherit; text-decoration: none;">
+  <h3>Components</h3>
+</a>
+
+<a href="#peerjs-helper-server-for-decentralized-training" id="peerjs-helper-server-for-decentralized-training" style="color: inherit; text-decoration: none;">
+  <h4>PeerJS helper server (for decentralized training)</h4>
+</a>
+<p>The PeerServer stores the entire list of connected peers, which the peers need to correctly communicate between one another. It centralizes the peer id generation, which is assigned to peers on connection. The server uses an API key, simply set to &quot;api&quot; for convenience (can be easily changed later on). The list of peers is publicly accessible through:</p>
+<ul>
+<li><code>/peerjs</code>: PeerServer home page</li>
+<li><code>/peerjs/api/peers</code>: list of connected peers (id)</li>
+</ul>
+
+<a href="#ml-tasks" id="ml-tasks" style="color: inherit; text-decoration: none;">
+  <h4>ML Tasks</h4>
+</a>
+<p>The list of ML training tasks available to DeAI clients are provided by this helper server. Their descriptions as well as their deep learning model architectures must be made available to peers, which is achieved via the following routing paths:</p>
+<ul>
+<li><code>/tasks</code>: JSON file containing meta-data (including task id) on all available DeAI training tasks</li>
+<li><code>/tasks/task_id/{model.json, weights.bin}</code>: Tensorflow neural network model files for the given task id (model architecture &amp; initialization weights)</li>
+</ul>
+<p>Tasks are stored in <code>tasks.json</code>. The models are declared in <code>models.js</code>.</p>
+
+<a href="#creating-a-new-task" id="creating-a-new-task" style="color: inherit; text-decoration: none;">
+  <h4>Creating a new task</h4>
+</a>
+<p>Adding a new task server-side can easily be done by following the next steps:</p>
+<ul>
+<li>add an entry to <code>tasks.json</code> with the task&#39;s parameters</li>
+<li>add a <code>createModel</code> function to <code>models.js</code> with the task&#39;s model architecture and export it</li>
+</ul>
+
+<a href="#deai-helper-server-for-federated-training" id="deai-helper-server-for-federated-training" style="color: inherit; text-decoration: none;">
+  <h2>DeAI Helper Server, for federated training</h2>
+</a>
+
+<a href="#components-1" id="components-1" style="color: inherit; text-decoration: none;">
+  <h3>Components</h3>
+</a>
+
+<a href="#server" id="server" style="color: inherit; text-decoration: none;">
+  <h4>Server</h4>
+</a>
+<p>The federated learning server keeps track of connected clients and weights from each client and communication round. It provides the following endpoints.</p>
+<ul>
+<li><p><code>GET</code> requests publicly available without prior connection</p>
+<ul>
+<li>connect client with ID <code>id</code> to task <code>task</code><pre><code><span class="hl-2">URL</span><span class="hl-1">:</span><span class="hl-4"> /connect/</span><span class="hl-1">&lt;</span><span class="hl-0">task</span><span class="hl-1">&gt;/&lt;</span><span class="hl-0">id</span><span class="hl-1">&gt;</span>
+</code></pre>
+</li>
+<li>disconnect client with ID <code>id</code> from task <code>task</code><pre><code><span class="hl-2">URL</span><span class="hl-1">:</span><span class="hl-4"> /disconnect/</span><span class="hl-1">&lt;</span><span class="hl-0">task</span><span class="hl-1">&gt;/&lt;</span><span class="hl-0">id</span><span class="hl-1">&gt;</span>
+</code></pre>
+</li>
+<li>access logs containing all training communication history made with the server (see POST requests below)<pre><code><span class="hl-2">URL</span><span class="hl-1">: /</span><span class="hl-0">logs</span><span class="hl-1">?</span><span class="hl-0">id</span><span class="hl-1">=&lt;</span><span class="hl-5">id</span><span class="hl-1">&gt;&amp;</span><span class="hl-0">task</span><span class="hl-1">=&lt;</span><span class="hl-5">task</span><span class="hl-1">&gt;&amp;</span><span class="hl-0">round</span><span class="hl-1">=&lt;</span><span class="hl-5">round</span><span class="hl-1">&gt;</span>
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p><code>POST</code> requests with required prior connection and body <code>{ id, timestamp, [data]}</code>, where the client ID and request timestamp are required for logging</p>
+<ul>
+<li>client sends their individual weights <code>weights</code> for communication round <code>round</code> and task <code>task</code>.<pre><code><span class="hl-2">URL</span><span class="hl-1">:</span><span class="hl-4"> /send_weights/</span><span class="hl-1">&lt;</span><span class="hl-0">task</span><span class="hl-1">&gt;/&lt;</span><span class="hl-0">round</span><span class="hl-1">&gt;</span><br/><span class="hl-2">Body</span><span class="hl-1">: { </span><span class="hl-2">id</span><span class="hl-1">: </span><span class="hl-5">String</span><span class="hl-1">, </span><span class="hl-2">timestamp</span><span class="hl-1">: </span><span class="hl-5">Date</span><span class="hl-1">, </span><span class="hl-2">weights</span><span class="hl-1">: </span><span class="hl-0">Buffer</span><span class="hl-1">  }</span>
+</code></pre>
+</li>
+<li>client receives averaged weights for communication round <code>round</code> and task <code>task</code><pre><code><span class="hl-2">URL</span><span class="hl-1">:</span><span class="hl-4"> /receive_weights/</span><span class="hl-1">&lt;</span><span class="hl-0">task</span><span class="hl-1">&gt;/&lt;</span><span class="hl-0">round</span><span class="hl-1">&gt;</span><br/><span class="hl-2">Body</span><span class="hl-1">: { </span><span class="hl-2">id</span><span class="hl-1">: </span><span class="hl-5">String</span><span class="hl-1">, </span><span class="hl-2">timestamp</span><span class="hl-1">: </span><span class="hl-5">Date</span><span class="hl-1"> }</span>
+</code></pre>
+</li>
+<li>client sends their individual number of data samples <code>samples</code> for communication round <code>round</code> and task <code>task</code><pre><code><span class="hl-2">URL</span><span class="hl-1">:</span><span class="hl-4"> /send_nbsamples/</span><span class="hl-1">&lt;</span><span class="hl-0">task</span><span class="hl-1">&gt;/&lt;</span><span class="hl-0">round</span><span class="hl-1">&gt;</span><br/><span class="hl-2">Body</span><span class="hl-1">: { </span><span class="hl-2">id</span><span class="hl-1">: </span><span class="hl-5">String</span><span class="hl-1">, </span><span class="hl-2">timestamp</span><span class="hl-1">: </span><span class="hl-5">Date</span><span class="hl-1">, </span><span class="hl-2">samples</span><span class="hl-1">: </span><span class="hl-5">Number</span><span class="hl-1"> }</span>
+</code></pre>
+</li>
+<li>client receives the number of data samples per client ID for communication round <code>round</code> and task <code>task</code><pre><code><span class="hl-2">URL</span><span class="hl-1">:</span><span class="hl-4"> /receive_data_info/</span><span class="hl-1">&lt;</span><span class="hl-0">task</span><span class="hl-1">&gt;/&lt;</span><span class="hl-0">round</span><span class="hl-1">&gt;</span><br/><span class="hl-2">Body</span><span class="hl-1">: { </span><span class="hl-2">id</span><span class="hl-1">: </span><span class="hl-5">String</span><span class="hl-1">, </span><span class="hl-2">timestamp</span><span class="hl-1">: </span><span class="hl-5">Date</span><span class="hl-1"> }</span>
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+
+<a href="#ml-tasks-1" id="ml-tasks-1" style="color: inherit; text-decoration: none;">
+  <h4>ML Tasks</h4>
+</a>
+<p>The list of ML training tasks available to DeAI clients are provided by this helper server. Their descriptions as well as their deep learning model architectures must be made available to all clients, which is achieved via the following <code>GET</code> request routes.</p>
+<ul>
+<li>JSON file containing meta-data (including task id) on all available FeAI training tasks<pre><code><span class="hl-2">URL</span><span class="hl-1">: /</span><span class="hl-0">tasks</span>
+</code></pre>
+</li>
+<li>Tensorflow neural network model files for the given task <code>task</code> (model architecture &amp; initialization weights)<pre><code><span class="hl-2">URL</span><span class="hl-1">:</span><span class="hl-4"> /tasks/</span><span class="hl-1">&lt;</span><span class="hl-0">task</span><span class="hl-1">&gt;/{</span><span class="hl-0">model</span><span class="hl-1">.</span><span class="hl-0">json</span><span class="hl-1">, </span><span class="hl-0">weights</span><span class="hl-1">.</span><span class="hl-0">bin</span><span class="hl-1">}</span>
+</code></pre>
+</li>
+</ul>
+<p>Tasks are stored in <code>tasks.json</code>. The models are declared in <code>models.js</code>.</p>
+
+<a href="#creating-a-new-task-1" id="creating-a-new-task-1" style="color: inherit; text-decoration: none;">
+  <h4>Creating a new task</h4>
+</a>
+<p>Adding a new task server-side can easily be done by following the next steps:</p>
+<ul>
+<li>add an entry to <code>tasks.json</code> with the task&#39;s parameters</li>
+<li>add a <code>createModel</code> function to <code>models.js</code> with the task&#39;s model architecture and export it</li>
+</ul>
+</div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Modules</a></li><li class=" tsd-kind-module"><a href="modules/helpers_helpers.html">helpers/helpers</a></li><li class=" tsd-kind-module"><a href="modules/helpers_tfjs_helpers.html">helpers/tfjs_<wbr/>helpers</a></li><li class=" tsd-kind-module"><a href="modules/logic_federated_handlers.html">logic/federated/handlers</a></li><li class=" tsd-kind-module"><a href="modules/router_router.html">router/router</a></li><li class=" tsd-kind-module"><a href="modules/run_server.html">run_<wbr/>server</a></li><li class=" tsd-kind-module"><a href="modules/tasks_helpers.html">tasks/helpers</a></li><li class=" tsd-kind-module"><a href="modules/tasks_models.html">tasks/models</a></li><li class=" tsd-kind-module"><a href="modules/tasks_task.html">tasks/task</a></li><li class=" tsd-kind-module"><a href="modules/test_api.html">test/api</a></li><li class=" tsd-kind-module"><a href="modules/test_helpers.html">test/helpers</a></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li><li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="assets/main.js"></script></body></html>
