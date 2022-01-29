@@ -426,10 +426,12 @@ const sections = [
         id: 'modelFile',
         name: 'TensorFlow.js Model in JSON format',
         yup: yup
-          .object()
-          .shape({
-            file: yup.mixed().required('File is required'),
-          })
+          .array()
+          .of(
+            yup.object().shape({
+              file: yup.mixed().required('File is required'),
+            })
+          )
           .required('File is required'),
         type: 'file',
         extension: '.json',
