@@ -426,12 +426,10 @@ const sections = [
         id: 'modelFile',
         name: 'TensorFlow.js Model in JSON format',
         yup: yup
-          .array()
-          .of(
-            yup.object().shape({
-              file: yup.mixed().required('File is required'),
-            })
-          )
+          .object()
+          .shape({
+            file: yup.mixed().required('File is required'),
+          })
           .required('File is required'),
         type: 'file',
         extension: '.json',
@@ -440,7 +438,7 @@ const sections = [
       {
         id: 'weightsFile',
         name: 'TensorFlow.js Model Weights in .bin format',
-        up: yup
+        yup: yup
           .object()
           .shape({
             file: yup.mixed().required('File is required'),

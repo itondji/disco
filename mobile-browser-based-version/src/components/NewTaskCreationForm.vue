@@ -1,496 +1,45 @@
 <template>
   <base-layout v-bind:withSection="true">
     <!-- Form definition -->
-    <vee-form v-slot="{ errors, handleSubmit }" :validation-schema="schema">
-      <form @submit="handleSubmit($event, onSubmit)">
+    <vee-form v-slot="{ errors }" :validation-schema="schema">
+      <form @submit="onSubmit">
         <div class="grid grid-cols-1 gap-8 p-4 lg:grid-cols-1 xl:grid-cols-1">
           <div v-for="formSection in formSections" :key="formSection.id">
             <title-card :title="formSection.title">
               <div class="space-y-4">
                 <div v-for="field in allFields(formSection)" :key="field.id">
-                  <label
-                    class="
-                      inline
-                      text-gray-500
-                      font-bold
-                      md:text-right
-                      mb-1
-                      md:mb-0
-                      pr-4
-                      dark:text-white
-                    "
-                    v-bind:for="field.id"
-                  >
-                    {{ field.name }}
-                  </label>
-                  <vee-field
+                  <custom-label :field="field" />
+
+                  <custom-select
                     v-if="field.type == 'select' && field.id == 'dataType'"
-                    v-bind:as="field.type"
                     v-model="dataType"
-                    v-bind:name="field.id"
-                    v-bind:id="field.id"
-                    class="
-                      bg-transparent
-                      border-b
-                      m-auto
-                      block
-                      focus:outline-none focus:border-green-500
-                      w-full
-                      mb-6
-                      text-gray-700
-                      dark:text-gray-100
-                      pb-1
-                    "
-                    v-slot="{ value }"
-                  >
-                    <option
-                      v-for="option in field.options"
-                      :key="option"
-                      :value="option"
-                      :selected="value && value.includes(option)"
-                    >
-                      {{ option }}
-                    </option>
-                  </vee-field>
-
-                  <vee-field
+                    :field="field"
+                  />
+                  <custom-select
                     v-else-if="field.type == 'select' && field.id != 'dataType'"
-                    v-bind:as="field.type"
-                    v-bind:name="field.id"
-                    v-bind:id="field.id"
-                    class="
-                      bg-transparent
-                      border-b
-                      m-auto
-                      block
-                      focus:outline-none focus:border-green-500
-                      w-full
-                      mb-6
-                      text-gray-700
-                      dark:text-gray-100
-                      pb-1
-                    "
-                    v-slot="{ value }"
-                  >
-                    <option
-                      v-for="option in field.options"
-                      :key="option"
-                      :value="option"
-                      :selected="value && value.includes(option)"
-                    >
-                      {{ option }}
-                    </option>
-                  </vee-field>
-
-                  <vee-field
+                    :field="field"
+                  />
+                  <custom-select-multiple
                     v-else-if="field.type == 'select-multiple'"
-                    as="select"
-                    v-bind:name="field.id"
-                    v-bind:id="field.id"
-                    class="
-                      bg-transparent
-                      border-b
-                      m-auto
-                      block
-                      focus:outline-none focus:border-green-500
-                      w-full
-                      mb-6
-                      text-gray-700
-                      dark:text-gray-100
-                      pb-1
-                    "
-                    v-slot="{ value }"
-                    multiple
-                  >
-                    <option
-                      v-for="option in field.options"
-                      :key="option"
-                      :value="option"
-                      :selected="value && value.includes(option)"
-                    >
-                      {{ option }}
-                    </option>
-                  </vee-field>
-
+                    :field="field"
+                  />
                   <!-- select file button -->
-                  <div v-else-if="field.type == 'file'">
-                    <div class="h-72">
-                      <div
-                        class="
-                          relative
-                          h-full
-                          hover:cursor-pointer
-                          border-dashed border-2 border-gray-500
-                          dark:border-primary
-                          flex flex-col
-                          justify-center
-                          items-center
-                        "
-                      >
-                        <div class="absolute">
-                          <div class="flex flex-col items-center">
-                            <svg
-                              class="w-8 h-8"
-                              fill="currentColor"
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 20 20"
-                            >
-                              <path
-                                d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z"
-                              /></svg
-                            ><span class="block text-gray-400 font-normal"
-                              >Drag and drop your file anywhere or</span
-                            >
-                            <span class="block text-gray-400 font-normal"
-                              >or</span
-                            >
-                            <span
-                              class="
-                                block
-                                font-normal
-                                mt-2
-                                p-2
-                                rounded-sm
-                                text-white
-                                transition-colors
-                                duration-200
-                                bg-primary
-                                hover:text-primary hover:bg-primary-100
-                                dark:hover:text-light
-                                dark:hover:bg-primary-dark
-                                dark:bg-dark
-                                focus:outline-none focus:bg-primary-100
-                                dark:focus:bg-primary-dark
-                                focus:ring-primary-darker
-                              "
-                              >select file</span
-                            >
-                          </div>
-                        </div>
+                  <custom-file-input
+                    v-else-if="field.type == 'file'"
+                    :field="field"
+                  />
 
-                        <vee-field
-                          v-bind:type="field.type"
-                          v-bind:name="field.id"
-                          v-bind:id="field.id"
-                          class="h-full w-full opacity-0"
-                          v-bind:accept="field.extension"
-                        />
-                      </div>
-                    </div>
-                    <div
-                      class="flex justify-between items-center text-gray-400"
-                    >
-                      <span
-                        >Accepted file type: {{ field.extension }} only</span
-                      >
-                      <span class="flex items-center"
-                        ><i class="fa fa-lock mr-1"></i> secure</span
-                      >
-                    </div>
-                    <ErrorMessage class="text-red-600" v-bind:name="field.id" />
-                  </div>
-
-                  <FieldArray
+                  <custom-field-array
                     v-else-if="field.type == 'array'"
-                    v-bind:name="field.id"
-                    v-bind:id="field.id"
-                    v-slot="{ fields, push, remove }"
-                  >
-                    <br />
-                    <fieldset v-for="(f, idx) in fields" :key="f.key">
-                      <div
-                        class="
-                          grid grid-flow-col
-                          auto-cols-max
-                          md:auto-cols-min
-                          space-x-2
-                        "
-                      >
-                        <div class="w-4/5 md:w-full">
-                          <vee-field
-                            :id="`${field.id}_${idx}`"
-                            :name="`${field.id}[${idx}]`"
-                            v-bind:placeholder="field.default"
-                            class="
-                              inline
-                              bg-gray-100
-                              appearance-none
-                              border-0 border-gray-200
-                              rounded
-                              py-2
-                              px-4
-                              text-gray-700
-                              leading-tight
-                              focus:outline-none focus:bg-white
-                            "
-                          />
-                          <ErrorMessage
-                            class="text-red-600"
-                            :name="`${field.id}[${idx}]`"
-                          />
-                        </div>
-                        <div class="w-1/5 md:w-full">
-                          <button
-                            type="button"
-                            @click="remove(idx)"
-                            class="
-                              inline-flex
-                              transition-colors
-                              duration-150
-                              bg-transparent
-                              rounded
-                              focus:shadow-outline
-                              hover:bg-red-100
-                            "
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              x="0px"
-                              y="0px"
-                              width="40"
-                              height="40"
-                              viewBox="0 0 48 48"
-                              style="fill: #000000"
-                            >
-                              <path
-                                fill="#F44336"
-                                d="M21.5 4.5H26.501V43.5H21.5z"
-                                transform="rotate(45.001 24 24)"
-                              ></path>
-                              <path
-                                fill="#F44336"
-                                d="M21.5 4.5H26.5V43.501H21.5z"
-                                transform="rotate(135.008 24 24)"
-                              ></path>
-                            </svg>
-                          </button>
-                        </div>
-                      </div>
-                    </fieldset>
+                    :field="field"
+                  />
 
-                    <button
-                      type="button"
-                      @click="push('')"
-                      class="
-                        inline-flex
-                        items-center
-                        h-10
-                        px-5
-                        transition-colors
-                        duration-150
-                        bg-transparent
-                        border-0
-                        rounded
-                        focus:shadow-outline
-                        hover:bg-gray-100
-                        dark:hover:text-gray-500
-                      "
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        x="0px"
-                        y="0px"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        style="fill: #6b7280"
-                        class="w-4 h-4 mr-3 fill-current"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M 11 2 L 11 11 L 2 11 L 2 13 L 11 13 L 11 22 L 13 22 L 13 13 L 22 13 L 22 11 L 13 11 L 13 2 Z"
-                        ></path>
-                      </svg>
-                      <span class="md:text-right mb-1 md:mb-0 pr-4">
-                        Add Element</span
-                      >
-                    </button>
-                  </FieldArray>
-
-                  <FieldArray
+                  <custom-field-array-object
                     v-else-if="field.type == 'arrayObject'"
-                    v-bind:name="field.id"
-                    v-bind:id="field.id"
-                    v-slot="{ fields, push, remove }"
-                  >
-                    <br />
-                    <div class="space-y-2">
-                      <fieldset v-for="(f, idx) in fields" :key="f.key">
-                        <div
-                          class="
-                            grid grid-flow-col
-                            auto-cols-max
-                            md:auto-cols-min
-                            space-x-2
-                          "
-                        >
-                          <div v-for="e in field.elements" v-bind:key="e.key">
-                            <div class="w-2/5 md:w-full">
-                              <label
-                                :for="`${e.key}_${idx}`"
-                                class="inline md:text-right mb-1 md:mb-0 pr-4"
-                                >{{ e.key }}</label
-                              >
-                              <vee-field
-                                :id="`${e.key}_${idx}`"
-                                :name="`${field.id}[${idx}].${e.key}`"
-                                v-bind:placeholder="e.default"
-                                class="
-                                  inline
-                                  bg-gray-100
-                                  appearance-none
-                                  border-0 border-gray-200
-                                  rounded
-                                  py-2
-                                  px-4
-                                  text-gray-700
-                                  leading-tight
-                                  focus:outline-none
-                                  focus:bg-white
-                                  focus:border-purple-500
-                                "
-                              />
-                              <ErrorMessage
-                                :name="`${field.id}[${idx}].${e.key}`"
-                                class="text-red-600"
-                              />
-                            </div>
-                          </div>
+                    :field="field"
+                  />
 
-                          <div class="w-1/5 md:w-full">
-                            <label
-                              class="
-                                inline
-                                md:text-right
-                                mb-1
-                                md:mb-0
-                                pr-4
-                                text-white
-                                dark:text-dark
-                              "
-                              >.</label
-                            >
-                            <button
-                              type="button"
-                              @click="remove(idx)"
-                              class="
-                                inline-flex
-                                transition-colors
-                                duration-150
-                                bg-transparent
-                                rounded
-                                focus:shadow-outline
-                                hover:bg-red-100
-                              "
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                x="0px"
-                                y="0px"
-                                width="40"
-                                height="40"
-                                viewBox="0 0 48 48"
-                                style="fill: #000000"
-                              >
-                                <path
-                                  fill="#F44336"
-                                  d="M21.5 4.5H26.501V43.5H21.5z"
-                                  transform="rotate(45.001 24 24)"
-                                ></path>
-                                <path
-                                  fill="#F44336"
-                                  d="M21.5 4.5H26.5V43.501H21.5z"
-                                  transform="rotate(135.008 24 24)"
-                                ></path>
-                              </svg>
-                            </button>
-                          </div>
-                        </div>
-                      </fieldset>
-
-                      <button
-                        type="button"
-                        @click="
-                          push(
-                            field.elements.reduce(
-                              (acc, e) => ((acc[e.key] = ''), acc),
-                              {}
-                            )
-                          )
-                        "
-                        class="
-                          inline-flex
-                          items-center
-                          h-10
-                          px-5
-                          transition-colors
-                          duration-150
-                          bg-transparent
-                          border-0
-                          rounded
-                          focus:shadow-outline
-                          hover:bg-gray-100
-                          dark:hover:text-gray-500
-                        "
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          x="0px"
-                          y="0px"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          style="fill: #6b7280"
-                          class="w-4 h-4 mr-3 fill-current"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            d="M 11 2 L 11 11 L 2 11 L 2 13 L 11 13 L 11 22 L 13 22 L 13 13 L 22 13 L 22 11 L 13 11 L 13 2 Z"
-                          ></path>
-                        </svg>
-                        <span class="md:text-right mb-1 md:mb-0 pr-4">
-                          Add Element</span
-                        >
-                      </button>
-                    </div>
-                  </FieldArray>
-
-                  <div v-else>
-                    <vee-field
-                      v-bind:name="field.id"
-                      v-bind:id="field.id"
-                      class="
-                        bg-transparent
-                        border-b
-                        m-auto
-                        block
-                        focus:outline-none focus:border-green-500
-                        w-full
-                        mb-6
-                        text-gray-700
-                        dark:text-gray-100
-                        pb-1
-                      "
-                      v-bind:as="field.as ? field.as : field.type"
-                      v-bind:type="field.type"
-                      v-bind:placeholder="field.default"
-                      v-bind:rows="
-                        field.as === 'textarea'
-                          ? field.type === 'number'
-                            ? 1
-                            : 6
-                          : undefined
-                      "
-                      v-bind:value="
-                        field.type === 'checkbox' ? field.default : undefined
-                      "
-                      v-bind:step="
-                        field.type === 'number' && field.as === 'textarea'
-                          ? 'any'
-                          : undefined
-                      "
-                    />
-                  </div>
+                  <custom-field v-else :field="field" />
 
                   <ErrorMessage class="text-red-600" v-bind:name="field.id" />
                   <span>{{ errors.field }}</span>
@@ -500,76 +49,18 @@
           </div>
           <!-- Submit button -->
           <div class="w-auto flex space-x-4">
-            <button
-              type="submit"
-              class="
-                w-1/6
-                text-lg
-                border-2 border-transparent
-                bg-green-500
-                ml-9
-                py-2
-                px-4
-                p
-                font-bold
-                uppercase
-                text-white
-                rounded
-                transform
-                transition
-                motion-reduce:transform-none
-                duration-500
-                focus:outline-none
-              "
-            >
-              Submit
-            </button>
+            <button type="submit" :class="'w-1/6' + buttonStyle">Submit</button>
             <button
               type="reset"
               ref="resetButton"
               value="Reset"
-              class="
-                w-1/6
-                text-lg
-                border-2 border-transparent
-                bg-green-500
-                ml-9
-                py-2
-                px-4
-                font-bold
-                uppercase
-                text-white
-                rounded
-                transform
-                transition
-                motion-reduce:transform-none
-                duration-500
-                focus:outline-none
-              "
+              :class="'w-1/6' + buttonStyle"
             >
               Reset
             </button>
-
             <a
               href="https://join.slack.com/t/deai-workspace/shared_invite/zt-fpsb7c9h-1M9hnbaSonZ7lAgJRTyNsw"
-              class="
-                w-2/5
-                text-lg text-center
-                border-2 border-transparent
-                bg-green-500
-                ml-9
-                py-2
-                px-4
-                font-bold
-                uppercase
-                text-white
-                rounded
-                transform
-                transition
-                motion-reduce:transform-none
-                duration-500
-                focus:outline-none
-              "
+              :class="'w-2/5' + buttonStyle"
             >
               Request Help on Slack
             </a>
@@ -584,18 +75,26 @@
 // WARNING: temporay code until serialization of Task object
 // Import the tasks objects Here
 import { mapMutations } from 'vuex';
-import BaseLayout from './containers/BaseLayout.vue';
-import _ from 'lodash';
 import sections from '../task_definition/form.config.js';
+
 import TitleCard from './containers/TitleCard.vue';
+import BaseLayout from './containers/BaseLayout.vue';
+import CustomLabel from './simple/form/CustomLabel.vue';
+import CustomSelect from './simple/form/CustomSelect.vue';
+import CustomSelectMultiple from './simple/form/CustomSelectMultiple.vue';
+import CustomFileInput from './simple/form/CustomFileInput.vue';
+import CustomFieldArray from './simple/form/CustomFieldArray.vue';
+import CustomFieldArrayObject from './simple/form/CustomFieldArrayObject.vue';
+import CustomField from './simple/form/CustomField.vue';
+
 import axios from 'axios';
+import _ from 'lodash';
 
 import {
-  Field as VeeField,
   Form as VeeForm,
   ErrorMessage,
-  FieldArray,
   handleSubmit,
+  useForm,
 } from 'vee-validate';
 import * as yup from 'yup';
 
@@ -604,10 +103,15 @@ export default {
   components: {
     BaseLayout,
     TitleCard,
-    VeeField,
     VeeForm,
     ErrorMessage,
-    FieldArray,
+    CustomLabel,
+    CustomSelect,
+    CustomSelectMultiple,
+    CustomFileInput,
+    CustomFieldArray,
+    CustomFieldArrayObject,
+    CustomField,
   },
   data() {
     // data property defining which task-specific fields should be rendered
@@ -630,6 +134,66 @@ export default {
       dataType,
       formSections,
       schema,
+    };
+  },
+  setup() {
+    const buttonStyle =
+      'text-lg border-2 border-transparent bg-green-500 ml-9 py-2 px-4 p font-bold uppercase text-white rounded transform transition motion-reduce:transform-none duration-500 focus:outline-none';
+    const { handleSubmit } = useForm();
+
+    function onInvalidSubmit({ values, errors, results }) {
+      console.log(values); // current form values
+      console.log(errors); // a map of field names and their first error message
+      console.log(results); // a detailed map of field names and their validation results
+    }
+
+    const onSubmitAsync = async (rawTask, { resetForm }) => {
+      console.log('*****************');
+      // load model.json file provided by user
+      function filePromise(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = async (e) => {
+            const response = await axios.get(reader.result);
+            resolve(response.data);
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+
+      console.log('*****************');
+      console.log(rawTask.weightsFile);
+      console.log(rawTask.modelFile);
+      const files = await Promise.all([
+        filePromise(rawTask.modelFile[0]),
+        filePromise(rawTask.weightsFile[0]),
+      ]);
+      // replace content of the form by the modelFile loaded
+      rawTask.modelFile = files[0];
+      rawTask.weightsFile = files[1];
+      const task = this.formatTaskForServer(rawTask);
+      // Submit values to Express server
+      const response = await axios.post(
+        `http://localhost:8080/${this.$store.getters.platform}/tasks/`,
+        task
+      );
+      if (response.status === 200) {
+        resetForm();
+        await this.onSubmissionSucess(task);
+        this.$toast.success(
+          `Task ${task.taskID} successfully uploaded on the platform`
+        );
+      } else {
+        this.$toast.error(
+          `Failed to upload Task ${task.taskID} on the platform`
+        );
+      }
+      setTimeout(this.$toast.clear, 30000);
+    };
+    const onSubmit = handleSubmit(onSubmitAsync, onInvalidSubmit);
+    return {
+      onSubmit,
+      buttonStyle,
     };
   },
   methods: {
@@ -666,45 +230,6 @@ export default {
       _.unset(formated, 'modelCompileData');
       _.unset(formated, 'generalInformation');
       return formated;
-    },
-
-    async onSubmit(rawTask, { resetForm }) {
-      // load model.json file provided by user
-      function filePromise(file) {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = async (e) => {
-            const response = await axios.get(reader.result);
-            resolve(response.data);
-          };
-          reader.readAsDataURL(file);
-        });
-      }
-      const files = await Promise.all([
-        filePromise(rawTask.modelFile[0]),
-        filePromise(rawTask.weightsFile[0]),
-      ]);
-      // replace content of the form by the modelFile loaded
-      rawTask.modelFile = files[0];
-      rawTask.weightsFile = files[1];
-      const task = this.formatTaskForServer(rawTask);
-      resetForm();
-      // Submit values to Express server
-      const response = await axios.post(
-        `http://localhost:8080/${this.$store.getters.platform}/tasks/`,
-        task
-      );
-      if (response.status === 200) {
-        await this.onSubmissionSucess(task);
-        this.$toast.success(
-          `Task ${task.taskID} successfully uploaded on the platform`
-        );
-      } else {
-        this.$toast.error(
-          `Failed to upload Task ${task.taskID} on the platform`
-        );
-      }
-      setTimeout(this.$toast.clear, 30000);
     },
     async onSubmissionSucess(task) {
       // manual reset of form

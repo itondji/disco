@@ -20,7 +20,6 @@
     "http-proxy-middleware": "^2.0.1",
     "lodash": "^4.17.21",
     "msgpack-lite": "^0.1.26",
-    "node-fetch": "^3.2.0",
     "peer": "^0.6.1"
   },
   "nodemonConfig": {
