@@ -1,12 +1,15 @@
+import { Logger } from 'logging/logger'
+import { Task } from 'task_definition/base/task'
+import { TaskHelper } from 'task_definition/base/taskHelper'
 import { ModelActor } from '../model_actor'
-export class Tester extends ModelActor {
+export class Tester<T extends Task> extends ModelActor<T> {
   /**
    * Constructor for Tester
    * @param {Task} task - task on which the tasking shall be performed
    * @param {Logger} logger - logging system (e.g. toaster)
    * @param {TaskHelper} helper - helper containing task specific functions (e.g. preprocessing)
    */
-  constructor (task, logger, helper) {
+  constructor (task: T, logger: Logger, helper?: TaskHelper<T>) {
     super(task, logger, 1, helper)
   }
 

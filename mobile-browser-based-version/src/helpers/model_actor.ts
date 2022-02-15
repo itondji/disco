@@ -7,10 +7,10 @@ import { Logger } from './logging/logger'
  * Base class for all actors of the system (e.g. trainer, tester, etc.)
  * containing commonly used parameters
  */
-export class ModelActor {
-  task: Task
+export class ModelActor<T extends Task> {
+  task: T
   logger: Logger
-  taskHelper: TaskHelper<Task>
+  taskHelper: TaskHelper<T>
   fileUploadManager: FileUploadManager
   /**
    * Constructor for Actor
@@ -19,7 +19,7 @@ export class ModelActor {
    * @param {Number} nbrFiles - number of files that shall be uploaded to the file upload manager
    * @param {TaskHelper} helper - helper containing task specific functions (e.g. preprocessing)
    */
-  constructor (task, logger, nbrFiles, helper) {
+  constructor (task: T, logger: Logger, nbrFiles: Number, helper?: TaskHelper<T>) {
     this.task = task
     this.logger = logger
     // Manager for the file uploading process

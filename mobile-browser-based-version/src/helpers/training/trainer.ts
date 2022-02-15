@@ -3,13 +3,16 @@ import { TrainingInformant } from './decentralised/training_informant'
 import { TrainingManager } from './training_manager'
 import { getClient } from '../communication/helpers'
 import { Client } from '../communication/client'
+import { Task } from 'task_definition/base/task'
+import { TaskHelper } from 'task_definition/base/taskHelper'
+import { Logger } from 'logging/logger'
 
 // number of files that should be loaded (required by the task)
 function nbrFiles (task) {
   const llist = task.trainingInformation.LABEL_LIST
   return llist ? llist.length : 1
 }
-export class Trainer extends ModelActor {
+export class Trainer<T extends Task> extends ModelActor<T> {
   isConnected: Boolean
   isTraining: Boolean
   distributedTraining: Boolean
@@ -20,11 +23,11 @@ export class Trainer extends ModelActor {
   /**
    * Constructor for Trainer
    * @param {Task} task - task on which the tasking shall be performed
-   * @param {string} platform - system platform (e.g. deai or feai)
+   * @param {String} platform - system platform (e.g. deai or feai)
    * @param {Logger} logger - logging system (e.g. toaster)
-   * @param {TaskHelper} helper - helper containing task specific functions (e.g. preprocessing)
+   * @param {TaskHelper} helper - (optional) helper containing task specific functions (e.g. preprocessing)
    */
-  constructor (task, platform, logger, helper) {
+  constructor (task: T, platform: String, logger: Logger, helper ?:TaskHelper<T>) {
     super(task, logger, nbrFiles(task), helper)
     this.isConnected = false
     this.isTraining = false
@@ -43,7 +46,7 @@ export class Trainer extends ModelActor {
    *
    * @param {Boolean} useIndexedDB - true if indexedDB shall be used to store the models
    */
-  created (useIndexedDB) {
+  created (useIndexedDB : Boolean) {
     // Assist with the training loop
     const trainingManager = new TrainingManager(
       this.task,
@@ -84,9 +87,9 @@ export class Trainer extends ModelActor {
 
   /**
    * Main training function
-   * @param {boolean} distributed - use distributed training (true) or local training (false)
+   * @param {Boolean} distributed - use distributed training (true) or local training (false)
    */
-  async joinTraining (distributed) {
+  async joinTraining (distributed : Boolean) {
     if (distributed && !this.isConnected) {
       await this.connectClientToServer()
       if (!this.isConnected) {
