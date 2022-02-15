@@ -29,7 +29,7 @@ export class CsvTask extends Task {
   /**
    * This functions takes as input a file (of type File) uploaded by the reader and checks
    * if the said file meets the constraints requirements and if so prepare the training data.
-   * @param {File} file file uploaded by the user
+   * @param file uploaded by the user
    * @returns an object of the form: {accepted: Boolean, Xtrain: training data, ytrain: data's labels}
    */
   async dataPreprocessing (file) {

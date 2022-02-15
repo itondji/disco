@@ -2,9 +2,10 @@
   "name": "command-line-interface",
   "version": "1.0.0",
   "description": "",
-  "main": "cli.ts",
+  "main": "cli/cli.ts",
   "scripts": {
-    "start": "ts-node cli/cli.js"
+    "dev": "nodemon cli/cli.ts",
+    "cli": "ts-node cli/cli.ts"
   },
   "author": "",
   "license": "ISC",
@@ -17,5 +18,19 @@
     "lodash": "^4.17.21",
     "peerjs": "^1.3.2",
     "typescript": "^4.5.5"
+  },
+  "nodemonConfig": {
+    "execMap": {
+      "ts": "node --inspect=0.0.0.0:9229 --nolazy -r ts-node/register"
+    },
+    "delay": 2500
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.0",
+    "@types/mocha": "^9.1.0",
+    "chai": "^4.3.6",
+    "mocha": "^9.2.0",
+    "supertest": "^6.2.2",
+    "ts-node": "^10.5.0"
   }
 }

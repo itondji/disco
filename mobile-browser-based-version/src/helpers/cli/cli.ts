@@ -1,4 +1,4 @@
-import './browser_env.js'
+import * as env from './browser_env'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 import { trainDecentralised } from './decentralised/training_handler'
@@ -7,6 +7,7 @@ import { testDecentralised } from './decentralised/testing_handler'
 import { testFederated } from './federated/testing_handler'
 import { logger } from '../logging/consoleLogger'
 
+console.log(env)
 // eslint-disable-next-line no-unused-expressions
 yargs(hideBin(process.argv))
   .command({
