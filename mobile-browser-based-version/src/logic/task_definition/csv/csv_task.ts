@@ -34,7 +34,6 @@ export class CsvTask extends Task {
    */
   async dataPreprocessing (file) {
     console.log('Start: Processing Uploaded File')
-    console.log(file)
     let Xtrain = null
     let ytrain = null
 
