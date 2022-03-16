@@ -17,10 +17,12 @@ export function datasetGenerator (
 ) {
   return function * dataGenerator () {
     for (let i = startIndex; i < endIndex; i++) {
+      console.log(dataset.arraySync()[i])
       const sampleTensor = preprocessData(
         dataset.arraySync()[i],
         trainingInformation
       )
+      console.log(labels.arraySync()[i])
       const labelTensor = _formatLabels(labels.arraySync()[i])
       yield { xs: sampleTensor, ys: labelTensor }
     }
