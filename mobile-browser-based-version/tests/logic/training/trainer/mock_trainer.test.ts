@@ -1,40 +1,14 @@
 /* eslint-disable no-unused-vars */
-import { Client } from '../../../../src/logic/communication/client'
 import { TrainingInformant } from '../../../../src/logic/training/training_informant'
 import { LocalTrainer } from '../../../../src/logic/training/trainer/local_trainer'
-import { AsyncWeightsBuffer } from '../../../../server/src/logic/federated/async_weights_buffer'
 import { expect } from 'chai'
-import { logger } from '../../../../src/logic/logging/console_logger'
 import * as fs from 'fs'
 import * as tf from '@tensorflow/tfjs'
 import * as tfnode from '@tensorflow/tfjs-node'
 import { RoundTracker } from '../../../../src/logic/training/trainer/round_tracker'
-import { Task, TrainingInformation } from '../../../../src/logic/task_definition/base/task'
+import { TrainingInformation } from '../../../../src/logic/task_definition/base/task'
 import { ImageTask } from '../../../../src/logic/task_definition/image/image_task'
-import { TaskHelper } from '../../../../src/logic/task_definition/base/task_helper'
 import { getModel } from './model.test'
-
-export class MockServer {
-    asyncWeightsBuffer: AsyncWeightsBuffer
-}
-
-export class MockFederatedClient extends Client {
-  connect (epochs?: number): Promise<any> {
-    throw new Error('Method not implemented.')
-  }
-
-  disconnect (): Promise<any> {
-    throw new Error('Method not implemented.')
-  }
-
-  onTrainEndCommunication (model: any, trainingInformant: TrainingInformant): Promise<void> {
-    throw new Error('Method not implemented.')
-  }
-
-  onRoundEndCommunication (model: any, round: number, trainingInformant: TrainingInformant): Promise<void> {
-    throw new Error('Method not implemented.')
-  }
-}
 
 function shuffle (array: any[], arrayTwo: any[]) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -58,7 +32,7 @@ function tensorFromImagePath (filePath: string) {
   let tensor = tfnode.node.decodeImage(imageBuffer) as tf.Tensor3D
   tensor = tf.image.resizeBilinear(tensor, [
     RESIZED_IMAGE_H, RESIZED_IMAGE_W
-  ])
+  ]).div(tf.scalar(255))
   return tensor
 }
 
@@ -70,7 +44,8 @@ async function readdir (folder: string) {
 async function loadImages (folderPath: string) {
   const files = await readdir(folderPath)
   const images: tf.Tensor3D[] = []
-  for (let i = 0; i < files.length; i++) {
+  const keepOnly = 0.1
+  for (let i = 0; i < files.length * keepOnly; i++) {
     const filePath = folderPath + '/' + files[i]
     const tensor = tensorFromImagePath(filePath)
     images.push(tensor)
@@ -78,33 +53,52 @@ async function loadImages (folderPath: string) {
   return images
 }
 
-async function loadData (age: string, index: number) {
+async function loadData (age: string, label: number) {
   const folderPath = rootDataPath + age
   const images = await loadImages(folderPath)
-  const labels = Array(images.length).fill(index)
+  const labels = Array(images.length).fill(label)
 
   return { images: images, labels: labels }
+}
+
+function ageToLabelMap (ageString: string) {
+  const age = +ageString
+  if (age > 6 && age <= 14) {
+    return 0
+  } else if (age > 20 && age <= 26) {
+    return 1
+  }
+  return -1
 }
 
 async function getData () {
   let images: tf.Tensor3D[] = []
   let labels: number[] = []
-  const ages = ['001', '016', '031', '046']
-  const numberOfClasses = ages.length
-  const mapLabelsToAge = {}
+  const numberOfClasses = 2
+
+  const ages = await readdir(rootDataPath)
+
+  const labelCount = { 0: 0, 1: 0 }
 
   for (let i = 0; i < ages.length; i++) {
-    const age = ages[i]
-    const data = await loadData(age, i)
-    images = images.concat(data.images)
-    labels = labels.concat(data.labels)
-    mapLabelsToAge[i] = age
+    const label = ageToLabelMap(ages[i])
+    if (label !== -1) {
+      const age = ages[i]
+      const data = await loadData(age, label)
+      images = images.concat(data.images)
+      labels = labels.concat(data.labels)
+      console.log(`age: ${age}, label: ${label}, size: ${data.images.length}`)
+      labelCount[label] += data.images.length
+    }
   }
 
-  console.log('Map of labels -> ages', mapLabelsToAge)
+  console.log(labelCount)
 
   // Shuffle data
   shuffle(images, labels)
+  console.log(labels)
+
+  const size = labels.length
 
   // Stack images into one big matrix
   const Xtrain = tf.stack(images)
@@ -112,63 +106,50 @@ async function getData () {
   // One hot encodings formatting
   const ytrain = tf.oneHot(tf.tensor1d(labels).toInt(), numberOfClasses)
 
-  return { Xtrain: Xtrain, ytrain: ytrain, mapLabelsToAge: mapLabelsToAge, numberOfClasses: ages.length }
+  return { Xtrain: Xtrain, ytrain: ytrain, numberOfClasses: numberOfClasses, size: size }
 }
 
 // Model
 
-describe('train test', () => { // the tests container
+describe('train local test', () => { // the tests container
   it('shuffle test', async () => {
     const a = [1, 2, 3, 4, 5, 6]
     const b = [1, 2, 3, 4, 5, 6]
     shuffle(a, b)
     expect(a).to.eql(b)
   })
-  //   it('read data', async () => {
+
+  //   it('train', async () => {
+  //     const imageWidth = 32
+  //     const imageHeight = 32
+  //     const imageChannels = 3
+  //     const trainingInformant = new TrainingInformant(1, 'face')
+  //     const roundDuration = 1
+  //     const batchSize = 4
+
+  //     const task = new ImageTask('face', '', '')
+
+  //     // training info
+  //     const trainingInformation = new TrainingInformation()
+  //     trainingInformation.RESIZED_IMAGE_H = imageHeight
+  //     trainingInformation.RESIZED_IMAGE_W = imageWidth
+  //     trainingInformation.validationSplit = 0.3
+  //     trainingInformation.batchSize = batchSize
+  //     trainingInformation.epochs = 10
+  //     trainingInformation.preprocessFunctions = []
+
+  //     task.trainingInformation = trainingInformation
+
+  //     // Model
   //     const data = await getData()
+  //     const model = getModel(imageWidth, imageHeight, imageChannels, data.numberOfClasses)
 
-  //     const tens = data.Xtrain.arraySync()[0]// .dataSync()
-  //     // console.log(tens)
-  //     // Need to cast?
-  //     const tensor = tf.image.resizeBilinear(tens, [32, 32])
-  //   })
+  //     const trainSize = data.size * 1 - trainingInformation.validationSplit
+  //     const roundTracker = new RoundTracker(roundDuration, trainSize, batchSize)
+  //     const localTrainer = new LocalTrainer(task, trainingInformant, false, roundTracker, model)
 
-  it('train', async () => {
-    const imageWidth = 32
-    const imageHeight = 32
-    const imageChannels = 3
-    const trainingInformant = new TrainingInformant(1, 'face')
-    const roundDuration = 1
-    const trainSize = 100
-    const batchSize = 1
-    const roundTracker = new RoundTracker(roundDuration, trainSize, batchSize)
-    const task = new ImageTask('face', '', '')
+  //     await localTrainer.trainModel(data)
 
-    // training info
-    const trainingInformation = new TrainingInformation()
-    trainingInformation.RESIZED_IMAGE_H = imageHeight
-    trainingInformation.RESIZED_IMAGE_W = imageWidth
-    trainingInformation.validationSplit = 0.3
-    trainingInformation.batchSize = batchSize
-    trainingInformation.epochs = 10
-    trainingInformation.preprocessFunctions = []
-
-    task.trainingInformation = trainingInformation
-
-    // Model
-    const data = await getData()
-    const numOutputClasses = 3
-    const model = getModel(imageWidth, imageHeight, imageChannels, data.numberOfClasses)
-
-    const localTrainer = new LocalTrainer(task, trainingInformant, false, roundTracker, model)
-
-    await localTrainer.trainModel(data)
-
-    // const tens = data.Xtrain.arraySync()[0]// .dataSync()
-    // console.log('TENS:')
-    // // console.log(tens)
-    // // Need to cast?
-    // const tensor = tf.image.resizeBilinear(tens, [32, 32])
-    // console.log(tensor)
-  }).timeout(1500000000000)
+//     await model.save('file://./tests/logic/training/trainer/model')
+//   }).timeout(1500000000000000)
 })
