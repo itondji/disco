@@ -2,10 +2,10 @@ import express from 'express'
 import _ from 'lodash'
 import * as handlers from '../logic/federated/request_handlers'
 import { writeNewTask, getTasks } from '../tasks/tasks_io'
-import { ExpressPeerServer } from 'peer'
-import { makeID } from './authenticator'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 import * as config from '../server.config'
+import { SignalingServer } from './signaling_server'
+import { Task } from '../tasks/task'
 
 const tasks = getTasks(config)
 
@@ -64,23 +64,15 @@ const ports = _.range(
   config.START_TASK_PORT,
   config.START_TASK_PORT + tasks?.length
 )
-const createTaskServer = (task, port) => {
+const createTaskServer = (task: Task, port: number) => {
   /**
    * Create a PeerJS server for each task on its corresponding port.
    * The path must match the reverse proxy entry point.
    */
+  // TODO flatten to not use nested express.Application
   const taskApp = express()
   const server = taskApp.listen(port)
-  taskApp.use(
-    `/deai/${task.taskID}`,
-    ExpressPeerServer(server, {
-      path: '/',
-      allow_discovery: true,
-      port: port,
-      generateClientId: makeID(10),
-      proxied: true
-    })
-  )
+  taskApp.use(`/deai/${task.taskID}`, SignalingServer(server))
 
   /**
    * Make the peer server's port accessible from a regular URL
