@@ -119,37 +119,46 @@ describe('train local test', () => { // the tests container
     expect(a).to.eql(b)
   })
 
-  //   it('train', async () => {
-  //     const imageWidth = 32
-  //     const imageHeight = 32
-  //     const imageChannels = 3
-  //     const trainingInformant = new TrainingInformant(1, 'face')
-  //     const roundDuration = 1
-  //     const batchSize = 4
+  it('train', async () => {
+    const imageWidth = 32
+    const imageHeight = 32
+    const imageChannels = 3
+    const trainingInformant = new TrainingInformant(1, 'face')
+    const roundDuration = 1
+    const batchSize = 4
 
-  //     const task = new ImageTask('face', '', '')
+    const task = new ImageTask('face', '', '')
 
-  //     // training info
-  //     const trainingInformation = new TrainingInformation()
-  //     trainingInformation.RESIZED_IMAGE_H = imageHeight
-  //     trainingInformation.RESIZED_IMAGE_W = imageWidth
-  //     trainingInformation.validationSplit = 0.3
-  //     trainingInformation.batchSize = batchSize
-  //     trainingInformation.epochs = 10
-  //     trainingInformation.preprocessFunctions = []
+    // training info
+    const trainingInformation = new TrainingInformation()
+    trainingInformation.RESIZED_IMAGE_H = imageHeight
+    trainingInformation.RESIZED_IMAGE_W = imageWidth
+    trainingInformation.validationSplit = 0.3
+    trainingInformation.batchSize = batchSize
+    trainingInformation.epochs = 10
+    trainingInformation.preprocessFunctions = []
 
-  //     task.trainingInformation = trainingInformation
+    task.trainingInformation = trainingInformation
 
-  //     // Model
-  //     const data = await getData()
-  //     const model = getModel(imageWidth, imageHeight, imageChannels, data.numberOfClasses)
+    // Model
+    const data = await getData()
 
-  //     const trainSize = data.size * 1 - trainingInformation.validationSplit
-  //     const roundTracker = new RoundTracker(roundDuration, trainSize, batchSize)
-  //     const localTrainer = new LocalTrainer(task, trainingInformant, false, roundTracker, model)
+    const model = await tf.loadLayersModel('file://./tests/logic/training/trainer/model_federated/model.json')
 
-  //     await localTrainer.trainModel(data)
+    const optimizer = tf.train.adam()
+    model.compile({
+      optimizer: optimizer,
+      loss: 'categoricalCrossentropy',
+      metrics: ['accuracy']
+    })
+    //   const model = getModel(imageWidth, imageHeight, imageChannels, data.numberOfClasses)
 
-//     await model.save('file://./tests/logic/training/trainer/model')
-//   }).timeout(1500000000000000)
+    const trainSize = data.size * 1 - trainingInformation.validationSplit
+    const roundTracker = new RoundTracker(roundDuration, trainSize, batchSize)
+    const localTrainer = new LocalTrainer(task, trainingInformant, false, roundTracker, model)
+
+    await localTrainer.trainModel(data)
+
+    // await model.save('file://./tests/logic/training/trainer/model')
+  }).timeout(1500000000000000)
 })

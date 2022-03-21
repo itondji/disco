@@ -10,6 +10,7 @@ import * as tfnode from '@tensorflow/tfjs-node'
 import { RoundTracker } from '../../../../src/logic/training/trainer/round_tracker'
 import { Task, TrainingInformation } from '../../../../src/logic/task_definition/base/task'
 import { ImageTask } from '../../../../src/logic/task_definition/image/image_task'
+import { getModel } from './model.test'
 
 let SHARED_WEIGHTS: tf.LayerVariable[] = []
 
@@ -220,7 +221,7 @@ async function runUser (user: string) {
     metrics: ['accuracy']
   })
 
-  // getModel(imageWidth, imageHeight, imageChannels, data.numberOfClasses)
+  //   const model = getModel(imageWidth, imageHeight, imageChannels, data.numberOfClasses)
 
   const trainSize = data.size * 1 - trainingInformation.validationSplit
   const roundTracker = new RoundTracker(roundDuration, trainSize, batchSize)
@@ -228,6 +229,9 @@ async function runUser (user: string) {
   const distributedTrainer = new DistributedTrainer(task, trainingInformant, false, roundTracker, model, client)
 
   await distributedTrainer.trainModel(data)
+  if (user === '2') {
+    await model.save('file://./tests/logic/training/trainer/model_federated')
+  }
 }
 
 // Model
@@ -240,9 +244,9 @@ describe('train federated test', () => { // the tests container
     expect(a).to.eql(b)
   })
 
-  it('train', async () => {
-    runUser('1')
-    runUser('2')
-    await runUser('3')
-  }).timeout(1500000000000000)
+//   it('train', async () => {
+//     runUser('1')
+//     await runUser('2')
+//     // await runUser('3')
+//   }).timeout(1500000000000000)
 })
