@@ -1,4 +1,4 @@
-import { DecentralisedClient } from './decentralised/decentralised_client'
+import { DecentralisedClient } from './decentralised_client'
 import { FederatedClient } from './federated/federated_client'
 import { Client } from './client'
 import { Task } from '../task_definition/base/task'
