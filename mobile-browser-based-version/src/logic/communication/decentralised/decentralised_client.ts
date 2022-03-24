@@ -7,7 +7,7 @@ import {
 import {
   assignWeightsToModel,
   serializeWeights
-} from '../tensor_serializer'
+} from './serializer'
 import { checkBufferUntil, checkBufferWeightsUntil } from './check_buffer'
 import { Client } from '../client'
 import { Task } from '@/logic/task_definition/base/task'
