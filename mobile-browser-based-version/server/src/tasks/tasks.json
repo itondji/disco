@@ -1,5 +1,56 @@
 [
   {
+    "taskID": "ebola",
+    "displayInformation": {
+      "taskTitle": "Ebola",
+      "summary": "Test our platform by using a private <b>tabular</b> dataset. <br><br> you can download a sample from the IDDO platform <a class='underline text-primary-dark dark:text-primary-light' href='https://www.kaggle.com/c/titanic'>here</a>. <br> This model predicts whether a patient will be EVD+ or EVD- based on their characteristics (sex, age, etc.).",
+      "overview": "We all know the unfortunate story of the Ebola epidemic in east Africa: This 3-year-long epidemic was marked by chaos and misinformation that was mostly attributed to the lack of a coordinated response and central source of data-driven information.",
+      "model": "The current form of the model does not normalize the given data.",
+      "tradeoffs": "We are using a small model for this task: 2 connected layers with few nodes and we are using no optimization techniques implemented. This allows fast training but can yield to poor performance.",
+      "dataFormatInformation": "This model takes as input a CSV file with 19 columns.  general information about the patient (sex, age, ymp_fever ...) and its cabin number.",
+      "dataExample": [
+        { "columnName": "dem_age_y", "columnData": "1" },
+        { "columnName": "dem_gender_01", "columnData": "0" },
+        { "columnName": "symp_fever_01", "columnData": "1" },
+        { "columnName": "symp_dyspnoea_01", "columnData": "0" },
+        { "columnName": "symp_hiccup_01", "columnData": "1" },
+        { "columnName": "symp_jaundice_01", "columnData": "1" }
+      ],
+      "headers": [
+        "dem_age_y",  
+        "dem_gender_01",
+        "symp_fever_01",
+        "symp_dyspnoea_01",   
+        "symp_hiccup_01", 
+        "symp_jaundice_01"
+      ]
+    },
+    "trainingInformation": {
+      "modelID": "ebola-model",
+      "epochs": 20,
+      "roundDuration": 5,
+      "validationSplit": 0.2,
+      "batchSize": 30,
+      "preprocessFunctions": [],
+      "modelCompileData": {
+        "optimizer": "rmsprop",
+        "loss": "binaryCrossentropy",
+        "metrics": ["accuracy"]
+      },
+      "receivedMessagesThreshold": 1,
+      "dataType": "csv",
+      "inputColumns": [
+        "dem_age_y",  
+        "dem_gender_01",
+        "symp_fever_01",
+        "symp_dyspnoea_01",   
+        "symp_hiccup_01", 
+        "symp_jaundice_01"
+      ],
+      "outputColumn": "oc_evd_01"
+    }
+  },
+  {
     "taskID": "titanic",
     "displayInformation": {
       "taskTitle": "Titanic",

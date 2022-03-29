@@ -52,4 +52,4 @@ export const SERVER_URI = `${CONNECTION_PROTOCOL}://${HOST_NAME}`;
 
 export const SERVER_PORT = 8080;
 
-export const START_TASK_PORT = 9000;
+export const START_TASK_PORT = 8000;

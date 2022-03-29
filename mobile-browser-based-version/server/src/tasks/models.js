@@ -12,6 +12,22 @@ import fs from 'fs';
 if (!fs.existsSync(config.MODELS_DIR)) {
   fs.mkdirSync(config.MODELS_DIR);
 }
+async function createEbolaModel() {
+  const model = tf.sequential();
+  model.add(
+    tf.layers.dense({
+      inputShape: [6],
+      units: 124,
+      activation: 'relu',
+      kernelInitializer: 'leCunNormal',
+    })
+  );
+  model.add(tf.layers.dense({ units: 64, activation: 'relu' }));
+  model.add(tf.layers.dense({ units: 32, activation: 'relu' }));
+  model.add(tf.layers.dense({ units: 1, activation: 'sigmoid' }));
+  const savePath = path.join(config.MODELS_DIR, 'ebola');
+  await model.save(config.SAVING_SCHEME.concat(savePath));
+}
 
 async function createTitanicModel() {
   const model = tf.sequential();
@@ -85,6 +101,7 @@ async function createCifar10Model() {
 }
 
 export default [
+  createEbolaModel,
   createTitanicModel,
   createMnistModel,
   createLUSCovidModel,
