@@ -1,9 +1,77 @@
 [
   {
-    "taskID": "ebola",
+    "taskID": "ebola_diag",
     "displayInformation": {
-      "taskTitle": "Ebola",
+      "taskTitle": "Ebola-Diagnosis",
       "summary": "Test our platform by using a private <b>tabular</b> dataset. <br><br> you can download a sample from the IDDO platform <a class='underline text-primary-dark dark:text-primary-light' href='https://www.kaggle.com/c/titanic'>here</a>. <br> This model predicts whether a patient will be EVD+ or EVD- based on their characteristics (sex, age, etc.).",
+      "overview": "We all know the unfortunate story of the Ebola epidemic in east Africa: This 3-year-long epidemic was marked by chaos and misinformation that was mostly attributed to the lack of a coordinated response and central source of data-driven information.",
+      "model": "The current form of the model does not normalize the given data.",
+      "tradeoffs": "We are using a small model for this task: 2 connected layers with few nodes and we are using no optimization techniques implemented. This allows fast training but can yield to poor performance.",
+      "dataFormatInformation": "This model takes as input a CSV file with 22 columns.  general information about the patient (sex, age, ymp_fever ...) and its cabin number.",
+      "dataExample": [
+        { "columnName": "dem_age_y", "columnData": "1" },
+        { "columnName": "dem_gender_01", "columnData": "0" },
+        { "columnName": "symp_fever_01", "columnData": "1" },
+        { "columnName": "symp_dyspnoea_01", "columnData": "0" },
+        { "columnName": "symp_hiccup_01", "columnData": "1" },
+        { "columnName": "symp_jaundice_01", "columnData": "1" }
+      ],
+      "headers": [
+        "dem_age_y",  
+        "dem_gender_01",
+        "symp_fever_01",
+        "symp_dyspnoea_01",   
+        "symp_hiccup_01", 
+        "symp_jaundice_01"
+      ]
+    },
+    "trainingInformation": {
+      "modelID": "ebola_diag-model",
+      "epochs": 20,
+      "roundDuration": 5,
+      "validationSplit": 0.2,
+      "batchSize": 32,
+      "preprocessFunctions": [],
+      "modelCompileData": {
+        "optimizer": "sgd",
+        "loss": "binaryCrossentropy",
+        "metrics": ["accuracy"]
+      },
+      "receivedMessagesThreshold": 1,
+      "dataType": "csv",
+      "inputColumns": [
+        "dem_age_y",  
+        "dem_gender_01",
+        "hos_admission_m",
+        "hos_duration_d",
+        "hos_referral_d",
+        "symp_anorexia_01",
+        "symp_arthritis_01",
+        "symp_chestpain_01",
+        "symp_diarrhea_01",
+        "symp_dysphagia_01",
+        "symp_dyspnoea_01",
+        "symp_fever_01",
+        "symp_headache_01",
+        "symp_hiccup_01",
+        "symp_jaundice_01",
+        "symp_mgd-abdominalpain_01",
+        "symp_mgd-bleeding_01",
+        "symp_mgd-fatigue_01",
+        "symp_mgd-nausea_01",
+        "symp_mgd-redeye_01",
+        "symp_myalgia_01",
+        "symp_skinrash_01"
+      ],
+      "outputColumn": "oc_evd_01"
+    }
+  },
+
+  {
+    "taskID": "ebola_prog",
+    "displayInformation": {
+      "taskTitle": "Ebola-Prognosis",
+      "summary": "Test our platform by using a private <b>tabular</b> dataset. <br><br> you can download a sample from the IDDO platform <a class='underline text-primary-dark dark:text-primary-light' href='https://www.kaggle.com/c/titanic'>here</a>. <br> This model predicts whether a patient will die or recover for EVD positive cases based on certain characteristics.",
       "overview": "We all know the unfortunate story of the Ebola epidemic in east Africa: This 3-year-long epidemic was marked by chaos and misinformation that was mostly attributed to the lack of a coordinated response and central source of data-driven information.",
       "model": "The current form of the model does not normalize the given data.",
       "tradeoffs": "We are using a small model for this task: 2 connected layers with few nodes and we are using no optimization techniques implemented. This allows fast training but can yield to poor performance.",
@@ -26,7 +94,7 @@
       ]
     },
     "trainingInformation": {
-      "modelID": "ebola-model",
+      "modelID": "ebola_prog-model",
       "epochs": 20,
       "roundDuration": 5,
       "validationSplit": 0.2,
@@ -42,14 +110,32 @@
       "inputColumns": [
         "dem_age_y",  
         "dem_gender_01",
+        "hos_admission_m",
+        "hos_duration_d",
+        "hos_referral_d",
+        "symp_anorexia_01",
+        "symp_arthritis_01",
+        "symp_chestpain_01",
+        "symp_diarrhea_01",
+        "symp_dysphagia_01",
+        "symp_dyspnoea_01",
         "symp_fever_01",
-        "symp_dyspnoea_01",   
-        "symp_hiccup_01", 
-        "symp_jaundice_01"
+        "symp_headache_01",
+        "symp_hiccup_01",
+        "symp_jaundice_01",
+        "symp_mgd-abdominalpain_01",
+        "symp_mgd-bleeding_01",
+        "symp_mgd-fatigue_01",
+        "symp_mgd-nausea_01",
+        "symp_mgd-redeye_01",
+        "symp_myalgia_01",
+        "symp_skinrash_01"
       ],
-      "outputColumn": "oc_evd_01"
+      "outputColumn": "oc_mortality_01"
     }
   },
+
+
   {
     "taskID": "titanic",
     "displayInformation": {
