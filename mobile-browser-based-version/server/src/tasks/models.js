@@ -17,7 +17,7 @@ async function createEboladiagModel() {
   const model = tf.sequential();
   model.add(
     tf.layers.dense({
-      inputShape: [6],
+      inputShape: [22],
       units: 124,
       activation: 'relu',
       kernelInitializer: 'leCunNormal',

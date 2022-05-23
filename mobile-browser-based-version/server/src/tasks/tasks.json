@@ -9,20 +9,53 @@
       "tradeoffs": "We are using a small model for this task: 2 connected layers with few nodes and we are using no optimization techniques implemented. This allows fast training but can yield to poor performance.",
       "dataFormatInformation": "This model takes as input a CSV file with 22 columns.  general information about the patient (sex, age, ymp_fever ...) and its cabin number.",
       "dataExample": [
-        { "columnName": "dem_age_y", "columnData": "1" },
+        { "columnName": "dem_age_y", "columnData": "44.0" },
         { "columnName": "dem_gender_01", "columnData": "0" },
         { "columnName": "symp_fever_01", "columnData": "1" },
         { "columnName": "symp_dyspnoea_01", "columnData": "0" },
         { "columnName": "symp_hiccup_01", "columnData": "1" },
-        { "columnName": "symp_jaundice_01", "columnData": "1" }
+        { "columnName": "symp_jaundice_01", "columnData": "1" },
+        { "columnName": "hos_admission_m", "columnData": "14.0" },
+        { "columnName": "hos_duration_d", "columnData": "7.0" },
+        { "columnName": "hos_referral_d", "columnData": "5.0" },
+        { "columnName": "symp_anorexia_01", "columnData": "1.0" },
+        { "columnName": "symp_arthritis_01", "columnData": "1.0" },
+        { "columnName": "symp_chestpain_01", "columnData": "0.0" },
+        { "columnName": "symp_diarrhea_01", "columnData": "1.0" },
+        { "columnName": "symp_dysphagia_01", "columnData": "1.0" },
+        { "columnName": "symp_headache_01", "columnData": "1.0" },
+        { "columnName": "symp_mgd-abdominalpain_01", "columnData": "1.0" },
+        { "columnName": "symp_mgd-bleeding_01", "columnData": "0.0" },
+        { "columnName": "symp_mgd-fatigue_01", "columnData": "1.0" },
+        { "columnName": "symp_mgd-nausea_01", "columnData": "0.0" },
+        { "columnName": "symp_mgd-redeye_01", "columnData": "1.0" },
+        { "columnName": "symp_myalgia_01", "columnData": "1.0" },
+        { "columnName": "symp_skinrash_01", "columnData": "1.0" }
       ],
       "headers": [
-        "dem_age_y",  
+        "dem_age_y",
         "dem_gender_01",
+        "hos_admission_m",
+        "hos_duration_d",
+        "hos_referral_d",
+        "symp_anorexia_01",
+        "symp_arthritis_01",
+        "symp_chestpain_01",
+        "symp_diarrhea_01",
+        "symp_dysphagia_01",
+        "symp_dyspnoea_01",
         "symp_fever_01",
-        "symp_dyspnoea_01",   
-        "symp_hiccup_01", 
-        "symp_jaundice_01"
+        "symp_headache_01",
+        "symp_hiccup_01",
+        "symp_jaundice_01",
+        "symp_mgd-abdominalpain_01",
+        "symp_mgd-bleeding_01",
+        "symp_mgd-fatigue_01",
+        "symp_mgd-nausea_01",
+        "symp_mgd-redeye_01",
+        "symp_myalgia_01",
+        "symp_skinrash_01",
+        "oc_evd_01"
       ]
     },
     "trainingInformation": {
@@ -40,7 +73,7 @@
       "receivedMessagesThreshold": 1,
       "dataType": "csv",
       "inputColumns": [
-        "dem_age_y",  
+        "dem_age_y",
         "dem_gender_01",
         "hos_admission_m",
         "hos_duration_d",
@@ -131,7 +164,7 @@
         "symp_myalgia_01",
         "symp_skinrash_01"
       ],
-      "outputColumn": "oc_mortality_01"
+      "outputColumn": "oc_evd_01"
     }
   },
 
